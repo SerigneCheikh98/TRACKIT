@@ -1,6 +1,6 @@
 ##### How to run
 1. Download expo App
-2. Run ```npx expo start```
+2. Run ```npx expo start``` or ```npm start```
 3. Scan the QR code using the Camera App
 
 > You need to be connected under the same network
