@@ -18,12 +18,11 @@ const ToggleChoice = () => {
 
   return (
     <View onValueChange={value => setValue(value)} value={value} style={styles.container}>
-        <Button icon="calendar" buttonColor={ value == 'left' ? 'blue' : 'grey' } mode="contained" style={styles.buttonStyle} onPress={() => handleToggle('left')}>
+        <Button icon="calendar" buttonColor={ value == 'left' ? '#1F1937' : 'grey' } mode="contained" style={styles.buttonLeftStyle} onPress={() => handleToggle('left')}>
           By Time
           
         </Button>
-        <View style={{ flex: 0.3 }}/>
-        <Button icon="car" buttonColor={ value == 'left' ? 'gray' : 'blue' } mode="contained" style={styles.buttonStyle} onPress={() => handleToggle('right')}>
+        <Button icon="car" buttonColor={ value == 'left' ? 'gray' : '#1F1937' } mode="contained" style={styles.buttonRightStyle} onPress={() => handleToggle('right')}>
           By Driver
         </Button>
     </View>
@@ -34,8 +33,21 @@ const styles = StyleSheet.create({
       flexDirection: 'row',
       alignItems: 'center'
     },
-    buttonStyle: {
-        borderRadius: 10
+    buttonLeftStyle: {
+        borderRadius: 0,
+        width: '100%',
+        alignItems: 'center',
+        alignContent: 'center',
+        borderTopLeftRadius: 10,
+        borderBottomLeftRadius: 10
+    },
+    buttonRightStyle: {
+        borderRadius: 0,
+        width: '100%',
+        alignItems: 'center',
+        alignContent: 'center',
+        borderTopRightRadius: 10,
+        borderBottomRightRadius: 10
     }
   });
 export default ToggleChoice;
