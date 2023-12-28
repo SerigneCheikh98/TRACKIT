@@ -1,38 +1,29 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TextInput } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import TopBar from './TopBar';
 import ToggleChoice from './ToggleChoice';
 import Sliders from './Slider';
 import { useState } from 'react';
 import Calendar from './Calendar1';
-
+import UsersList from './UsersList';
+import BottomBar from './BottomBar';
+import { Button, TextInput } from 'react-native-paper';
+import InputForm from './InputForm';
 
 
 const HomePage = ({navigation,route}) => {
-    const [text, setText] = useState("");
     return(
-  <SafeAreaProvider>
-          
-          <TopBar />
-          
-          <SafeAreaView style={styles.container}>
-           
-            <ToggleChoice />
-            <View >
-              <Text>Location: </Text>
-              <TextInput
-                label="Location"
-                value={text}
-                onChangeText={text => setText(text)}
-              />
-             <Calendar/>
-            
-            </View>
-            <Sliders />
-            <Text>Si proprio tu</Text>
-          </SafeAreaView>
-        </SafeAreaProvider>
+      <SafeAreaProvider>
+        <TopBar />
+        <SafeAreaView style={styles.container}>
+          <ToggleChoice />
+          <InputForm />
+          <UsersList />
+          {/* <Sliders /> */}
+        </SafeAreaView>
+        <BottomBar />
+      </SafeAreaProvider>
     );
 }
 
