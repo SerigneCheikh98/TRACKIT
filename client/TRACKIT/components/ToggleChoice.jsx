@@ -5,6 +5,7 @@ import { Button } from 'react-native-paper';
 import { View } from 'react-native';
 import { useState } from 'react';
 
+
 const ToggleChoice = () => {
   const [value, setValue] = useState('left');
 
@@ -19,7 +20,9 @@ const ToggleChoice = () => {
     <View onValueChange={value => setValue(value)} value={value} style={styles.container}>
         <Button icon="calendar" buttonColor={ value == 'left' ? 'blue' : 'grey' } mode="contained" style={styles.buttonStyle} onPress={() => handleToggle('left')}>
           By Time
+          
         </Button>
+        <View style={{ flex: 0.3 }}/>
         <Button icon="car" buttonColor={ value == 'left' ? 'gray' : 'blue' } mode="contained" style={styles.buttonStyle} onPress={() => handleToggle('right')}>
           By Driver
         </Button>
