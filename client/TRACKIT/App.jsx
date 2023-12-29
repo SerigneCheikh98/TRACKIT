@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Calendar from './components/Calendar1';
 import Login from './components/Login';
 import HomePage from './components/Home';
+import RegisterScreen from './components/Registration';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import TopBar from './components/TopBar';
 import ToggleChoice from './components/ToggleChoice';
@@ -18,7 +19,7 @@ export default function App() {
     <NavigationContainer>
     <Stack.Navigator>
       <Stack.Screen 
-      name="Login"
+      name="LoginPage"
       component={Login}
       options={{ headerShown: false} }
 
@@ -26,6 +27,11 @@ export default function App() {
       <Stack.Screen 
       name = "HomePage"
       component={HomePage}
+      options={{ headerShown: false} }
+      />
+      <Stack.Screen 
+      name = "RegistrationPage"
+      component={RegisterScreen}
       options={{ headerShown: false} }
       />
     </Stack.Navigator>

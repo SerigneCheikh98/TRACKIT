@@ -1,7 +1,7 @@
 import { Button, TextInput, Text} from 'react-native-paper'
-import { Image } from 'react-native'
+import { Image, Linking } from 'react-native'
 import { KeyboardAvoidingView, TouchableOpacity, View, StyleSheet} from 'react-native'
-
+import { Link } from '@react-navigation/native';
 
 const Login = ({navigation}) =>{
   
@@ -60,6 +60,17 @@ const Login = ({navigation}) =>{
             <Text style={styles.buttonOutlineText}>Register</Text>
         </TouchableOpacity>
         </View>
+        <Text variant="labelSmall" style={{ marginTop: '7%' }} >Want to help others learn how to drive?</Text>
+        
+       
+         <Text variant="labelSmall" style={{ color: 'grey', textDecorationLine: 'underline', }}
+         onPress={()=>{ navigation.navigate('RegistrationPage')/* navigate to Registration */     }}
+         >Register as an experienced driver</Text>
+         
+       
+    
+       
+       
         </View>
         
     )
@@ -101,7 +112,7 @@ const styles = StyleSheet.create({
         padding: '4%',
         borderRadius: 10,
         alignItems: 'center',
-        marginTop: '30%',
+        marginTop: '20%',
         width: 200,
 
     },
