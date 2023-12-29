@@ -31,7 +31,9 @@ const ToggleChoice = () => {
 const styles = StyleSheet.create({
     container: {
       flexDirection: 'row',
-      alignItems: 'center'
+      flex: 1,
+      alignItems: 'center',
+      paddingHorizontal: '5%'
     },
     buttonLeftStyle: {
         borderRadius: 0,
@@ -39,7 +41,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         alignContent: 'center',
         borderTopLeftRadius: 10,
-        borderBottomLeftRadius: 10
+        borderBottomLeftRadius: 10,
+        flex: 1
     },
     buttonRightStyle: {
         borderRadius: 0,
@@ -47,7 +50,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         alignContent: 'center',
         borderTopRightRadius: 10,
-        borderBottomRightRadius: 10
+        borderBottomRightRadius: 10,
+        flex: 1
     }
   });
 export default ToggleChoice;

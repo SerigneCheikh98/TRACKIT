@@ -54,8 +54,9 @@ const RegisterScreen = ({navigation}) =>{
                     right={
                         
                         <TextInput.Icon
-                        style={{screenLeft: 0}}
-                          name="eye"
+                        style={{screenLeft: 0, color: "#1F1937", size:20}}
+                          icon="eye"
+                          color= "#1F1937"
                           onPress={() => setHidePass(!hidePass)}
                         />
                       }

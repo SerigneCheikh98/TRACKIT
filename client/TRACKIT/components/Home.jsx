@@ -19,10 +19,10 @@ const HomePage = ({navigation,route}) => {
         <SafeAreaView style={styles.container}>
           <ToggleChoice />
           <InputForm />
-          <UsersList />
+          {/* <UsersList /> */}
           {/* <Sliders /> */}
         </SafeAreaView>
-        <BottomBar />
+        {/* <BottomBar /> */}
       </SafeAreaProvider>
     );
 }
@@ -31,8 +31,6 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: '#fff',
-      alignItems: 'center',
-      // justifyContent: 'center',
     },
   });
 

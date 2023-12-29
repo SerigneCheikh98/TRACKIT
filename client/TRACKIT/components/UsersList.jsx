@@ -30,7 +30,7 @@ const UsersList = () => {
         <>
             <View style={styles.container}>
                 <Filters />
-                <UserItem />
+                {/* <UserItem /> */}
             </View>
         </>
     )
