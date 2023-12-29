@@ -4,7 +4,8 @@ import { KeyboardAvoidingView, TouchableOpacity, View, StyleSheet} from 'react-n
 import { Link } from '@react-navigation/native';
 
 const Login = ({navigation}) =>{
-  
+    
+
     return (
         <View
         style={styles.container}
@@ -19,7 +20,8 @@ const Login = ({navigation}) =>{
         </View>
         <View>
         <TextInput
-        placeholder='Email'
+        
+        label="Email"
         //value={}
         //onChangeText={text => }
         mode='outlined'
@@ -32,7 +34,7 @@ const Login = ({navigation}) =>{
         //value={}
         //onChangeText={text => }
         mode='outlined'
-        outlineColor='#1F1937'
+        
         activeOutlineColor='#1F1937'
         style={styles.input}
         

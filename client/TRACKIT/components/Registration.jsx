@@ -8,6 +8,12 @@ import { useState } from 'react';
 
 const RegisterScreen = ({navigation}) =>{
     let [step, setStep] = useState("1");
+    let [hidePassp, setHidePassp] = useState(true);
+    let [hidePasscp, setHidePasscp] = useState(true);
+    let [passIconp, setPassIconp] = useState("eye-off")
+    let [passIconcp, setPassIconcp] = useState("eye-off")
+    let [onFocusp, setOnFocusp] = useState(false)
+    let [onFocuscp, setOnFocuscp] = useState(false)
     return(
         <SafeAreaProvider>
             <Appbar.Header style={{mode: 'center-aligned', backgroundColor:"#1F1937"}}>
@@ -33,9 +39,10 @@ const RegisterScreen = ({navigation}) =>{
                     outlineColor='#1F1937'
                     activeOutlineColor='#1F1937'
                     style={styles.input}
-                    
+                    onFocus={()=>{setOnFocuscp(false)
+                    setOnFocusp(false)}}
                     />
-                    <TextInput  secureTextEntry={true}
+                    <TextInput  
                     placeholder='Password'
                     //value={}
                     //onChangeText={text => }
@@ -43,7 +50,32 @@ const RegisterScreen = ({navigation}) =>{
                     outlineColor='#1F1937'
                     activeOutlineColor='#1F1937'
                     style={styles.input}
-                    icon ="eye"/>
+                    onFocus={()=>{setOnFocusp(true)
+                    setOnFocuscp(false)}}
+                    
+                    
+                    right={
+                        onFocusp &&
+                        <TextInput.Icon
+                        style={{screenLeft: 0, color: "#1F1937", size:20}}
+                          icon={passIconp}
+                          color= "#1F1937"
+                          onPress={() => {
+                            
+                            if(hidePassp)
+                            {
+                                setPassIconp("eye");
+                                setHidePassp(false)
+                            }
+                            else{
+                                setPassIconp("eye-off");
+                                setHidePassp(true)
+                            }
+                        }}
+                        />
+                      }
+                      secureTextEntry={hidePassp}
+                    />
                   
                     <TextInput  
                     placeholder='Confirm password'
@@ -51,16 +83,29 @@ const RegisterScreen = ({navigation}) =>{
                     outlineColor='#1F1937'
                     activeOutlineColor='#1F1937'
                     style={styles.input}
+                    onFocus={()=>{setOnFocusp(false)
+                        setOnFocuscp(true)}}
                     right={
-                        
+                        onFocuscp &&
                         <TextInput.Icon
                         style={{screenLeft: 0, color: "#1F1937", size:20}}
-                          icon="eye"
+                          icon={passIconcp}
                           color= "#1F1937"
-                          onPress={() => setHidePass(!hidePass)}
+                          onPress={() => {
+                            
+                            if(hidePasscp)
+                            {
+                                setPassIconcp("eye");
+                                setHidePasscp(false)
+                            }
+                            else{
+                                setPassIconcp("eye-off");
+                                setHidePasscp(true)
+                            }
+                        }}
                         />
                       }
-                    secureTextEntry={true}
+                    secureTextEntry={hidePasscp}
                     />
                     <TouchableOpacity
         onPress={()=>{
