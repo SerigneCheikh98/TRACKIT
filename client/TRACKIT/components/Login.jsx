@@ -1,5 +1,5 @@
 import { Button, TextInput, Text} from 'react-native-paper'
-import { Image, Linking } from 'react-native'
+import { Image, Linking, ScrollView } from 'react-native'
 import { KeyboardAvoidingView, TouchableOpacity, View, StyleSheet} from 'react-native'
 import { Link } from '@react-navigation/native';
 
@@ -7,6 +7,7 @@ const Login = ({navigation}) =>{
     
 
     return (
+        <ScrollView>
         <View
         style={styles.container}
         behavior='padding'
@@ -74,6 +75,7 @@ const Login = ({navigation}) =>{
        
        
         </View>
+        </ScrollView>
         
     )
 }
@@ -86,6 +88,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+        paddingTop: '20%'
     },
     inputContainer:
     {
