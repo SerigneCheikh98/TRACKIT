@@ -1,21 +1,71 @@
-import { Button, TextInput, Text, Appbar} from 'react-native-paper'
+import { Button, TextInput, Text, Appbar, Divider, Checkbox} from 'react-native-paper'
 import { Image, Linking, ScrollView } from 'react-native'
 import {Icon} from '@rneui/themed'
 import { KeyboardAvoidingView, TouchableOpacity, View, StyleSheet} from 'react-native'
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { useState } from 'react';
+import { Dropdown } from 'react-native-element-dropdown';
+import * as ImagePicker from 'expo-image-picker';
+import DateTimePicker from '@react-native-community/datetimepicker';
+
+
+import PhoneInput from 'react-native-international-phone-number';
+const genders = [
+    {label: "Female", value: '1'},
+    {label: "Male", value: '2'},
+]
+
 
 
 const RegisterScreen = ({navigation}) =>{
     let [step, setStep] = useState("1");
     let [hidePassp, setHidePassp] = useState(true);
     let [hidePasscp, setHidePasscp] = useState(true);
-    let [passIconp, setPassIconp] = useState("eye-off")
-    let [passIconcp, setPassIconcp] = useState("eye-off")
-    let [onFocusp, setOnFocusp] = useState(false)
-    let [onFocuscp, setOnFocuscp] = useState(false)
+    let [passIconp, setPassIconp] = useState("eye-off");
+    let [passIconcp, setPassIconcp] = useState("eye-off");
+    let [onFocusp, setOnFocusp] = useState(false);
+    let [onFocuscp, setOnFocuscp] = useState(false);
+
+    let  [gender, setGender] = useState(null);
+    let  [onFocusg, setOnFocusg] = useState(false);
+
+    const [selectedCountry, setSelectedCountry] = useState('');
+    const [inputValue, setInputValue] = useState('');
+
+
+    const [checked, setChecked] = useState(false);
+
+    const pickImage = async () => {
+        // No permissions request is necessary for launching the image library
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.All,
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 1,
+        });
+    
+        console.log(result);
+    
+        if (!result.canceled) {
+          setImage(result.assets[0].uri);
+        }
+      };
+   
+    function handleInputValue(phoneNumber) {
+        setInputValue(phoneNumber);
+    }
+
+    function handleSelectedCountry(country) {
+        setSelectedCountry(country);
+    }
+
+
+
+    let [phoneNumber, setPhoneNumber] = useState('')
+
     return(
-        <SafeAreaProvider>
+
+       <View>
             <Appbar.Header style={{mode: 'center-aligned', backgroundColor:"#1F1937"}}>
             <Appbar.BackAction color='white' onPress={()=>{
                 if(step == 1){
@@ -27,12 +77,36 @@ const RegisterScreen = ({navigation}) =>{
                 }}/>
             <Appbar.Content  title="Registration" titleStyle={{color: "white"}}/>
             </Appbar.Header>
-            <SafeAreaView>
-            <ScrollView>
+          
+            <KeyboardAvoidingView
+            behavior='padding'>
+                <ScrollView>
+           
             {(step == 1) && 
                     <View style={styles.TextContainer}>
+                     <TextInput  
+                    label='Name'
+                    //value={}
+                    //onChangeText={text => }
+                    mode='outlined'
+                    outlineColor='#1F1937'
+                    activeOutlineColor='#1F1937'
+                    style={styles.input}
+                    
+                    />
+                   
+                    <TextInput  
+                    label='Last Name'
+                    //value={}
+                    //onChangeText={text => }
+                    mode='outlined'
+                    outlineColor='#1F1937'
+                    activeOutlineColor='#1F1937'
+                    style={styles.input}
+                    
+                    />
                     <TextInput  keyboardType='email-address'
-                    placeholder='Email'
+                    label='Email'
                     //value={}
                     //onChangeText={text => }
                     mode='outlined'
@@ -43,7 +117,7 @@ const RegisterScreen = ({navigation}) =>{
                     setOnFocusp(false)}}
                     />
                     <TextInput  
-                    placeholder='Password'
+                    label='Password'
                     //value={}
                     //onChangeText={text => }
                     mode='outlined'
@@ -78,7 +152,7 @@ const RegisterScreen = ({navigation}) =>{
                     />
                   
                     <TextInput  
-                    placeholder='Confirm password'
+                    label='Confirm password'
                     mode='outlined'
                     outlineColor='#1F1937'
                     activeOutlineColor='#1F1937'
@@ -122,96 +196,100 @@ const RegisterScreen = ({navigation}) =>{
         alignItems: 'center', flex:1 }}
         onPress={()=>{ navigation.navigate('LoginPage')/* navigate to Registration */     }}
         >Login</Text>
+
+      
+
         </View>
             
 }
-{(step != "1") && <View>
-
-
-
-
-    </View>}
-            </ScrollView>
-            </SafeAreaView>
-            </SafeAreaProvider>
-    )
-}
-
-
-
-
-const RegsitrationStep1 = ({navigation}) => {
-
-
-    return(
-<ScrollView>
-            <Appbar.Header style={{mode: 'center-aligned', backgroundColor:"#1F1937"}}>
-            <Appbar.BackAction color='white' onPress={()=>{navigation.navigate('LoginPage')}}/>
-            <Appbar.Content  title="Registration" titleStyle={{color: "white"}}/>
-            </Appbar.Header>
-            <SafeAreaView>
-                    <View style={styles.TextContainer}>
-                    <TextInput  keyboardType='email-address'
-                    placeholder='Email'
-                    //value={}
-                    //onChangeText={text => }
-                    mode='outlined'
-                    outlineColor='#1F1937'
-                    activeOutlineColor='#1F1937'
-                    style={styles.input}
+{(step != "1") && 
+    
+  
+    <View style={styles.TextContainer}>
+                 
+                  <Text variant="titleSmall" style={{marginTop:"7%", textAlign: 'left', alignItems: 'baseline'}} textColor="#1F1937">Personal Information</Text>
+                 
+                    <Dropdown 
+                    style={styles.dropdown}
+                    data={genders}
+                    placeholderStyle={styles.placeholderStyle}
+                    selectedTextStyle={styles.selectedTextStyle}
+                    activeColor='#1F1937'
                     
+                    maxHeight={300}
+                    labelField="label"
+                    valueField="value"
+                    placeholder="Select Gender"
+                    onChange={(item)=>{
+                        setGender(item.value);
+                        setOnFocusg(false);
+                    }}
+                    onFocus={()=>{
+                    setOnFocusg(true);
+                    }}
+                    onBlur={()=>{setOnFocusg(false)}}
+                    
+
                     />
-                    <TextInput  secureTextEntry={true}
-                    placeholder='Password'
-                    //value={}
-                    //onChangeText={text => }
-                    mode='outlined'
-                    outlineColor='#1F1937'
-                    activeOutlineColor='#1F1937'
-                    style={styles.input}
-                    right = {<TextInput.Icon icon="eye" color= "#1F1937"/>}
-                    />
-                    <TextInput  secureTextEntry={true}
-                    placeholder='Confirm password'
-                    //value={}
-                    //onChangeText={text => }
-                    mode='outlined'
-                    outlineColor='#1F1937'
-                    activeOutlineColor='#1F1937'
-                    style={styles.input}
-                    right={
-                        
-                        <TextInput.Icon
-                        style={{screenLeft: 0, color: "#1F1937", size:20}}
-                          name="eye"
-                          color= "#1F1937"
-                          onPress={() => setHidePass(!hidePass)}
-                        />
-                      }
-                    />
-                    <TouchableOpacity
-        onPress={()=>{
-            navigation.navigate('HomePage')
-        }}
-        style={styles.button}
-        >
-            <Text style={styles.buttonText}>Submit</Text>
-        </TouchableOpacity>
-        <Text variant="labelSmall" style={{ marginTop: '7%' }} >Already Registered?</Text>
-        
-       
-        <Text variant="labelSmall" style={{ color: 'grey', textDecorationLine: 'underline', justifyContent: 'center',
-        alignItems: 'center', flex:1 }}
-        onPress={()=>{ navigation.navigate('LoginPage')/* navigate to Registration */     }}
-        >Login</Text>
-        </View>
-            
-            </SafeAreaView>
+                  
+                    <View style={{width:"100%", height:"15%", marginLeft:"15%", marginBottom:"7sd%"}}>
+                    <Text variant="titleSmall" style={{marginTop:"7%", marginLeft:"3%"}} textColor="#1F1937">Birth Date</Text>
+                     <DateTimePicker  mode="date" display='spinner' value={new Date()}  style={{width:"80%", height:"100%"}} />
+                     </View>
+                    <View style={styles.phoneNumberCont}>
+                    <PhoneInput 
+                    value={inputValue}
+                    onChangePhoneNumber={handleInputValue}
+                    selectedCountry={selectedCountry}
+                    onChangeSelectedCountry={handleSelectedCountry}
+                    modalHeight="40%"
+                    defaultCountry="IT"
+                    customMask={[ '### ### ####','#### ####']}
+                    placeholder="Phone Number"
+                    excludedCountries={['IL']}
+                     />
+                     <Text variant="titleSmall" style={{marginTop:"7%"}} textColor="#1F1937">Upload Driving License</Text>
+                     <View style={{ flexDirection: 'row' }}>
+      <Button icon="camera" mode="contained" onPress={pickImage} style={[styles.buttonImport, { marginRight: 10 }]}>
+        Front
+      </Button>
+      <Button icon="camera" mode="contained" onPress={pickImage} style={styles.buttonOutlineImport} textColor='#1F1937'>
+        Back
+      </Button>
+    </View>
+    <Text variant="titleSmall" style={{marginTop:"7%"}} textColor="#1F1937">Upload Identity Card</Text>
+     <View style={{ flexDirection: 'row' }}>
+      <Button icon="camera" mode="contained" onPress={pickImage} style={[styles.buttonImport, { marginRight: 10 }]}>
+        Front
+      </Button>
+      <Button icon="camera" mode="contained" onPress={pickImage} style={styles.buttonOutlineImport} textColor='#1F1937'>
+        Back
+      </Button>
+    </View>
+   
+                     </View>
+                     <View>
+                    
+                     <Checkbox
+      status={checked ? 'checked' : 'unchecked'}
+      onPress={() => {
+        setChecked(!checked);
+      }}
+    />
+                     </View>
+    </View>
+   
+
+
+   }
             </ScrollView>
-
+            </KeyboardAvoidingView>
+          
+          </View>
     )
-
 }
+
+
 
 
 
@@ -233,7 +311,6 @@ const styles = StyleSheet.create({
     input: {
         backgroundColor: 'white',
         paddingHorizontal: '1%',
-        paddingVertical: '0.2%',
         marginTop: "3%",
         width: 300,
     
@@ -264,6 +341,27 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         alignItems: 'center',
     },
+    buttonImport:{
+        backgroundColor: "#1F1937",
+        width: '35%',
+        borderColor: '#1F1937',
+        borderWidth:2,
+        borderRadius: 10,
+        alignItems: 'center',
+
+        marginTop: '3%',
+    },
+    buttonOutlineImport:{
+        backgroundColor: 'white',
+        marginTop: 5,
+        width: '35%',
+        borderColor: '#1F1937',
+        borderColor: '#1F1937',
+        borderWidth:2,
+        borderRadius: 10,
+        alignItems: 'center',
+        marginTop: '3%',
+    },
     buttonText:{
         color: 'white',
         fontWeight: '700',
@@ -273,7 +371,41 @@ const styles = StyleSheet.create({
         color: '#782F9',
         fontWeight: '700',
         fontSize: 16,
-    }
+    },
+    dropdown: {
+        height: 50,
+        borderColor: 'gray',
+        borderWidth: 0.5,
+        borderRadius: 8,
+        paddingHorizontal: 8,
+        width: "80%",
+        marginTop: "5%"
+      },
+      label: {
+        position: 'absolute',
+        backgroundColor: 'white',
+        left: 22,
+        top: 8,
+        zIndex: 999,
+        paddingHorizontal: 8,
+        fontSize: 14,
+      },
+      placeholderStyle: {
+        fontSize: 16,
+      },
+      selectedTextStyle: {
+        fontSize: 16,
+      },
+      iconStyle: {
+        width: 20,
+        height: 20,
+      },
+      phoneNumberCont: {
+        
+        width: '93%', flex: 1, padding: 24,
+        
+      }
+
 })
 
 export default RegisterScreen;
