@@ -1,10 +1,24 @@
 import { View, StyleSheet } from "react-native";
 import { Button, TextInput } from 'react-native-paper';
-import { useState } from "react";
+import { useState, useCallback } from "react";
+import { DatePickerModal } from 'react-native-paper-dates';
 
-const InputForm = () => {
+const InputForm = (props) => {
   const [location, setLocation] = useState("");
+  const [date, setDate] = useState(undefined);
+  const [open, setOpen] = useState(false);
 
+  const onDismissSingle = useCallback(() => {
+    setOpen(false);
+  }, [setOpen]);
+
+  const onConfirmSingle = useCallback(
+    (params) => {
+      setOpen(false);
+      setDate(params.date);
+    },
+    [setOpen, setDate]
+  );
   return (
     <>
       <View style={styles.container}>
@@ -18,8 +32,22 @@ const InputForm = () => {
           />
         </View>
         <View style={styles.textInputContainer}>
-          <View style={{ flex: 2 }}></View>
-          <Button style={styles.submitButton} buttonColor='black' mode="contained">
+          <View style={{ flex: 2 }}>
+          <View style={{ justifyContent: 'center', flex: 1, alignItems: 'center' }}>
+            <Button onPress={() => setOpen(true)} uppercase={false} mode="outlined">
+              Pick single date
+            </Button>
+            <DatePickerModal
+              locale="en"
+              mode="single"
+              visible={open}
+              onDismiss={onDismissSingle}
+              date={date}
+              onConfirm={onConfirmSingle}
+            />
+          </View>
+          </View>
+          <Button style={styles.submitButton} buttonColor='black' mode="contained" onPress={props.applyChange}>
             Apply changes
           </Button>
         </View>

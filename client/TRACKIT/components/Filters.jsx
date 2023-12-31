@@ -20,14 +20,15 @@ const Filters = () => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    flex: 1,
     backgroundColor: '#fff',
-    alignContent: 'space-between'
+    alignItems: 'center',
+    paddingHorizontal: '2%'
   },
   buttons: {
+    marginHorizontal: '2%',
     maxWidth: '40%',
-    maxHeight: '40%',
-    paddingHorizontal: '2&'
+    borderRadius: 10,
+    flex: 1
   }
 });
 

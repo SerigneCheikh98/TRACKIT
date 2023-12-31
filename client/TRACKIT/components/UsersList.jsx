@@ -3,34 +3,18 @@ import { useState } from "react";
 import UserItem from "./UserItem";
 import { View, StyleSheet } from "react-native";
 
-const UsersList = () => {
-    const [users, setUsers] = useState([{
-        username: 'Liam Carter',
-        rating: 4,
-        distance: 0.5
-    },
-    {
-        username: 'Sophia Chang',
-        rating: 3,
-        distance: 0.8
-    },
-    {
-        username: 'Oliver Patel',
-        rating: 5,
-        distance: 12
-    },
-    {
-        username: 'Gianni',
-        rating: 5,
-        distance: 15
-    }
-    ])
-
+const UsersList = (props) => {
     return (
         <>
             <View style={styles.container}>
                 <Filters />
-                {/* <UserItem /> */}
+                <View style={styles.list}>
+                    {
+                        props.users.map(item => {
+                            return <UserItem key={item.userId} style={styles.list} user={item} />
+                        })
+                    }
+                </View>
             </View>
         </>
     )
@@ -38,7 +22,14 @@ const UsersList = () => {
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1
+      flex: 1,
+      paddingHorizontal: '2%',
+      backgroundColor: '#fff',
+
+    },
+    list: {
+        paddingHorizontal: '6%',
+        paddingVertical: '2%'
     }
   });
 

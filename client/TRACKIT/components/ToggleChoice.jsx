@@ -33,7 +33,8 @@ const styles = StyleSheet.create({
       flexDirection: 'row',
       flex: 1,
       alignItems: 'center',
-      paddingHorizontal: '5%'
+      paddingHorizontal: '5%',
+      backgroundColor: '#fff'
     },
     buttonLeftStyle: {
         borderRadius: 0,
