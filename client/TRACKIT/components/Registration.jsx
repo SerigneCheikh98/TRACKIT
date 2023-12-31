@@ -1,4 +1,4 @@
-import { Button, TextInput, Text, Appbar, Divider,} from 'react-native-paper'
+import { Button, TextInput, Text, Appbar, Divider, Checkbox} from 'react-native-paper'
 import { Image, Linking, ScrollView } from 'react-native'
 import {Icon} from '@rneui/themed'
 import { KeyboardAvoidingView, TouchableOpacity, View, StyleSheet} from 'react-native'

@@ -31,7 +31,7 @@ const Login = ({navigation}) =>{
         style={styles.input}
         />
         <TextInput
-        placeholder='Password'
+        label='Password'
         //value={}
         //onChangeText={text => }
         mode='outlined'
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     input: {
         backgroundColor: 'white',
         paddingHorizontal: '1%',
-        paddingVertical: '0.2%',
+       
         marginTop: "3%",
         width: 300,
     
