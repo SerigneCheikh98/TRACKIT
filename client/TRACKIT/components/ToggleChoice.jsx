@@ -1,28 +1,19 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
-import { ToggleButton } from 'react-native-paper';
 import { Button } from 'react-native-paper';
 import { View } from 'react-native';
-import { useState } from 'react';
 
 
-const ToggleChoice = () => {
-  const [value, setValue] = useState('left');
+const ToggleChoice = (props) => {
 
-  function handleToggle(pos) {
-    if(value == 'left' && pos != 'left') 
-        setValue('right')
-    else if(value == 'right' && pos != 'right')
-        setValue('left')
-  }
 
   return (
-    <View onValueChange={value => setValue(value)} value={value} style={styles.container}>
-        <Button icon="calendar" buttonColor={ value == 'left' ? '#1F1937' : 'grey' } mode="contained" style={styles.buttonLeftStyle} onPress={() => handleToggle('left')}>
+    <View style={styles.container}>
+        <Button icon="calendar" buttonColor={ props.bookingType == 'left' ? '#1F1937' : 'grey' } mode="contained" style={styles.buttonLeftStyle} onPress={() => props.handleToggle('left')}>
           By Time
           
         </Button>
-        <Button icon="car" buttonColor={ value == 'left' ? 'gray' : '#1F1937' } mode="contained" style={styles.buttonRightStyle} onPress={() => handleToggle('right')}>
+        <Button icon="car" buttonColor={ props.bookingType == 'left' ? 'gray' : '#1F1937' } mode="contained" style={styles.buttonRightStyle} onPress={() => props.handleToggle('right')}>
           By Driver
         </Button>
     </View>

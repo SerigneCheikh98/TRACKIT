@@ -3,9 +3,9 @@ import { Appbar } from 'react-native-paper';
 import { StyleSheet } from 'react-native';
 
 const TopBar = () => (
-  <Appbar.Header style={{mode: 'center-aligned'}}>
-    <Appbar.Content title="TRACKIT"/>
-    <Appbar.Action icon="bell"></Appbar.Action>
+  <Appbar.Header style={{mode: 'center-aligned', backgroundColor:"#1F1937"}}>
+    <Appbar.Content title="TRACKIT" titleStyle={{color: "white"}}/>
+    <Appbar.Action icon="bell" color='white' />
   </Appbar.Header>
 );
 
