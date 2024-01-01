@@ -15,7 +15,7 @@ const UsersList = (props) => {
                     {/* <ScrollView> */}
                     {
                         props.users.sort(props.inUseFilter != 0 ? sortingFn : () => {}).map(item => {
-                            return <UserItem key={item.userId} style={styles.list} user={item} />
+                            return <UserItem navigation={props.navigation} key={item.userId} style={styles.list} user={item} />
                         })
                     }
                     {/* </ScrollView> */}

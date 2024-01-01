@@ -1,12 +1,18 @@
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { Text } from 'react-native-paper'
 import { Avatar } from "react-native-paper";
 import { Icon } from "@rneui/themed";
 
 const UserItem = (props) => {
   return (
-
-    <View style={styles.container}>
+    <TouchableOpacity
+    onPress={()=>{
+        props.navigation.navigate('BookingPage')
+    }}
+    style={styles.button}
+    >
+    
+    <View style={styles.container} >
       <View style={styles.icon}>
         <Avatar.Text size={35} style={styles.avatar} color={'white'} label={props.user.name[0] + props.user.lastname[0]}/>
       </View>
@@ -18,6 +24,7 @@ const UserItem = (props) => {
         <Text>{props.user.distance + ' Kms away'}</Text>
       </View>
     </View>
+    </TouchableOpacity>
   )
 }
 

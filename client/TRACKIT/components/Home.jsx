@@ -98,7 +98,7 @@ const HomePage = ({ navigation, route }) => {
           <ToggleChoice bookingType={bookingType} handleToggle={handleToggle} />
           <InputForm bookingType={bookingType} applyChange={applyChange}/>
 
-          <UsersList users={users} inUseFilter={inUseFilter} handleSetFilter={handleSetFilter}/>
+          <UsersList navigation={navigation} users={users} inUseFilter={inUseFilter } handleSetFilter={handleSetFilter}/>
           {/* <Sliders /> */}
         </SafeAreaView>
       </ScrollView>

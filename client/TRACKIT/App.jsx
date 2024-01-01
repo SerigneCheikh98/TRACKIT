@@ -12,6 +12,7 @@ import { StyleSheet, Text, View, TextInput } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { enGB, registerTranslation } from 'react-native-paper-dates'
+import Booking from './components/BookingPage';
 const Stack = createNativeStackNavigator();
 
 registerTranslation('en', {
@@ -51,6 +52,11 @@ export default function App() {
       <Stack.Screen 
       name = "RegistrationPage"
       component={RegisterScreen}
+      options={{ headerShown: false} }
+      />
+      <Stack.Screen 
+      name = "BookingPage"
+      component={Booking}
       options={{ headerShown: false} }
       />
     </Stack.Navigator>
