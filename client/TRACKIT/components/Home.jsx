@@ -25,55 +25,69 @@ const HomePage = ({ navigation, route }) => {
     name: 'Sophia',
     lastname: 'Chang',
     rating: 3,
-    distance: 0.8
+    distance: 120
   },
   {
     userId: 3,
     name: 'Oliver',
     lastname: 'Patel',
     rating: 5,
-    distance: 12
+    distance: 200
   },
   {
     userId: 4,
     name: 'Gianni',
     lastname: ' ',
-    rating: 5,
+    rating: 2,
     distance: 15
   },
   {
     userId: 5,
     name: 'Oliver',
     lastname: 'Patel',
-    rating: 5,
-    distance: 12
+    rating: 1,
+    distance: 150
   },
   {
     userId: 6,
     name: 'Oliver',
     lastname: 'Patel',
-    rating: 5,
-    distance: 12
-  },
-  {
-    userId: 7,
-    name: 'Oliver',
-    lastname: 'Patel',
-    rating: 5,
-    distance: 12
-  },
-  {
-    userId: 8,
-    name: 'Oliver',
-    lastname: 'Patel',
-    rating: 5,
-    distance: 12
+    rating: 0,
+    distance: 24
   }
   ]
   const [users, setUsers] = useState([])
+  const [bookingType, setBookingType] = useState('left')
+  const [inUseFilter, setInUseFilter] = useState(0) // 0 none - 1 distance - 2 rating
 
   const applyChange = () => {
     setUsers(static_users)
+  }
+
+  function handleToggle(pos) {
+    if(bookingType == 'left' && pos != 'left') {
+      setBookingType('right')
+      setUsers([])
+    }
+    else if(bookingType == 'right' && pos != 'right') {
+      setBookingType('left')
+      setUsers([])
+    }
+  }
+
+  function handleSetFilter(choice) {
+    if(inUseFilter == 1 && choice != 1) {
+      setInUseFilter(2)
+    }
+    else if(inUseFilter == 2 && choice != 2) {
+      setInUseFilter(1)
+    }
+    else if(inUseFilter == 0) {
+      setInUseFilter(choice)
+    }
+    else {
+      setInUseFilter(0)
+    }
   }
 
   return (
@@ -81,20 +95,22 @@ const HomePage = ({ navigation, route }) => {
       <TopBar />
       <ScrollView>
         <SafeAreaView style={styles.container}>
-          <ToggleChoice />
-          <InputForm applyChange={applyChange}/>
+          <ToggleChoice bookingType={bookingType} handleToggle={handleToggle} />
+          <InputForm bookingType={bookingType} applyChange={applyChange}/>
 
-          <UsersList users={users}/>
+          <UsersList users={users} inUseFilter={inUseFilter} handleSetFilter={handleSetFilter}/>
           {/* <Sliders /> */}
         </SafeAreaView>
       </ScrollView>
-      <BottomBar />
+      {/* <BottomBar /> */}
     </SafeAreaProvider>
   );
 }
 
 const styles = StyleSheet.create({
-
+  container: {
+    // flex: 1
+  }
 });
 
 export default HomePage
