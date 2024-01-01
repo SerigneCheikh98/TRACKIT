@@ -1,6 +1,7 @@
-import { Button, TextInput, Text, Appbar, Divider, Checkbox} from 'react-native-paper'
+import { Button, TextInput, Text, Appbar, Divider,  Title} from 'react-native-paper'
 import { Image, Linking, ScrollView } from 'react-native'
 import {Icon} from '@rneui/themed'
+import Checkbox from 'expo-checkbox'
 import { KeyboardAvoidingView, TouchableOpacity, View, StyleSheet} from 'react-native'
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { useState } from 'react';
@@ -10,6 +11,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 
 
 import PhoneInput from 'react-native-international-phone-number';
+import { Tile, color } from '@rneui/base';
 const genders = [
     {label: "Female", value: '1'},
     {label: "Male", value: '2'},
@@ -187,11 +189,13 @@ const RegisterScreen = ({navigation}) =>{
         }}
         style={styles.button}
         >
+          
             <Text style={styles.buttonText}>Submit</Text>
         </TouchableOpacity>
         <Text variant="labelSmall" style={{ marginTop: '7%' }} >Already Registered?</Text>
         
        
+                  
         <Text variant="labelSmall" style={{ color: 'grey', textDecorationLine: 'underline', justifyContent: 'center',
         alignItems: 'center', flex:1 }}
         onPress={()=>{ navigation.navigate('LoginPage')/* navigate to Registration */     }}
@@ -204,11 +208,13 @@ const RegisterScreen = ({navigation}) =>{
 }
 {(step != "1") && 
     
-  
+ 
+
     <View style={styles.TextContainer}>
-                 
+
                   <Text variant="titleSmall" style={{marginTop:"7%", textAlign: 'left', alignItems: 'baseline'}} textColor="#1F1937">Personal Information</Text>
-                 
+                  <View style={{width:"100%", height:"45%", marginLeft:"15%", marginBottom:"27%"}}>
+                  <Text variant="titleSmall" style={{marginTop:"7%", marginLeft:"3%", marginBottom:"2%"}} textColor="#1F1937">Gender</Text>
                     <Dropdown 
                     style={styles.dropdown}
                     data={genders}
@@ -231,12 +237,27 @@ const RegisterScreen = ({navigation}) =>{
                     
 
                     />
-                  
-                    <View style={{width:"100%", height:"15%", marginLeft:"15%", marginBottom:"7sd%"}}>
+                   
                     <Text variant="titleSmall" style={{marginTop:"7%", marginLeft:"3%"}} textColor="#1F1937">Birth Date</Text>
-                     <DateTimePicker  mode="date" display='spinner' value={new Date()}  style={{width:"80%", height:"100%"}} />
+                     <DateTimePicker  mode="date" display='spinner' value={new Date()}  style={{width:"80%", height:"40%"}} />
+                     
+                     <Text variant="titleSmall" style={{marginTop:"7%", marginLeft:"3%"}}  textColor="#1F1937">Driving License</Text>
+                     <View style={{ flexDirection: 'row' }}>
+      <Button icon="camera" mode="contained" onPress={pickImage} style={[styles.buttonImport, { marginRight: 10, fontSize: 8, width:"50%" }]}>
+        Upload photo
+      </Button>
+      
+    </View>
+    <Text variant="titleSmall" style={{marginTop:"7%", marginLeft:"3%"}} textColor="#1F1937">Identity Card</Text>
+     <View style={{ flexDirection: 'row' }}>
+      <Button icon="camera" mode="contained" onPress={pickImage} style={[styles.buttonImport, { marginRight: 10, fontSize: 12, width:"50%" }]}>
+        Upload photo
+      </Button>
+    </View>
+   
                      </View>
-                    <View style={styles.phoneNumberCont}>
+                     <View style={styles.phoneNumberCont}>
+                    <Text variant="titleSmall" style={{marginTop:"7%", marginLeft:"3%", marginBottom:"3%"}} textColor="#1F1937">Phone number</Text>
                     <PhoneInput 
                     value={inputValue}
                     onChangePhoneNumber={handleInputValue}
@@ -248,36 +269,15 @@ const RegisterScreen = ({navigation}) =>{
                     placeholder="Phone Number"
                     excludedCountries={['IL']}
                      />
-                     <Text variant="titleSmall" style={{marginTop:"7%"}} textColor="#1F1937">Upload Driving License</Text>
-                     <View style={{ flexDirection: 'row' }}>
-      <Button icon="camera" mode="contained" onPress={pickImage} style={[styles.buttonImport, { marginRight: 10 }]}>
-        Front
-      </Button>
-      <Button icon="camera" mode="contained" onPress={pickImage} style={styles.buttonOutlineImport} textColor='#1F1937'>
-        Back
-      </Button>
-    </View>
-    <Text variant="titleSmall" style={{marginTop:"7%"}} textColor="#1F1937">Upload Identity Card</Text>
-     <View style={{ flexDirection: 'row' }}>
-      <Button icon="camera" mode="contained" onPress={pickImage} style={[styles.buttonImport, { marginRight: 10 }]}>
-        Front
-      </Button>
-      <Button icon="camera" mode="contained" onPress={pickImage} style={styles.buttonOutlineImport} textColor='#1F1937'>
-        Back
-      </Button>
-    </View>
-   
                      </View>
-                     <View>
-                    
-                     <Checkbox
-      status={checked ? 'checked' : 'unchecked'}
-      onPress={() => {
-        setChecked(!checked);
-      }}
+                     {/* <View style={{width:"100%", height:"25%", marginLeft:"15%", marginBottom:"2%", marginTop:"7%"}}>
+                     <Checkbox value={false}
+      
     />
-                     </View>
+   </View> */}
+                        
     </View>
+  
    
 
 
@@ -343,29 +343,31 @@ const styles = StyleSheet.create({
     },
     buttonImport:{
         backgroundColor: "#1F1937",
-        width: '35%',
+        width: '65%',
         borderColor: '#1F1937',
         borderWidth:2,
         borderRadius: 10,
-        alignItems: 'center',
+        alignItems: 'flex-start',
 
         marginTop: '3%',
+
     },
     buttonOutlineImport:{
         backgroundColor: 'white',
         marginTop: 5,
-        width: '35%',
+        width: '45%',
         borderColor: '#1F1937',
         borderColor: '#1F1937',
         borderWidth:2,
         borderRadius: 10,
-        alignItems: 'center',
+        alignItems: 'flex-start',
         marginTop: '3%',
     },
     buttonText:{
         color: 'white',
         fontWeight: '700',
-        fontSize: 16,
+        fontSize: 12,
+
     },
     buttonContainer:{
         color: '#782F9',
@@ -379,7 +381,7 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         paddingHorizontal: 8,
         width: "80%",
-        marginTop: "5%"
+       
       },
       label: {
         position: 'absolute',
@@ -402,7 +404,10 @@ const styles = StyleSheet.create({
       },
       phoneNumberCont: {
         
-        width: '93%', flex: 1, padding: 24,
+        width: '93%',
+        flex:1, 
+        padding: 21,
+        height:"1%",
         
       }
 
