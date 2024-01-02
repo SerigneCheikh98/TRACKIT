@@ -1,15 +1,15 @@
 import { View, StyleSheet } from "react-native";
 import { Button, Text } from 'react-native-paper';
 
-const Filters = () => {
+const Filters = (props) => {
   return (
     <>
       <View style={styles.container}>
         <Text style={{ flex: 1 }}>Sort by: </Text>
-        <Button icon="map-marker-distance" mode="outlined" style={styles.buttons} onPress={() => console.log('Pressed')}>
+        <Button icon="map-marker-distance" mode="outlined" labelStyle={{ color: props.inUseFilter === 1 ? '#1F1937' : 'grey' }} style={styles.buttons} onPress={() => props.handleSetFilter(1)}>
           Distance
         </Button>
-        <Button  icon='star' mode="outlined" style={styles.buttons} onPress={() => console.log('Pressed')}>
+        <Button  icon='star' mode="outlined" labelStyle={{ color: props.inUseFilter === 2 ? '#1F1937' : 'grey' }} style={styles.buttons} onPress={() => props.handleSetFilter(2)}>
           Rating
         </Button>
       </View>
