@@ -1,7 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
-import TopBar from './TopBar';
 import ToggleChoice from './ToggleChoice';
 import Sliders from './Slider';
 import { useState, useCallback, useEffect } from 'react';
@@ -94,7 +93,6 @@ const HomePage = ({ navigation, route }) => {
 
   return (
     <SafeAreaProvider>
-      <TopBar />
       <ScrollView>
         <SafeAreaView style={styles.container}>
           <ToggleChoice bookingType={bookingType} handleToggle={handleToggle} />

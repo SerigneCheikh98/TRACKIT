@@ -1,18 +1,16 @@
-import { useState } from 'react';
-import Calendar from './components/Calendar1';
+import * as React from 'react';
 import Login from './components/Login';
 import HomePage from './components/Home';
 import RegisterScreen from './components/Registration';
-import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
+import ReportScreen from './components/Report';
 import TopBar from './components/TopBar';
-import ToggleChoice from './components/ToggleChoice';
-import Sliders from './components/Slider';
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TextInput } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { enGB, registerTranslation } from 'react-native-paper-dates'
-const Stack = createNativeStackNavigator();
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { getHeaderTitle } from '@react-navigation/elements';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 registerTranslation('en', {
   save: 'Save',
@@ -33,27 +31,57 @@ registerTranslation('en', {
   close: 'Close',
 })
 
+const HomeStack = createNativeStackNavigator();
+
+function HomeStackScreen() {
+  return (
+    <HomeStack.Navigator screenOptions={() => ({ headerShown: false })}>
+      <HomeStack.Screen name="LoginPage" component={Login} />
+      <HomeStack.Screen name="HomePage" component={HomePage} />
+      <HomeStack.Screen name="RegistrationPage" component={RegisterScreen} />
+    </HomeStack.Navigator>
+  );
+}
+
+const ProfileStack = createNativeStackNavigator();
+
+function ProfileStackScreen() {
+  return (
+    <ProfileStack.Navigator screenOptions={() => ({ headerShown: false })}>
+      <ProfileStack.Screen name="Profile" component={ReportScreen} />
+      <ProfileStack.Screen name="HomePage" component={HomePage} />
+    </ProfileStack.Navigator>
+  );
+}
+
+const Tab = createBottomTabNavigator();
+
 export default function App() {
   return(
     <NavigationContainer>
-    <Stack.Navigator>
-      <Stack.Screen 
-      name="LoginPage"
-      component={Login}
-      options={{ headerShown: false} }
-
-      />
-      <Stack.Screen 
-      name = "HomePage"
-      component={HomePage}
-      options={{ headerShown: false} }
-      />
-      <Stack.Screen 
-      name = "RegistrationPage"
-      component={RegisterScreen}
-      options={{ headerShown: false} }
-      />
-    </Stack.Navigator>
+    <Tab.Navigator
+        screenOptions={({ route }) => ({
+          tabBarActiveTintColor: 'tomato',
+          tabBarInactiveTintColor: 'gray',
+          header: ({ navigation, route, options }) => {
+            const title = getHeaderTitle(options, route.name);
+          
+            return <TopBar />;
+          },
+          //tabBarShowLabel: false,
+        })}
+      >
+        <Tab.Screen name="Home" component={HomeStackScreen} options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="home" color={color} size={size} />
+          ),
+        }}/>
+        <Tab.Screen name="profile" component={ProfileStackScreen} options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="account" color={color} size={size} />
+          ),
+        }}/>
+      </Tab.Navigator>
   </NavigationContainer>
   );
 }
