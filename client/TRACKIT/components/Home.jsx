@@ -4,15 +4,17 @@ import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import TopBar from './TopBar';
 import ToggleChoice from './ToggleChoice';
 import Sliders from './Slider';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import Calendar from './Calendar1';
 import UsersList from './UsersList';
 import BottomBar from './BottomBar';
 import { Button, TextInput } from 'react-native-paper';
 import InputForm from './InputForm';
 import { DatePickerModal } from 'react-native-paper-dates';
+import API from '../API';
 
 const HomePage = ({ navigation, route }) => {
+
   const static_users = [{
     userId: 1,
     name: 'Liam',
