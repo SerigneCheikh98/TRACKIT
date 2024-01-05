@@ -1,10 +1,12 @@
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, SafeAreaView } from "react-native";
 import { Button, TextInput, Text, IconButton } from 'react-native-paper';
 import { useState, useCallback } from "react";
-import { DatePickerModal } from 'react-native-paper-dates';
+import { DatePickerModal, TimePickerModal } from 'react-native-paper-dates';
+import { Pressable } from "react-native";
 import { Dropdown } from 'react-native-element-dropdown';
 import * as Location from 'expo-location'
 import API from "../API";
+import dayjs from "dayjs";
 
 const slots = [
   { label: "min", value: 'min' },
@@ -26,13 +28,27 @@ const time_value = {
 }
 
 const InputForm = (props) => {
-  const [duration, setDuration] = useState("");
-  const [timeUnit, setTimeUnit] = useState('min');
-  const [date, setDate] = useState(undefined);
-  const [open, setOpen] = useState(false);
   const [onFocusg, setOnFocusg] = useState(false);
   const [location, setLocation] = useState("");
 
+  //TIME PICKER
+  const [visible, setVisible] = useState(false)
+  const [time, setTime] = useState('')
+
+  const onDismiss = useCallback(() => {
+    setVisible(false)
+  }, [setVisible])
+
+  const onConfirm = useCallback(
+    ({ hours, minutes }) => {
+      setVisible(false);
+      setTime(`${hours}:${minutes}`)
+    },
+    [setVisible]
+  );
+
+
+  // LOCATION HANDLING
   const handleGetLocation = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== 'granted') {
@@ -50,6 +66,13 @@ const InputForm = (props) => {
       .catch(err => console.log(err))
     console.log(location)
   }
+
+
+
+  // DATE PICKER
+  const [date, setDate] = useState(undefined);
+  const [open, setOpen] = useState(false);
+
   const onDismissSingle = useCallback(() => {
     setOpen(false);
   }, [setOpen]);
@@ -57,14 +80,15 @@ const InputForm = (props) => {
   const onConfirmSingle = useCallback(
     (params) => {
       setOpen(false);
-      setDate(params.date);
-      console.log(params.date)
+      setDate(dayjs(params.date).format('DD/MM/YYYY').toString());
     },
     [setOpen, setDate]
   );
   return (
     <>
       <View style={styles.container}>
+
+        {/* LOCATION */}
         <View style={styles.textInputContainer}>
           <TextInput
             style={{ flex: 1 }}
@@ -76,23 +100,78 @@ const InputForm = (props) => {
             onChangeText={location => setLocation(location)}
           />
           <View style={{ flex: 0.25, justifyContent: 'center', alignItems: 'center' }}>
-            <IconButton style={styles.submitButton} size={25} iconColor="white" backgroundColor="black" icon='map-marker' buttonColor='black' mode="contained" onPress={() => { handleGetLocation() }} />
+            <IconButton style={styles.submitButton} size={25} iconColor="white" backgroundColor="#00c89e" icon='crosshairs-gps' buttonColor='black' mode="contained" onPress={() => { handleGetLocation() }} />
           </View>
         </View>
+
+        {/* DATE TIME*/}
         <View style={{ ...styles.textInputContainer, alignItems: 'center' }}>
-          <View style={{ flex: 1, paddingRight: '2%' }}>
+          {/* DATE */}
+          <View style={{ flex: 2, paddingRight: '2%' }}>
+
+            <Pressable onPress={() => setOpen(true)}>
+              <View pointerEvents="none">
+                <TextInput
+                  mode='outlined'
+                  label="DD/MM/YYYY"
+                  outlineColor='#1F1937'
+                  activeOutlineColor='#1F1937'
+                  value={date}
+                  labelStyle={{ color: '#1F1937' }}
+                />
+                <DatePickerModal
+                  locale="en"
+                  mode="single"
+                  visible={open}
+                  onDismiss={onDismissSingle}
+                  date={date}
+                  onConfirm={onConfirmSingle}
+                />
+              </View>
+            </Pressable>
+          </View>
+
+          {/* TIME */}
+          <View style={{ flex: 1, paddingRight: '2%' }} >
+
+            <Pressable onPress={() => setVisible(true)}>
+              <View pointerEvents="none">
+                <TextInput
+                  mode='outlined'
+                  label="Time"
+                  outlineColor='#1F1937'
+                  activeOutlineColor='#1F1937'
+                  value={time}
+                  labelStyle={{ color: '#1F1937' }}
+                />
+                <TimePickerModal
+                  visible={visible}
+                  onDismiss={onDismiss}
+                  onConfirm={onConfirm}
+                  hours={12}
+                  minutes={14}
+                />
+              </View>
+            </Pressable>
+          </View>
+        </View>
+
+        {/* DURATION */}
+        <View style={{ ...styles.textInputContainer, alignItems: 'center' }}>
+          <View style={{ flex: 2, paddingRight: '2%' }}>
             <Dropdown
               style={styles.dropdown}
-              data={time_value[timeUnit]}
+              data={time_value[props.timeUnit]}
               placeholderStyle={styles.placeholderStyle}
               selectedTextStyle={styles.selectedTextStyle}
-              activeColor='#1F1937'
+              activeColor='#00c89e'
+              placeholder={"Duration"}
 
               maxHeight={300}
               labelField="label"
               valueField="value"
               onChange={(item) => {
-                setDuration(item);
+                props.setDuration(item);
                 setOnFocusg(false);
               }}
               onFocus={() => {
@@ -107,14 +186,14 @@ const InputForm = (props) => {
               data={slots}
               placeholderStyle={styles.placeholderStyle}
               selectedTextStyle={styles.selectedTextStyle}
-              activeColor='#1F1937'
+              activeColor='#00c89e'
 
               maxHeight={300}
               labelField="label"
               valueField="value"
-              placeholder={timeUnit}
+              placeholder={props.timeUnit}
               onChange={(item) => {
-                setTimeUnit(item.value);
+                props.setTimeUnit(item.value);
                 setOnFocusg(false);
               }}
               onFocus={() => {
@@ -124,40 +203,15 @@ const InputForm = (props) => {
             />
           </View>
         </View>
-        <View style={{ ...styles.textInputContainer, alignItems: 'center' }}>
-          <View style={{ flex: 1, paddingRight: '2%' }}>
-            <TextInput
-              mode='outlined'
-              label="DD/MM/YYYY"
-              outlineColor='#1F1937'
-              activeOutlineColor='#1F1937'
-              value={date}
-              labelStyle={{ color: '#1F1937' }}
-            />
-          </View>
-          <View style={{ justifyContent: 'center', flex: 1, alignItems: 'flex-start' }}>
-              <Button style={{ borderRadius: 10, width: '100%' }} labelStyle={{ color: '#1F1937' }} onPress={() => setOpen(true)} uppercase={false} mode="outlined">
-                Pick a date
-              </Button>
-            <DatePickerModal
-              locale="en"
-              mode="single"
-              visible={open}
-              onDismiss={onDismissSingle}
-              date={date}
-              onConfirm={onConfirmSingle}
-            />
-          </View>
 
-        </View>
+        {/* SUBMIT */}
         <View style={styles.textInputContainer}>
-          <View style={{ flex: 2 }}>
-
-          </View>
+          <View style={{ flex: 2 }}></View>
           <Button style={styles.submitButton} buttonColor='black' mode="contained" onPress={props.applyChange}>
             Apply changes
           </Button>
         </View>
+
       </View>
     </>
   )
@@ -180,9 +234,9 @@ const styles = StyleSheet.create({
     borderRadius: 10
   },
   dropdown: {
-    borderColor: 'gray',
-    borderWidth: 0.5,
-    borderRadius: 8,
+    borderColor: 'black',
+    borderWidth: 1,
+    borderRadius: 10,
     paddingHorizontal: 8,
   },
   placeholderStyle: {
