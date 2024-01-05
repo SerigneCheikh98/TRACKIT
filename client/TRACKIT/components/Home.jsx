@@ -1,17 +1,17 @@
 import { StatusBar } from 'expo-status-bar';
 import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
-import ToggleChoice from './ToggleChoice';
-import Sliders from './Slider';
 import { useState, useCallback, useEffect } from 'react';
-import Calendar from './Calendar1';
 import UsersList from './UsersList';
 import BottomBar from './BottomBar';
+import RequestCard from './RequestCard';
 import { Button, TextInput } from 'react-native-paper';
 import InputForm from './InputForm';
 import { DatePickerModal } from 'react-native-paper-dates';
 import API from '../API';
-
+import Separator from './Separator';
+import Popup from './Popup';
+import { Modal, Pressable } from 'react-native';
 const HomePage = ({ navigation, route }) => {
 
   const static_users = [{
@@ -19,87 +19,117 @@ const HomePage = ({ navigation, route }) => {
     name: 'Liam',
     lastname: 'Carter',
     rating: 4,
-    distance: 0.5
+    distance: 0.5,
+    from: '09:00',
+    to: '12:00'
   },
   {
     userId: 2,
     name: 'Sophia',
     lastname: 'Chang',
     rating: 3,
-    distance: 120
+    distance: 120,
+    from: '13:00',
+    to: '16:00'
   },
   {
     userId: 3,
     name: 'Oliver',
     lastname: 'Patel',
     rating: 5,
-    distance: 200
+    distance: 200,
+    from: '17:00',
+    to: '18:00'
   },
   {
     userId: 4,
     name: 'Gianni',
     lastname: ' ',
     rating: 2,
-    distance: 15
+    distance: 15,
+    from: '17:00',
+    to: '20:00'
   },
   {
     userId: 5,
     name: 'Oliver',
     lastname: 'Patel',
     rating: 1,
-    distance: 150
+    distance: 150,
+    from: '19:00',
+    to: '22:00'
   },
   {
     userId: 6,
     name: 'Oliver',
     lastname: 'Patel',
     rating: 0,
-    distance: 24
+    distance: 24,
+    from: '21:00',
+    to: '22:30'
   }
   ]
   const [users, setUsers] = useState([])
-  const [bookingType, setBookingType] = useState('left')
   const [inUseFilter, setInUseFilter] = useState(0) // 0 none - 1 distance - 2 rating
+  const [available, setAvailable] = useState(true)
+
+  const [duration, setDuration] = useState("");
+  const [timeUnit, setTimeUnit] = useState('min');
 
   const applyChange = () => {
+    // API call for precise search
+    // found => setUsers(results)
+    // not found
+    setAvailable(false)
+    // API call for the day
     setUsers(static_users)
   }
 
-  function handleToggle(pos) {
-    if(bookingType == 'left' && pos != 'left') {
-      setBookingType('right')
-      setUsers([])
-    }
-    else if(bookingType == 'right' && pos != 'right') {
-      setBookingType('left')
-      setUsers([])
-    }
-  }
 
   function handleSetFilter(choice) {
-    if(inUseFilter == 1 && choice != 1) {
+    if (inUseFilter == 1 && choice != 1) {
       setInUseFilter(2)
     }
-    else if(inUseFilter == 2 && choice != 2) {
+    else if (inUseFilter == 2 && choice != 2) {
       setInUseFilter(1)
     }
-    else if(inUseFilter == 0) {
+    else if (inUseFilter == 0) {
       setInUseFilter(choice)
     }
     else {
       setInUseFilter(0)
     }
   }
+  const [modalVisible, setModalVisible] = useState(false);
+  const [popupText, setPopupText] = useState('')
+  const [popupFn, setPopupFn] = useState([{
+    name: '',
+    fn: () => {}
+  }])
 
+  function throwPopup(text, buttons) {
+    setModalVisible(true)
+    setPopupText(text)
+    setPopupFn(buttons)
+  }
+
+  function closePopup() {
+    setModalVisible(false)
+  }
   return (
     <SafeAreaProvider>
       <ScrollView>
         <SafeAreaView style={styles.container}>
-          <ToggleChoice bookingType={bookingType} handleToggle={handleToggle} />
-          <InputForm bookingType={bookingType} applyChange={applyChange}/>
-
-          <UsersList users={users} inUseFilter={inUseFilter} handleSetFilter={handleSetFilter}/>
-          {/* <Sliders /> */}
+          <Popup modalVisible={modalVisible} setModalVisible={setModalVisible} text={popupText} buttons={popupFn}/>
+          <InputForm duration={duration} setDuration={setDuration} timeUnit={timeUnit} setTimeUnit={setTimeUnit} applyChange={applyChange} />
+          {
+            available == false &&
+            <>
+              <RequestCard throwPopup={throwPopup} closePopup={closePopup}/>
+              <Separator text={'OR'} />
+            </>
+          }
+          <UsersList users={users} inUseFilter={inUseFilter} handleSetFilter={handleSetFilter} available={available} duration={duration} timeUnit={timeUnit} throwPopup={throwPopup} closePopup={closePopup}/>
         </SafeAreaView>
       </ScrollView>
       {/* <BottomBar /> */}
@@ -109,7 +139,6 @@ const HomePage = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1
   }
 });
 
