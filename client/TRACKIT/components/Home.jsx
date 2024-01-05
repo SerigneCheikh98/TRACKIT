@@ -1,8 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
-import ToggleChoice from './ToggleChoice';
-import Sliders from './Slider';
 import { useState, useCallback, useEffect } from 'react';
 import Calendar from './Calendar1';
 import UsersList from './UsersList';
@@ -58,23 +56,12 @@ const HomePage = ({ navigation, route }) => {
   }
   ]
   const [users, setUsers] = useState([])
-  const [bookingType, setBookingType] = useState('left')
   const [inUseFilter, setInUseFilter] = useState(0) // 0 none - 1 distance - 2 rating
 
   const applyChange = () => {
     setUsers(static_users)
   }
 
-  function handleToggle(pos) {
-    if(bookingType == 'left' && pos != 'left') {
-      setBookingType('right')
-      setUsers([])
-    }
-    else if(bookingType == 'right' && pos != 'right') {
-      setBookingType('left')
-      setUsers([])
-    }
-  }
 
   function handleSetFilter(choice) {
     if(inUseFilter == 1 && choice != 1) {
@@ -95,11 +82,8 @@ const HomePage = ({ navigation, route }) => {
     <SafeAreaProvider>
       <ScrollView>
         <SafeAreaView style={styles.container}>
-          <ToggleChoice bookingType={bookingType} handleToggle={handleToggle} />
-          <InputForm bookingType={bookingType} applyChange={applyChange}/>
-
+          <InputForm applyChange={applyChange}/>
           <UsersList users={users} inUseFilter={inUseFilter} handleSetFilter={handleSetFilter}/>
-          {/* <Sliders /> */}
         </SafeAreaView>
       </ScrollView>
       {/* <BottomBar /> */}
