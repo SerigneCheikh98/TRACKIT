@@ -216,7 +216,7 @@ const RegisterScreen = ({navigation}) =>{
     <View style={styles.TextContainer}>
 
 <Text variant="titleLarge" style={{marginTop:0, marginBottom:"2%"}} textColor="#1F1937">Personal Information</Text>
-                  <View style={{width:"100%", height:"61%", marginLeft:"15%", marginBottom:"3%"}}>
+                  <View style={{width:"100%", height:"58%", marginLeft:"15%", marginBottom:"3%"}}>
                   <Text variant="titleSmall" style={{marginTop:"7%", marginLeft:"3%", marginBottom:"2%"}} textColor="#1F1937">1. Gender</Text>
                     <Dropdown 
                     style={styles.dropdown}
@@ -244,20 +244,20 @@ const RegisterScreen = ({navigation}) =>{
                     <Text variant="titleSmall" style={{marginTop:"7%", marginLeft:"3%"}} textColor="#1F1937">2. Birth Date</Text>
                      <DateTimePicker  mode="date" display='spinner' value={new Date()}  style={{width:"80%", height:"20%"}} />
                      
-                     <Text variant="titleSmall" style={{marginTop:"7%", marginLeft:"3%"}}  textColor="#1F1937">3. Profile Picture</Text>
+                     {/* <Text variant="titleSmall" style={{marginTop:"7%", marginLeft:"3%"}}  textColor="#1F1937">3. Profile Picture</Text>
                      <View style={{ flexDirection: 'row' }}>
       <Button icon="camera" mode="contained" onPress={pickImage} textColor="#1F1937" style={[styles.buttonOutlineImport, { marginRight: "70%", fontSize: 8 }]}>
         Upload photo
       </Button>
-      </View>          
-                     <Text variant="titleSmall" style={{marginTop:"7%", marginLeft:"3%"}}  textColor="#1F1937">4. Driving License</Text>
+      </View>           */}
+                     <Text variant="titleSmall" style={{marginTop:"7%", marginLeft:"3%"}}  textColor="#1F1937">3. Driving License</Text>
                      <View style={{ flexDirection: 'row' }}>
       <Button icon="camera" mode="contained" onPress={pickImage} textColor="#1F1937" style={[styles.buttonOutlineImport, { marginRight: "70%", fontSize: 8 }]}>
         Upload photo
       </Button>
       
     </View>
-    <Text variant="titleSmall" style={{marginTop:"7%", marginLeft:"3%"}} textColor="#1F1937">5. Identity Card</Text>
+    <Text variant="titleSmall" style={{marginTop:"7%", marginLeft:"3%"}} textColor="#1F1937">4. Identity Card</Text>
      <View style={{ flexDirection: 'row' }}>
       <Button icon="camera" mode="contained" onPress={pickImage}  textColor="#1F1937" style={[styles.buttonOutlineImport, { marginRight: "70%", fontSize: 8 }]}>
         Upload photo
@@ -266,7 +266,7 @@ const RegisterScreen = ({navigation}) =>{
    
                      </View >
                      <View style={styles.phoneNumberCont}>
-                    <Text variant="titleSmall" style={{marginTop:"7%", marginLeft:"3%", marginBottom:"3%"}} textColor="#1F1937">6. Phone number</Text>
+                    <Text variant="titleSmall" style={{marginTop:"1%", marginLeft:"3%", marginBottom:"3%"}} textColor="#1F1937">5. Phone number</Text>
                     <PhoneInput 
                     value={inputValue}
                     onChangePhoneNumber={handleInputValue}
