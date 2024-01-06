@@ -8,6 +8,9 @@ import InputForm from './InputForm';
 import API from '../API';
 import Separator from './Separator';
 import Popup from './Popup';
+import { Modal, Pressable } from 'react-native';
+
+import Badge from 'react-native-paper';
 
 const HomePage = ({ navigation, route }) => {
 
@@ -73,6 +76,8 @@ const HomePage = ({ navigation, route }) => {
   const [duration, setDuration] = useState("");
   const [timeUnit, setTimeUnit] = useState('min');
 
+  const [badgeOn, setBadgeOn] = useState(false);
+
   const applyChange = () => {
     // API call for precise search
     // found => setUsers(results)
@@ -119,15 +124,15 @@ const HomePage = ({ navigation, route }) => {
         <SafeAreaView style={styles.container}>
           {modalVisible && <View style={styles.overlay} />}
           <Popup modalVisible={modalVisible} setModalVisible={setModalVisible} text={popupText} buttons={popupFn}/>
-            <InputForm duration={duration} setDuration={setDuration} timeUnit={timeUnit} setTimeUnit={setTimeUnit} applyChange={applyChange} />
-            {
-              available == false &&
-              <>
-                <RequestCard throwPopup={throwPopup} closePopup={closePopup}/>
-                <Separator text={'OR'} />
-              </>
-            }
-            <UsersList users={users} inUseFilter={inUseFilter} handleSetFilter={handleSetFilter} available={available} duration={duration} timeUnit={timeUnit} throwPopup={throwPopup} closePopup={closePopup}/>
+          <InputForm duration={duration} setDuration={setDuration} timeUnit={timeUnit} setTimeUnit={setTimeUnit} applyChange={applyChange} />
+          {
+            available == false &&
+            <>
+              <RequestCard throwPopup={throwPopup} closePopup={closePopup} badgeOn={badgeOn} setBadgeOn={setBadgeOn}/>
+              <Separator text={'OR'} />
+            </>
+          }
+          <UsersList users={users} inUseFilter={inUseFilter} handleSetFilter={handleSetFilter} available={available} duration={duration} timeUnit={timeUnit} throwPopup={throwPopup} closePopup={closePopup}/>
         </SafeAreaView>
       </ScrollView>
       {/* <BottomBar /> */}
