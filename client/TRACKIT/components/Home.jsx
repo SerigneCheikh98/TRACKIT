@@ -11,6 +11,7 @@ import Popup from './Popup';
 import { Modal, Pressable } from 'react-native';
 
 import Badge from 'react-native-paper';
+import NotificationPage from './NotificationPage';
 
 const HomePage = ({ navigation, route }) => {
 
@@ -77,6 +78,7 @@ const HomePage = ({ navigation, route }) => {
   const [timeUnit, setTimeUnit] = useState('min');
 
   const [badgeOn, setBadgeOn] = useState(false);
+  const [page, setPage] = useState('home'); // home OR notification
 
   const applyChange = () => {
     // API call for precise search
@@ -106,7 +108,7 @@ const HomePage = ({ navigation, route }) => {
   const [popupText, setPopupText] = useState('')
   const [popupFn, setPopupFn] = useState([{
     name: '',
-    fn: () => {}
+    fn: () => { }
   }])
 
   function throwPopup(text, buttons) {
@@ -123,16 +125,21 @@ const HomePage = ({ navigation, route }) => {
       <ScrollView>
         <SafeAreaView style={styles.container}>
           {modalVisible && <View style={styles.overlay} />}
-          <Popup modalVisible={modalVisible} setModalVisible={setModalVisible} text={popupText} buttons={popupFn}/>
-          <InputForm duration={duration} setDuration={setDuration} timeUnit={timeUnit} setTimeUnit={setTimeUnit} applyChange={applyChange} />
-          {
-            available == false &&
+          <Popup modalVisible={modalVisible} setModalVisible={setModalVisible} text={popupText} buttons={popupFn} />
+          {page == 'notification' && <NotificationPage throwPopup={throwPopup} closePopup={closePopup}/>}
+          {page == 'home' &&
             <>
-              <RequestCard throwPopup={throwPopup} closePopup={closePopup} badgeOn={badgeOn} setBadgeOn={setBadgeOn}/>
-              <Separator text={'OR'} />
+              <InputForm duration={duration} setDuration={setDuration} timeUnit={timeUnit} setTimeUnit={setTimeUnit} applyChange={applyChange} />
+              {
+                available == false &&
+                <>
+                  <RequestCard throwPopup={throwPopup} closePopup={closePopup} badgeOn={badgeOn} setBadgeOn={setBadgeOn} />
+                  <Separator text={'OR'} />
+                </>
+              }
+              <UsersList users={users} inUseFilter={inUseFilter} handleSetFilter={handleSetFilter} available={available} duration={duration} timeUnit={timeUnit} throwPopup={throwPopup} closePopup={closePopup} />
             </>
           }
-          <UsersList users={users} inUseFilter={inUseFilter} handleSetFilter={handleSetFilter} available={available} duration={duration} timeUnit={timeUnit} throwPopup={throwPopup} closePopup={closePopup}/>
         </SafeAreaView>
       </ScrollView>
       {/* <BottomBar /> */}
