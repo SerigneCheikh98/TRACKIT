@@ -12,6 +12,9 @@ import API from '../API';
 import Separator from './Separator';
 import Popup from './Popup';
 import { Modal, Pressable } from 'react-native';
+
+import Badge from 'react-native-paper';
+
 const HomePage = ({ navigation, route }) => {
 
   const static_users = [{
@@ -76,6 +79,8 @@ const HomePage = ({ navigation, route }) => {
   const [duration, setDuration] = useState("");
   const [timeUnit, setTimeUnit] = useState('min');
 
+  const [badgeOn, setBadgeOn] = useState(false);
+
   const applyChange = () => {
     // API call for precise search
     // found => setUsers(results)
@@ -125,7 +130,7 @@ const HomePage = ({ navigation, route }) => {
           {
             available == false &&
             <>
-              <RequestCard throwPopup={throwPopup} closePopup={closePopup}/>
+              <RequestCard throwPopup={throwPopup} closePopup={closePopup} badgeOn={badgeOn} setBadgeOn={setBadgeOn}/>
               <Separator text={'OR'} />
             </>
           }

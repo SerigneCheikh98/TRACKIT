@@ -41,8 +41,8 @@ For this project we had 2 types of participants:
 
 
 
-1. Young adults (aged between 20 and 35 years old) who are learning how to drive to get an Italian driving license. 
-2. Young adults who already passed the exam. We interviewed people who studied the theoretical part on their own and others who were enrolled in a driving school.        
+- Young adults (aged between 20 and 35 years old) who are learning how to drive to get an Italian driving license. 
+- Young adults who already passed the exam. We interviewed people who studied the theoretical part on their own and others who were enrolled in a driving school.        
 
                                                                           
 
@@ -54,8 +54,8 @@ For this project we had 2 types of participants:
 
 
 
-1. Young adults who failed the exam several times and then passed it. 
-2. Young adult foreigners who already have driving license in their home country and are learning to get the Italian driving license
+- Young adults who failed the exam several times and then passed it. 
+- Young adult foreigners who already have driving license in their home country and are learning to get the Italian driving license
 
     **_Why:_** These Users are more experienced with the process of learning than immediate users since they did it more than once and know more about the problems students face.​
 
@@ -64,11 +64,11 @@ To look for participants
 
 
 
-1. We went to three different driving schools in Torino:
-*  Autoscuola Peschiera
-*  Autoscuola Gamma
-*  Autoscuola Torino 2 ​
-2. We asked our friends for acquaintances who matches our search​
+- We went to three different driving schools in Torino:
+    *  Autoscuola Peschiera
+    *  Autoscuola Gamma
+    *  Autoscuola Torino 2 ​
+- We asked our friends for acquaintances who matches our search​
 
 	
 
@@ -76,7 +76,7 @@ To look for participants
 
 
 
-1. **Lorenzo**
+- **Lorenzo**
 
     <span style="text-decoration:underline;">Participant type</span>: Immediate user
 
@@ -87,9 +87,9 @@ To look for participants
     Through an online meeting since Lorenzo lives in another city. ​
 
 
-        Cheikh interviewed him and Paolo took notes.
+    Cheikh interviewed him and Paolo took notes.
 
-2. **Giulia**
+- **Giulia**
 
     <span style="text-decoration:underline;">Participant type</span>: Lead user
 
@@ -102,7 +102,7 @@ To look for participants
 
     Paolo interviewed Gulia and Inaam took notes.
 
-3. **Reza**
+- **Reza**
 
     <span style="text-decoration:underline;">Participant type</span>: Lead user
 
@@ -115,7 +115,7 @@ To look for participants
 
     Inaam did the interview and Cheikh took notes.
 
-4. **Francesca**
+- **Francesca**
 
     <span style="text-decoration:underline;">Participant type</span>: Immediate user
 
@@ -128,7 +128,7 @@ To look for participants
 
     Francesco did the interview and Cheikh took notes.
 
-5. **Filippo**
+- **Filippo**
 
     <span style="text-decoration:underline;">Participant type</span>: Immediate user
 
@@ -147,8 +147,8 @@ To look for participants
 
 
 
-1. We asked participants if they have time if yes we did the interview on spot otherwise we scheduled meetings with them​. We asked all participants to sign a consent for (for the online interview he sent us a copy of signed consent) before starting the interview.
-2. All our interviews were conducted with the presence of 2 members of our team, one did the interview and the other took notes, and all of the interviews were recorded in order to get back to them when some notes were ambiguous or the member taking notes missed a certain idea. The recordings helped a lot for extracting needs from the interviews.
+- We asked participants if they have time if yes we did the interview on spot otherwise we scheduled meetings with them​. We asked all participants to sign a consent for (for the online interview he sent us a copy of signed consent) before starting the interview.
+- All our interviews were conducted with the presence of 2 members of our team, one did the interview and the other took notes, and all of the interviews were recorded in order to get back to them when some notes were ambiguous or the member taking notes missed a certain idea. The recordings helped a lot for extracting needs from the interviews.
 
 
 #### 4. **List of questions**
@@ -458,6 +458,6 @@ Overall, participants expressed various challenges encountered during their lear
 
         **Answer:** At first I couldn’t understand … language barrier was a problem, it was so hard for me I used some techniques, in sentences 
  
-8. 
+8. User needs to effectively prepare for theoreticat questions
 
 	

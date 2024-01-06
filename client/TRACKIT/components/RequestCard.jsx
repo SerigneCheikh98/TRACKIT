@@ -10,10 +10,12 @@ const RequestCard = (props) => {
                 <Text variant="bodyLarge">We are sorry, currently no drivers are available at this time :'(</Text>
             </Card.Content>
             <View style={styles.container}>
-                <Button style={styles.submitButton} buttonColor='#00c89e' mode="contained" onPress={() => props.throwPopup(msg, [{
+                <Button style={styles.submitButton} buttonColor='#00c89e' mode="contained" onPress={() => {
+                    props.setBadgeOn(true)
+                    props.throwPopup(msg, [{
                     name: 'Close',
                     fn: props.closePopup
-                }])}>
+                }])}}>
                     Request a practice for this time
                 </Button>
             </View>
