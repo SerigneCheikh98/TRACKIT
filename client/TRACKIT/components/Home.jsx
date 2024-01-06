@@ -1,17 +1,14 @@
-import { StatusBar } from 'expo-status-bar';
-import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { useState, useCallback, useEffect } from 'react';
 import UsersList from './UsersList';
 import BottomBar from './BottomBar';
 import RequestCard from './RequestCard';
-import { Button, TextInput } from 'react-native-paper';
 import InputForm from './InputForm';
-import { DatePickerModal } from 'react-native-paper-dates';
 import API from '../API';
 import Separator from './Separator';
 import Popup from './Popup';
-import { Modal, Pressable } from 'react-native';
+
 const HomePage = ({ navigation, route }) => {
 
   const static_users = [{
@@ -120,16 +117,17 @@ const HomePage = ({ navigation, route }) => {
     <SafeAreaProvider>
       <ScrollView>
         <SafeAreaView style={styles.container}>
+          {modalVisible && <View style={styles.overlay} />}
           <Popup modalVisible={modalVisible} setModalVisible={setModalVisible} text={popupText} buttons={popupFn}/>
-          <InputForm duration={duration} setDuration={setDuration} timeUnit={timeUnit} setTimeUnit={setTimeUnit} applyChange={applyChange} />
-          {
-            available == false &&
-            <>
-              <RequestCard throwPopup={throwPopup} closePopup={closePopup}/>
-              <Separator text={'OR'} />
-            </>
-          }
-          <UsersList users={users} inUseFilter={inUseFilter} handleSetFilter={handleSetFilter} available={available} duration={duration} timeUnit={timeUnit} throwPopup={throwPopup} closePopup={closePopup}/>
+            <InputForm duration={duration} setDuration={setDuration} timeUnit={timeUnit} setTimeUnit={setTimeUnit} applyChange={applyChange} />
+            {
+              available == false &&
+              <>
+                <RequestCard throwPopup={throwPopup} closePopup={closePopup}/>
+                <Separator text={'OR'} />
+              </>
+            }
+            <UsersList users={users} inUseFilter={inUseFilter} handleSetFilter={handleSetFilter} available={available} duration={duration} timeUnit={timeUnit} throwPopup={throwPopup} closePopup={closePopup}/>
         </SafeAreaView>
       </ScrollView>
       {/* <BottomBar /> */}
@@ -139,7 +137,16 @@ const HomePage = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
   container: {
-  }
+  },
+  overlay: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    zIndex: 999,
+  },
 });
 
 export default HomePage
