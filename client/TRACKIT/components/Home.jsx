@@ -89,6 +89,32 @@ const HomePage = ({ navigation, route }) => {
     setUsers(static_users)
   }
 
+  function handleToggle(pos) {
+    if(bookingType == 'left' && pos != 'left') {
+      setBookingType('right')
+      setUsers([])
+    }
+    else if(bookingType == 'right' && pos != 'right') {
+      setBookingType('left')
+      setUsers([])
+    }
+  }
+
+  function handleSetFilter(choice) {
+    if(inUseFilter == 1 && choice != 1) {
+      setInUseFilter(2)
+    }
+    else if(inUseFilter == 2 && choice != 2) {
+      setInUseFilter(1)
+    }
+    else if(inUseFilter == 0) {
+      setInUseFilter(choice)
+    }
+    else {
+      setInUseFilter(0)
+    }
+  }
+
 
   function handleSetFilter(choice) {
     if (inUseFilter == 1 && choice != 1) {
@@ -142,6 +168,7 @@ const HomePage = ({ navigation, route }) => {
           }
         </SafeAreaView>
       </ScrollView>
+      {/* <BottomBar /> */}
       {/* <BottomBar /> */}
     </SafeAreaProvider>
   );

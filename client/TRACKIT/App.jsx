@@ -13,6 +13,8 @@ import { getHeaderTitle } from '@react-navigation/elements';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import NotificationPage from './components/NotificationPage';
 import ProfilePage from './components/Profile';
+import Booking from './components/BookingPage';
+const Stack = createNativeStackNavigator();
 
 registerTranslation('en', {
   save: 'Save',

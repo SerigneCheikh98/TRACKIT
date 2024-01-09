@@ -1,4 +1,5 @@
 import { Button, TextInput, Text, Appbar, Divider,  Title, Tooltip, Card, Avatar, IconButton} from 'react-native-paper'
+import { Button, TextInput, Text, Appbar, Divider,  Title, Tooltip, Card, Avatar, IconButton} from 'react-native-paper'
 import { Image, Linking, ScrollView } from 'react-native'
 import {Icon} from '@rneui/themed'
 import Checkbox from 'expo-checkbox'
@@ -68,15 +69,21 @@ const RegisterScreen = ({navigation}) =>{
     return(
 
       <SafeAreaProvider>
+      <SafeAreaProvider>
             <Appbar.Header style={{mode: 'center-aligned', backgroundColor:"#1F1937"}}>
+           {  (step == 1 || step== 2) && <Appbar.BackAction color='white' onPress={()=>{
            {  (step == 1 || step== 2) && <Appbar.BackAction color='white' onPress={()=>{
                 if(step == 1){
                 navigation.navigate('LoginPage')}
             
                 else{
                   
+                  
                     setStep("1");
                 }
+                }}/>}
+            <Appbar.Content  title={step != 3 ?"Registration": "Request Status"} titleStyle={{color: "white"}}/>
+            {step ==3 &&  <Appbar.Action icon="power" color='white' accessibilityLabel='Log out' onPress={()=>{navigation.navigate("LoginPage")}}></Appbar.Action>}
                 }}/>}
             <Appbar.Content  title={step != 3 ?"Registration": "Request Status"} titleStyle={{color: "white"}}/>
             {step ==3 &&  <Appbar.Action icon="power" color='white' accessibilityLabel='Log out' onPress={()=>{navigation.navigate("LoginPage")}}></Appbar.Action>}
@@ -85,6 +92,7 @@ const RegisterScreen = ({navigation}) =>{
             <KeyboardAvoidingView
             behavior='padding'>
                 <ScrollView>
+                <SafeAreaView>
                 <SafeAreaView>
            
             {(step == 1) && 
@@ -210,6 +218,7 @@ const RegisterScreen = ({navigation}) =>{
             
 }
 {(step == "2") && 
+{(step == "2") && 
     
  
 
@@ -243,6 +252,8 @@ const RegisterScreen = ({navigation}) =>{
                    
                     <Text variant="titleSmall" style={{marginTop:"7%", marginLeft:"3%"}} textColor="#1F1937">2. Birth Date</Text>
                      <DateTimePicker  mode="date" display='spinner' value={new Date()}  style={{width:"80%", height:"20%"}} />
+                    <Text variant="titleSmall" style={{marginTop:"7%", marginLeft:"3%"}} textColor="#1F1937">2. Birth Date</Text>
+                     <DateTimePicker  mode="date" display='spinner' value={new Date()}  style={{width:"80%", height:"20%"}} />
                      
                      {/* <Text variant="titleSmall" style={{marginTop:"7%", marginLeft:"3%"}}  textColor="#1F1937">3. Profile Picture</Text>
                      <View style={{ flexDirection: 'row' }}>
@@ -253,6 +264,7 @@ const RegisterScreen = ({navigation}) =>{
                      <Text variant="titleSmall" style={{marginTop:"7%", marginLeft:"3%"}}  textColor="#1F1937">3. Driving License</Text>
                      <View style={{ flexDirection: 'row' }}>
       <Button icon="camera" mode="contained" onPress={pickImage} textColor="#1F1937" style={[styles.buttonOutlineImport, { marginRight: "70%", fontSize: 8 }]}>
+      <Button icon="camera" mode="contained" onPress={pickImage} textColor="#1F1937" style={[styles.buttonOutlineImport, { marginRight: "70%", fontSize: 8 }]}>
         Upload photo
       </Button>
       
@@ -260,10 +272,12 @@ const RegisterScreen = ({navigation}) =>{
     <Text variant="titleSmall" style={{marginTop:"7%", marginLeft:"3%"}} textColor="#1F1937">4. Identity Card</Text>
      <View style={{ flexDirection: 'row' }}>
       <Button icon="camera" mode="contained" onPress={pickImage}  textColor="#1F1937" style={[styles.buttonOutlineImport, { marginRight: "70%", fontSize: 8 }]}>
+      <Button icon="camera" mode="contained" onPress={pickImage}  textColor="#1F1937" style={[styles.buttonOutlineImport, { marginRight: "70%", fontSize: 8 }]}>
         Upload photo
       </Button>
     </View>
    
+                     </View >
                      </View >
                      <View style={styles.phoneNumberCont}>
                     <Text variant="titleSmall" style={{marginTop:"1%", marginLeft:"3%", marginBottom:"3%"}} textColor="#1F1937">5. Phone number</Text>
@@ -278,6 +292,20 @@ const RegisterScreen = ({navigation}) =>{
                     placeholder="Phone Number"
                     excludedCountries={['IL']}
                      />
+                     
+                     <TouchableOpacity
+                    
+        onPress={()=>{
+            setStep('3');
+        }}
+        style={[styles.buttonSubmit, height="100%",  marginLeft="60%"]}
+        >
+          
+            <Text style={styles.buttonText}>Send Request</Text>
+        </TouchableOpacity>
+                   
+
+        </View>          
                      
                      <TouchableOpacity
                     
@@ -320,9 +348,31 @@ const RegisterScreen = ({navigation}) =>{
     
     </View>}
           </SafeAreaView>
+   {(step == "3") && <View>
+   <Card style={{width: "90%", marginLeft:"5%", flex:1, height:"100%"}}>
+   <Card.Title
+    title="Pending request"
+    subtitle=""
+    
+    left={(props) => <Avatar.Icon {...props} style={{backgroundColor:'#1F1937'}} icon="reflect-vertical"  />}
+     />
+     <Card.Content>
+      <Text variant="bodyMedium">Your request is still being processed by our team. 
+      
+      </Text>
+      <Text variant='bodySmall'>Estimated response time: 3-4 working days</Text>
+    </Card.Content>
+     </Card>
+     
+     
+  
+    
+    </View>}
+          </SafeAreaView>
             </ScrollView>
             </KeyboardAvoidingView>
           
+          </SafeAreaProvider>
           </SafeAreaProvider>
     )
 }
@@ -378,6 +428,18 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: '10%',
         width: "40%",
+
+    },
+    buttonSubmit:
+    {
+        backgroundColor: "#1F1937",
+        padding: '4%',
+        borderRadius: 10,
+        alignItems: 'center',
+        marginTop: '10%',
+        width: "40%",
+        marginLeft: "60%"
+        width: "40%",
         marginLeft: "60%"
 
     },
@@ -392,9 +454,11 @@ const styles = StyleSheet.create({
     buttonImport:{
         backgroundColor: "#1F1937",
         width: '40%',
+        width: '40%',
         borderColor: '#1F1937',
         borderWidth:2,
         borderRadius: 10,
+       
        
 
         marginTop: '3%',
@@ -403,6 +467,7 @@ const styles = StyleSheet.create({
     buttonOutlineImport:{
         backgroundColor: 'white',
         marginTop: 5,
+        width: '40%',
         width: '40%',
         borderColor: '#1F1937',
         borderColor: '#1F1937',
@@ -459,7 +524,14 @@ const styles = StyleSheet.create({
         height:"100%",
         marginBottom: "7%",
         
+        paddingRight:13,
+        paddingLeft: 13,
+        height:"100%",
+        marginBottom: "7%",
         
+        
+      },
+    
       },
     
 
