@@ -1,10 +1,10 @@
 import { Button, TextInput, Text} from 'react-native-paper'
 import { Image, Linking, ScrollView } from 'react-native'
 import { KeyboardAvoidingView, TouchableOpacity, View, StyleSheet} from 'react-native'
-import { Link } from '@react-navigation/native';
+import { Link, useNavigation } from '@react-navigation/native';
 
-const Login = ({navigation}) =>{
-    
+const Login = ({setIsLoggedIn}) =>{
+    const navigate = useNavigation();
 
     return (
         <ScrollView>
@@ -46,7 +46,8 @@ const Login = ({navigation}) =>{
         <View style={styles.buttonContainer}>
         <TouchableOpacity
         onPress={()=>{
-            navigation.navigate('HomePage')
+            setIsLoggedIn(true);
+            //navigate.navigate('HomePage')
         }}
         style={styles.button}
         >
@@ -67,7 +68,9 @@ const Login = ({navigation}) =>{
         
        
          <Text variant="labelSmall" style={{ color: 'grey', textDecorationLine: 'underline', }}
-         onPress={()=>{ navigation.navigate('RegistrationPage')/* navigate to Registration */     }}
+         onPress={()=>{ //setIsLoggedIn(true); 
+            navigate.navigate('RegistrationPage')/* navigate to Registration */     
+        }}
          >Register as an experienced driver</Text>
          
        

@@ -5,6 +5,7 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context"
 import { View } from "react-native"
 import { Text, Button } from "react-native-paper"
 import Popup from './Popup';
+import TopBar from "./TopBar"
 
 //assume we have props: bookings for each user
 //so we have a list of bookings
@@ -39,6 +40,7 @@ const NotificationPage = ({ navigation, route }) => {
     );
     return (
         <SafeAreaProvider>
+            <TopBar navigation={navigation} />
             <KeyboardAvoidingView>
                 <ScrollView>
                     <SafeAreaView>

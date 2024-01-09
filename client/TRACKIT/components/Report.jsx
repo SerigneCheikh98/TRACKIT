@@ -3,6 +3,7 @@ import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { Icon, Card, List, Avatar, Portal, PaperProvider } from 'react-native-paper';
 import { useState, useCallback } from 'react';
 import { PieChart } from "react-native-gifted-charts";
+import TopBar from './TopBar';
 
 const ReportScreen = ({ navigation }) => {
   const weaknesses = ["Initial setup", "Parking", "Intersections"];
@@ -88,6 +89,7 @@ const ReportScreen = ({ navigation }) => {
 
   return (
     <SafeAreaProvider>
+      <TopBar navigation={navigation} />
       <ScrollView>
         <View
           style={{

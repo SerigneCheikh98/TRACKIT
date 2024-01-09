@@ -14,6 +14,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import NotificationPage from './components/NotificationPage';
 import ProfilePage from './components/Profile';
 import Booking from './components/BookingPage';
+import { useState } from 'react';
 const Stack = createNativeStackNavigator();
 
 registerTranslation('en', {
@@ -40,9 +41,9 @@ const HomeStack = createNativeStackNavigator();
 function HomeStackScreen() {
   return (
     <HomeStack.Navigator screenOptions={() => ({ headerShown: false })}>
-      <HomeStack.Screen name="LoginPage" component={Login} />
+      {/* <HomeStack.Screen name="LoginPage" component={Login} /> */}
       <HomeStack.Screen name="HomePage" component={HomePage} />
-      <HomeStack.Screen name="RegistrationPage" component={RegisterScreen} />
+      {/* <HomeStack.Screen name="RegistrationPage" component={RegisterScreen} /> */}
       <HomeStack.Screen name="NotificationPage" component={NotificationPage} />
     </HomeStack.Navigator>
   );
@@ -61,32 +62,50 @@ function ReportStackScreen() {
 }
 
 const ProfileStack = createNativeStackNavigator();
-
-function ProfileStackScreen() {
+function ProfileStackScreen({ setIsLoggedIn }) {
   return (
     <ProfileStack.Navigator screenOptions={() => ({ headerShown: false })}>
-      <ProfileStack.Screen name="Profile" component={ReportScreen} />
-      <ProfileStack.Screen name="HomePage" component={HomePage} />
+      <ProfileStack.Screen name="Profile" >
+        {(props) => <ProfilePage {...props} setIsLoggedIn={setIsLoggedIn} />}
+      </ProfileStack.Screen>
       <ProfileStack.Screen name="NotificationPage" component={NotificationPage} />
     </ProfileStack.Navigator>
+  );
+}
+
+const AuthStack = createNativeStackNavigator();
+function AuthStackScreen({ setIsLoggedIn }) {
+  return (
+    <AuthStack.Navigator screenOptions={{ headerShown: false }}>
+      <AuthStack.Screen name="LoginPage">
+        {(props) => <Login {...props} setIsLoggedIn={setIsLoggedIn} />}
+      </AuthStack.Screen>
+      <AuthStack.Screen name="RegistrationPage" component={RegisterScreen} />
+    </AuthStack.Navigator>
   );
 }
 
 const Tab = createBottomTabNavigator();
 
 export default function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   return(
     <NavigationContainer>
-    <Tab.Navigator
+      {!isLoggedIn ? <AuthStackScreen setIsLoggedIn={setIsLoggedIn} /> : 
+    (<Tab.Navigator
         screenOptions={({ route }) => ({
           tabBarActiveTintColor: 'tomato',
           tabBarInactiveTintColor: 'gray',
-          header: ({ navigation, route, options }) => {
-            const title = getHeaderTitle(options, route.name);
-          
-            return <TopBar navigation={navigation} />;
-          },
+          // header: ({ navigation, route, options }) => {
+          //   const title = getHeaderTitle(options, route.name);
+          //   if (title != 'Home'){
+          //     return <TopBar navigation={navigation} />;
+          //   }
+            
+          // },
           //tabBarShowLabel: false,
+          headerShown: false,
         })}
       >
         <Tab.Screen name="Home" component={HomeStackScreen} options={{
@@ -99,12 +118,15 @@ export default function App() {
             <MaterialCommunityIcons name="chart-arc" color={color} size={size} />
           ),
         }}/>
-        <Tab.Screen name="profile" component={ProfilePage} options={{
+        <Tab.Screen name="profile" options={{
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="account-circle" color={color} size={size} />
           ),
-        }}/>
-      </Tab.Navigator>
+        }}>
+          {(props) => <ProfileStackScreen {...props} setIsLoggedIn={setIsLoggedIn} />}
+        </Tab.Screen>
+      </Tab.Navigator>)
+    }
   </NavigationContainer>
   );
 }

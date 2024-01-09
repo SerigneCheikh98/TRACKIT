@@ -8,6 +8,7 @@ import InputForm from './InputForm';
 import API from '../API';
 import Separator from './Separator';
 import Popup from './Popup';
+import TopBar from './TopBar';
 import { Modal, Pressable } from 'react-native';
 
 import Badge from 'react-native-paper';
@@ -148,6 +149,7 @@ const HomePage = ({ navigation, route }) => {
   }
   return (
     <SafeAreaProvider>
+      <TopBar navigation={navigation} />
       <ScrollView>
         <SafeAreaView style={styles.container}>
           {modalVisible && <View style={styles.overlay} />}
