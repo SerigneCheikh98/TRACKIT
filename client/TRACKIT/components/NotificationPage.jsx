@@ -4,6 +4,7 @@ import { Card, Avatar, IconButton } from "react-native-paper"
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context"
 import { View } from "react-native"
 import { Text, Button } from "react-native-paper"
+import Popup from './Popup';
 
 //assume we have props: bookings for each user
 //so we have a list of bookings
@@ -11,7 +12,24 @@ import { Text, Button } from "react-native-paper"
 //if state = pending the card looks different since there's no driver name
 
 
-const NotificationPage = ({ navigation, route, ...props}) => {
+const NotificationPage = ({ navigation, route }) => {
+
+    const [modalVisible, setModalVisible] = useState(false);
+    const [popupText, setPopupText] = useState('')
+    const [popupFn, setPopupFn] = useState([{
+        name: '',
+        fn: () => { }
+    }])
+
+    function throwPopup(text, buttons) {
+        setModalVisible(true)
+        setPopupText(text)
+        setPopupFn(buttons)
+    }
+
+    function closePopup() {
+        setModalVisible(false)
+    }
 
     const [bookings, setBookings] = useState(
         [
@@ -19,17 +37,17 @@ const NotificationPage = ({ navigation, route, ...props}) => {
             { bookingId: 2, driverName: "Oliver Patel", Date: "02/01/2024", time: "13:00", duration: "3", unit: "hours", state: "Approved" }
         ]
     );
-    console.log(props)
     return (
         <SafeAreaProvider>
             <KeyboardAvoidingView>
                 <ScrollView>
                     <SafeAreaView>
-
+                        {modalVisible && <View style={styles.overlay} />}
+                        <Popup modalVisible={modalVisible} setModalVisible={setModalVisible} text={popupText} buttons={popupFn} />
                         <View>
 
                             {bookings.map((booking, index) => (
-                                <CardBooking key={index} date={booking.Date} driverName={booking.driverName} time={booking.time} duration={booking.duration} state={booking.state} unit={booking.unit} throwPopup={props.throwPopup} closePopup={props.closePopup} />
+                                <CardBooking key={index} date={booking.Date} driverName={booking.driverName} time={booking.time} duration={booking.duration} state={booking.state} unit={booking.unit} throwPopup={throwPopup} closePopup={closePopup} />
 
 
                             ))}

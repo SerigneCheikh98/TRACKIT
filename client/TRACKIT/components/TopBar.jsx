@@ -9,7 +9,7 @@ const TopBar = ({navigation}) => (
   <Appbar.Header style={{mode: 'center-aligned', backgroundColor:"#1F1937"}}>
     <Appbar.Content title="TRACKIT" titleStyle={{color: "white"}}/>
     <Badge  size={9} style={{ position: 'absolute', top: 22, right: 24 }}/><Appbar.Action icon="bell" color='white' style={{position:'absolute', right:10, top: 10}}  onPress={()=>{
-      navigation.navigate(NotificationPage)
+      navigation.navigate('NotificationPage')
     }} />
   </Appbar.Header>
 );

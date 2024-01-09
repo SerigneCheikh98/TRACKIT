@@ -11,6 +11,7 @@ import { enGB, registerTranslation } from 'react-native-paper-dates'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { getHeaderTitle } from '@react-navigation/elements';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import NotificationPage from './components/NotificationPage';
 
 registerTranslation('en', {
   save: 'Save',
@@ -39,6 +40,7 @@ function HomeStackScreen() {
       <HomeStack.Screen name="LoginPage" component={Login} />
       <HomeStack.Screen name="HomePage" component={HomePage} />
       <HomeStack.Screen name="RegistrationPage" component={RegisterScreen} />
+      <HomeStack.Screen name="NotificationPage" component={NotificationPage} />
     </HomeStack.Navigator>
   );
 }
@@ -50,6 +52,7 @@ function ProfileStackScreen() {
     <ProfileStack.Navigator screenOptions={() => ({ headerShown: false })}>
       <ProfileStack.Screen name="Profile" component={ReportScreen} />
       <ProfileStack.Screen name="HomePage" component={HomePage} />
+      <ProfileStack.Screen name="NotificationPage" component={NotificationPage} />
     </ProfileStack.Navigator>
   );
 }
@@ -66,16 +69,26 @@ export default function App() {
           header: ({ navigation, route, options }) => {
             const title = getHeaderTitle(options, route.name);
           
-            return <TopBar />;
+            return <TopBar navigation={navigation} />;
           },
           //tabBarShowLabel: false,
         })}
       >
-        <Tab.Screen name="Home" component={HomeStackScreen} options={{
+        {/* <Tab.Screen name="Home" component={HomeStackScreen} options={{
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="home" color={color} size={size} />
           ),
-        }}/>
+        }}/> */}
+        <Tab.Screen name="Home" options={{
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons name="home" color={color} size={size} />
+            ),
+          }}
+        >
+          {() => (
+            <HomeStackScreen />
+          )}
+        </Tab.Screen>
         <Tab.Screen name="profile" component={ProfileStackScreen} options={{
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="account" color={color} size={size} />
