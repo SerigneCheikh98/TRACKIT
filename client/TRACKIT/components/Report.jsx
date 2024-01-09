@@ -1,11 +1,16 @@
-import { ScrollView, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, TouchableOpacity, Modal, Pressable } from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
-import { Icon, Card, List, Avatar } from 'react-native-paper';
+import { Icon, Card, List, Avatar, Portal, PaperProvider } from 'react-native-paper';
 import { useState, useCallback } from 'react';
 import { PieChart } from "react-native-gifted-charts";
 
 const ReportScreen = ({ navigation }) => {
   const weaknesses = ["Initial setup", "Parking", "Intersections"];
+  const weaknessData = [
+    {id: "Initial setup", data: [{ value: 40, color: 'green', gradientCenterColor: '#3BE9DE' }, { value: 60, color: 'lightgrey', gradientCenterColor: 'lightgrey' }]}, 
+    {id: "Parking", data: [{ value: 16, color: 'green', gradientCenterColor: '#3BE9DE' }, { value: 84, color: 'lightgrey', gradientCenterColor: 'lightgrey' }]}, 
+    {id: "Intersections", data: [{ value: 64, color: 'green', gradientCenterColor: '#3BE9DE' }, { value: 36, color: 'lightgrey', gradientCenterColor: 'lightgrey' }]}
+  ];
 
   const pieData = [
     { value: 47, color: '#009FFF', gradientCenterColor: '#006DFF', focused: true },
@@ -64,6 +69,14 @@ const ReportScreen = ({ navigation }) => {
     );
   };
 
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedWeakness, setSelectedWeakness] = useState('');
+
+  const handleWeaknessTopic = (topic) => {
+    setSelectedWeakness(topic);
+    setModalVisible(true);
+  };
+
   const Item = ({ title }) => (
     <View style={styles.item}>
       <Text style={styles.title}>{`\u2022 ${title}`}</Text>
@@ -118,7 +131,7 @@ const ReportScreen = ({ navigation }) => {
           <View>
             <List.Section title={`Top ${weaknesses.length} weaknesses:`} titleStyle={{ fontSize: 20, fontWeight: 'bold', textDecorationLine: 'underline', color: 'black' }}>
               {weaknesses.map((weakness, index) => (
-                <List.Item key={index} title={`\u2022 ${weakness}`} titleStyle={styles.title} style={{ marginBottom: -5 }} />
+                <List.Item key={index} title={`\u2022 ${weakness}`} titleStyle={styles.title} description="more.." descriptionStyle={styles.description} style={{ marginBottom: -5 }} onPress={() => handleWeaknessTopic(weakness)} />
               ))}
             </List.Section>
           </View>
@@ -128,6 +141,32 @@ const ReportScreen = ({ navigation }) => {
               <Text variant="bodyLarge"> {tips} </Text>
             </Card.Content>
           </Card>
+          <Modal visible={modalVisible} transparent={true} animationType="slide" onDismiss={() => setModalVisible(false)} contentContainerStyle={styles.containerStyle}>
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <Text style={styles.modalText}>{selectedWeakness}</Text>
+                <PieChart
+                data={weaknessData.find((d) => (d.id === selectedWeakness))?.data || []}
+                showGradient
+                //radius={120}
+                centerLabelComponent={() => {
+                  return (
+                    <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                      <Text style={{ fontSize: 22, fontWeight: 'bold' }}>
+                        {`${weaknessData.find((d) => (d.id === selectedWeakness)).data[0].value}%`}
+                      </Text>
+                    </View>
+                  );
+                }}
+              />
+                <Pressable
+                  style={[styles.button, styles.buttonClose]}
+                  onPress={() => setModalVisible(!modalVisible)}>
+                  <Text style={styles.textStyle}>Hide</Text>
+                </Pressable>
+              </View>
+            </View>
+          </Modal>
         </View>
         <View style={styles.buttonContainer}>
           <TouchableOpacity onPress={() => { navigation.navigate('HomePage') }} style={styles.button} >
@@ -147,6 +186,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     margin: -8
+  },
+  description: {
+    fontSize: 12,
+    marginTop: 8,
+    marginLeft: 6,
+    color: "#a158cc"
   },
   buttonContainer: {
     width: '100%',
@@ -171,6 +216,44 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: '700',
     fontSize: 16,
+  },
+  containerStyle: {
+    backgroundColor: 'white',
+    padding: 20
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  buttonClose: {
+    backgroundColor: '#2196F3',
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
+    fontSize: 20
   },
 });
 
