@@ -72,7 +72,6 @@ const InputForm = (props) => {
   // DATE PICKER
   const [date, setDate] = useState(undefined);
   const [open, setOpen] = useState(false);
-  const [onFocusg, setOnFocusg] = useState(false);
 
   const onDismissSingle = useCallback(() => {
     setOpen(false);
@@ -95,8 +94,6 @@ const InputForm = (props) => {
             style={{ flex: 1 }}
             mode='outlined'
             label="Location"
-            outlineColor='#1F1937'
-            activeOutlineColor='#1F1937'
             outlineColor='#1F1937'
             activeOutlineColor='#1F1937'
             value={location}

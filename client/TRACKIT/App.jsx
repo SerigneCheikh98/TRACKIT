@@ -53,7 +53,7 @@ const ReportStack = createNativeStackNavigator();
 function ReportStackScreen() {
   return (
     <ReportStack.Navigator screenOptions={() => ({ headerShown: false })}>
-      <ReportStack.Screen name="Report" component={ReportScreen} />
+      <ReportStack.Screen name="ReportPage" component={ReportScreen} />
       <ReportStack.Screen name="HomePage" component={HomePage} />
       <ReportStack.Screen name="NotificationPage" component={NotificationPage} />
     </ReportStack.Navigator>
