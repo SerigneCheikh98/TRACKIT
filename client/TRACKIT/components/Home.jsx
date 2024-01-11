@@ -22,8 +22,8 @@ const HomePage = ({ navigation, route }) => {
     lastname: 'Carter',
     rating: 4,
     distance: 0.5,
-    from: '09:00',
-    to: '12:00'
+    from: '08:00',
+    to: '12:30'
   },
   {
     userId: 2,
@@ -74,9 +74,6 @@ const HomePage = ({ navigation, route }) => {
   const [users, setUsers] = useState([])
   const [inUseFilter, setInUseFilter] = useState(0) // 0 none - 1 distance - 2 rating
   const [available, setAvailable] = useState(true)
-
-  const [duration, setDuration] = useState("");
-  const [timeUnit, setTimeUnit] = useState('min');
 
   const [badgeOn, setBadgeOn] = useState(false);
   const [page, setPage] = useState('home'); // home OR notification
@@ -147,6 +144,33 @@ const HomePage = ({ navigation, route }) => {
   function closePopup() {
     setModalVisible(false)
   }
+
+  // params
+
+  const [time, setTime] = useState('')
+  const [date, setDate] = useState(undefined);
+  const [location, setLocation] = useState("");
+
+  const [duration, setDuration] = useState("");
+  const [timeUnit, setTimeUnit] = useState('min');
+
+
+  const params = {
+    time: time,
+    setTime: setTime,
+    date: date,
+    setDate: setDate,
+    location: location,
+    setLocation: setLocation,
+    duration: duration,
+    setDuration: setDuration,
+    timeUnit: timeUnit,
+    setTimeUnit: setTimeUnit
+  } 
+
+
+
+
   return (
     <SafeAreaProvider>
       <TopBar navigation={navigation} />
@@ -157,7 +181,7 @@ const HomePage = ({ navigation, route }) => {
           {page == 'notification' && <NotificationPage throwPopup={throwPopup} closePopup={closePopup}/>}
           {page == 'home' &&
             <>
-              <InputForm duration={duration} setDuration={setDuration} timeUnit={timeUnit} setTimeUnit={setTimeUnit} applyChange={applyChange} />
+              <InputForm params={params} applyChange={applyChange} />
               {
                 available == false &&
                 <>
@@ -165,7 +189,7 @@ const HomePage = ({ navigation, route }) => {
                   <Separator text={'OR'} />
                 </>
               }
-              <UsersList users={users} inUseFilter={inUseFilter} handleSetFilter={handleSetFilter} available={available} duration={duration} timeUnit={timeUnit} throwPopup={throwPopup} closePopup={closePopup} />
+              <UsersList users={users} params={params} inUseFilter={inUseFilter} handleSetFilter={handleSetFilter} available={available} throwPopup={throwPopup} closePopup={closePopup} />
             </>
           }
         </SafeAreaView>

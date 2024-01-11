@@ -29,11 +29,9 @@ const time_value = {
 
 const InputForm = (props) => {
   const [onFocusg, setOnFocusg] = useState(false);
-  const [location, setLocation] = useState("");
 
   //TIME PICKER
   const [visible, setVisible] = useState(false)
-  const [time, setTime] = useState('')
 
   const onDismiss = useCallback(() => {
     setVisible(false)
@@ -42,7 +40,7 @@ const InputForm = (props) => {
   const onConfirm = useCallback(
     ({ hours, minutes }) => {
       setVisible(false);
-      setTime(`${hours}:${minutes}`)
+      props.params.setTime(`${hours}:${minutes}`)
     },
     [setVisible]
   );
@@ -52,7 +50,7 @@ const InputForm = (props) => {
   const handleGetLocation = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== 'granted') {
-      setLocation('error')
+      props.params.setLocation('error')
       return;
     }
 
@@ -61,7 +59,7 @@ const InputForm = (props) => {
     console.log(JSON.parse(text))
     API.getCity(JSON.parse(text).coords.latitude, JSON.parse(text).coords.longitude)
       .then(res => {
-        setLocation(`${res.address.city} ${res.address.road}`)
+          props.params.setLocation(`${res.address.city} ${res.address.road}`)
       })
       .catch(err => console.log(err))
     console.log(location)
@@ -70,7 +68,6 @@ const InputForm = (props) => {
 
 
   // DATE PICKER
-  const [date, setDate] = useState(undefined);
   const [open, setOpen] = useState(false);
 
   const onDismissSingle = useCallback(() => {
@@ -80,9 +77,9 @@ const InputForm = (props) => {
   const onConfirmSingle = useCallback(
     (params) => {
       setOpen(false);
-      setDate(dayjs(params.date).format('DD/MM/YYYY').toString());
+      props.params.setDate(dayjs(params.date).format('DD/MM/YYYY').toString());
     },
-    [setOpen, setDate]
+    [setOpen, props.params.setDate]
   );
   return (
     <>
@@ -96,8 +93,8 @@ const InputForm = (props) => {
             label="Location"
             outlineColor='#1F1937'
             activeOutlineColor='#1F1937'
-            value={location}
-            onChangeText={location => setLocation(location)}
+            value={props.params.location}
+            onChangeText={location => props.params.setLocation(location)}
           />
           <View style={{ flex: 0.25, justifyContent: 'center', alignItems: 'center' }}>
             <IconButton style={styles.submitButton} size={25} iconColor="white" backgroundColor="#00c89e" icon='crosshairs-gps' buttonColor='black' mode="contained" onPress={() => { handleGetLocation() }} />
@@ -116,7 +113,7 @@ const InputForm = (props) => {
                   label="DD/MM/YYYY"
                   outlineColor='#1F1937'
                   activeOutlineColor='#1F1937'
-                  value={date}
+                  value={props.params.date}
                   labelStyle={{ color: '#1F1937' }}
                 />
                 <DatePickerModal
@@ -124,7 +121,7 @@ const InputForm = (props) => {
                   mode="single"
                   visible={open}
                   onDismiss={onDismissSingle}
-                  date={date}
+                  date={props.params.date}
                   onConfirm={onConfirmSingle}
                 />
               </View>
@@ -141,7 +138,7 @@ const InputForm = (props) => {
                   label="Time"
                   outlineColor='#1F1937'
                   activeOutlineColor='#1F1937'
-                  value={time}
+                  value={props.params.time}
                   labelStyle={{ color: '#1F1937' }}
                 />
                 <TimePickerModal
@@ -161,7 +158,7 @@ const InputForm = (props) => {
           <View style={{ flex: 2, paddingRight: '2%' }}>
             <Dropdown
               style={styles.dropdown}
-              data={time_value[props.timeUnit]}
+              data={time_value[props.params.timeUnit]}
               placeholderStyle={styles.placeholderStyle}
               selectedTextStyle={styles.selectedTextStyle}
               activeColor='#00c89e'
@@ -171,7 +168,7 @@ const InputForm = (props) => {
               labelField="label"
               valueField="value"
               onChange={(item) => {
-                props.setDuration(item);
+                props.params.setDuration(item);
                 setOnFocusg(false);
               }}
               onFocus={() => {
@@ -191,9 +188,9 @@ const InputForm = (props) => {
               maxHeight={300}
               labelField="label"
               valueField="value"
-              placeholder={props.timeUnit}
+              placeholder={props.params.timeUnit}
               onChange={(item) => {
-                props.setTimeUnit(item.value);
+                props.params.setTimeUnit(item.value);
                 setOnFocusg(false);
               }}
               onFocus={() => {
