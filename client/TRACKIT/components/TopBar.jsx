@@ -1,26 +1,35 @@
 import * as React from 'react';
-import { Appbar } from 'react-native-paper';
+import { Appbar, Badge } from 'react-native-paper';
 import { StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-const TopBar = () => (
-  <Appbar.Header style={{mode: 'center-aligned'}}>
-    <Appbar.Content title="TRACKIT" style={styles.titleContainer}/>
-    <Appbar.Action icon="bell"></Appbar.Action>
-  </Appbar.Header>
-);
+
+
+
+const TopBar = () => {
+  const navigation = useNavigation();
+  
+  return (
+    <Appbar.Header style={{ mode: 'center-aligned', backgroundColor: "#1F1937" }}>
+      <Appbar.Content title="TRACKIT" titleStyle={{ color: "white" }} />
+      <Badge size={9} style={{ position: 'absolute', top: 22, right: 24 }} /><Appbar.Action icon="bell" color='white' style={{ position: 'absolute', right: 10, top: 10 }} onPress={() => {
+        navigation.navigate('NotificationPage')
+      }} />
+    </Appbar.Header>
+  )
+};
 
 const styles = StyleSheet.create({
-    titleContainer: {
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center'
-    },
-    header: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        paddingHorizontal: 16, // Adjust padding as needed
-      }
-  });
+  Badge: {
+    position: 'absolute',
+    right: 10,
+    top: 5
+    
+
+
+    
+  }
+});
+
 
 export default TopBar;
