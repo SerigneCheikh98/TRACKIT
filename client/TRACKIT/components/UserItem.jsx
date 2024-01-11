@@ -2,6 +2,7 @@ import { View, StyleSheet, Pressable } from "react-native";
 import { Text } from 'react-native-paper'
 import { Avatar } from "react-native-paper";
 import { Icon } from "@rneui/themed";
+import { useNavigation } from '@react-navigation/native';
 import dayjs from "dayjs";
 
 function getDurationMin(from, to) {
@@ -20,6 +21,8 @@ function parseDuration(value, type) {
 const UserItem = (props) => {
   const msg = `Attention\nYour chosen time slot is not fully covered`
   const danger = parseDuration(props.duration.value, props.timeUnit.value) > getDurationMin(props.user.from, props.user.to)
+  const navigation = useNavigation();
+
   return (
     <Pressable onPress={() => {
       if (danger) {
@@ -28,7 +31,11 @@ const UserItem = (props) => {
           fn: props.closePopup
         }])
       }
-      // else link to the other page
+      else{
+        navigation.navigate('BookingPage')
+
+      } //link to the other page
+
     }}>
       <View style={styles.container} pointerEvents="none">
         <View style={styles.icon}>

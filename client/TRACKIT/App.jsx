@@ -43,6 +43,7 @@ function HomeStackScreen() {
     <HomeStack.Navigator screenOptions={() => ({ headerShown: false })}>
       {/* <HomeStack.Screen name="LoginPage" component={Login} /> */}
       <HomeStack.Screen name="HomePage" component={HomePage} />
+      <HomeStack.Screen name="BookingPage" component={Booking} />
       {/* <HomeStack.Screen name="RegistrationPage" component={RegisterScreen} /> */}
       <HomeStack.Screen name="NotificationPage" component={NotificationPage} />
     </HomeStack.Navigator>
@@ -55,7 +56,6 @@ function ReportStackScreen() {
   return (
     <ReportStack.Navigator screenOptions={() => ({ headerShown: false })}>
       <ReportStack.Screen name="ReportPage" component={ReportScreen} />
-      <ReportStack.Screen name="HomePage" component={HomePage} />
       <ReportStack.Screen name="NotificationPage" component={NotificationPage} />
     </ReportStack.Navigator>
   );
