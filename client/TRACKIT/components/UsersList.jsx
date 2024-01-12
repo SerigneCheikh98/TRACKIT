@@ -15,7 +15,7 @@ const UsersList = (props) => {
                     {/* <ScrollView> */}
                     {
                         props.users.sort(props.inUseFilter != 0 ? sortingFn : () => {}).map(item => {
-                            return <UserItem key={item.userId} style={styles.list} user={item} available={props.available} duration={props.duration} timeUnit={props.timeUnit} throwPopup={props.throwPopup} closePopup={props.closePopup}/>
+                            return <UserItem params={props.params} key={item.userId} style={styles.list} user={item} available={props.available} duration={props.duration} timeUnit={props.timeUnit} throwPopup={props.throwPopup} closePopup={props.closePopup}/>
                         })
                     }
                     {/* </ScrollView> */}

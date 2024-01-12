@@ -119,7 +119,7 @@ export default function App() {
             <MaterialCommunityIcons name="chart-arc" color={color} size={size} />
           ),
         }}/>
-        <Tab.Screen name="profile" options={{
+        <Tab.Screen name="Profile" options={{
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="account-circle" color={color} size={size} />
           ),
