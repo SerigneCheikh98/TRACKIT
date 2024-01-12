@@ -19,17 +19,18 @@ const genders = [
 
 
 
-const RegisterScreen = ({navigation}) =>{
-    let [step, setStep] = useState("1");
-    let [hidePassp, setHidePassp] = useState(true);
-    let [hidePasscp, setHidePasscp] = useState(true);
-    let [passIconp, setPassIconp] = useState("eye-off");
-    let [passIconcp, setPassIconcp] = useState("eye-off");
-    let [onFocusp, setOnFocusp] = useState(false);
-    let [onFocuscp, setOnFocuscp] = useState(false);
+const RegisterScreen = ({navigation, route}) =>{
+    const {source} =route.params || {};
+    const [step, setStep] = useState(source ?? "1");
+    const [hidePassp, setHidePassp] = useState(true);
+    const [hidePasscp, setHidePasscp] = useState(true);
+    const [passIconp, setPassIconp] = useState("eye-off");
+    const [passIconcp, setPassIconcp] = useState("eye-off");
+    const [onFocusp, setOnFocusp] = useState(false);
+    const [onFocuscp, setOnFocuscp] = useState(false);
 
-    let  [gender, setGender] = useState(null);
-    let  [onFocusg, setOnFocusg] = useState(false);
+    const  [gender, setGender] = useState(null);
+    const  [onFocusg, setOnFocusg] = useState(false);
 
     const [selectedCountry, setSelectedCountry] = useState('');
     const [inputValue, setInputValue] = useState('');
@@ -74,7 +75,7 @@ const RegisterScreen = ({navigation}) =>{
             
                 else{
                   
-                    setStep("1");
+                    source ? navigation.navigate('Profile') :setStep("1");
                 }
                }}/>}
             <Appbar.Content  title={step != 3 ?"Registration": "Request Status"} titleStyle={{color: "white"}}/>
