@@ -69,6 +69,7 @@ function ProfileStackScreen({ setIsLoggedIn }) {
         {(props) => <ProfilePage {...props} setIsLoggedIn={setIsLoggedIn} />}
       </ProfileStack.Screen>
       <ProfileStack.Screen name="NotificationPage" component={NotificationPage} />
+      <ProfileStack.Screen name="Registration" component={RegisterScreen} />
     </ProfileStack.Navigator>
   );
 }
