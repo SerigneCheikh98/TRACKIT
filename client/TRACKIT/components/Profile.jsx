@@ -41,15 +41,16 @@ const ProfilePage = ({ route, setIsLoggedIn }) => {
       
     
 
-    return (
+    return (<>
+        <TopBar navigation={navigation} />
+
         <View style={styles.prova}>
-            <TopBar navigation={navigation} />
             <View style={styles.topBar}>
                 {/* <CircleView dimensione={0.165}/>  */}
                 <Avatar
                 containerStyle={[debug, styles.profilePic]}
                     rounded
-                    size={64}
+                    size={'medium'}
                     source={{uri : 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=3560&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'}}
                 />
 
@@ -138,6 +139,7 @@ const ProfilePage = ({ route, setIsLoggedIn }) => {
              </View> */
             /* <Appbar.Action icon="power" color='white' accessibilityLabel='Log out' onPress={()=>{navigation.navigate("LoginPage")}}></Appbar.Action> */}
         </View>
+        </>
     )
 }
 
@@ -147,7 +149,8 @@ const commonTextStyles = {
 
 const debug = {
     borderWidth: 0,
-    borderColor: 'red'
+    borderColor: 'red',
+
 };
 
 const commonBoxContent = {
@@ -158,7 +161,9 @@ const commonBoxContent = {
 
 const styles = StyleSheet.create({
     prova:{
-        height: '100%'
+        ...debug,
+        flex: 1,
+        justifyContent: 'space-around'
     },
     
     container: {
@@ -177,7 +182,6 @@ const styles = StyleSheet.create({
         ...commonBoxContent,
         height : '12%',
         backgroundColor : '#1F1937',
-        marginTop: '5%',
         flexDirection: 'row',
         alignItems: 'center',
         shadowColor: '#000',
@@ -255,9 +259,8 @@ const styles = StyleSheet.create({
     centerContent: {
         ...debug,
         ...commonBoxContent,
-        height: '40%',
+        height: '45%',
         backgroundColor: '#FFFFFF',
-        marginTop: '5%',
         justifyContent: 'space-around',
     },
 
@@ -265,7 +268,7 @@ const styles = StyleSheet.create({
         ...debug,
         ...commonBoxContent,
         backgroundColor: '#FFFFFF',
-        height: '20%',
+        height: '25%',
         justifyContent: 'space-around',
 
     },
@@ -273,7 +276,7 @@ const styles = StyleSheet.create({
     more:{
         ...debug,
         ...commonTextStyles,
-        margin: '5%',
+        marginLeft: '5%',
         fontSize: 17,
         fontFamily: 'serif-semiBold'
     },
