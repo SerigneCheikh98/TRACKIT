@@ -1,0 +1,13 @@
+@APIURL = http://localhost:3000/api
+
+##
+GET {{APIURL}}/rides
+Content-Type: application/json
+
+{
+    "location": "Torino",
+    "date": "17/01/2024",
+    "time": "14:30",
+    "duration": "30",
+    "timeUnit": "min"
+}
