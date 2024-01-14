@@ -25,8 +25,9 @@ const Popup = (props) => {
                         <Text style={styles.modalText}>{props.text}</Text>
                         {
                             props.buttons != undefined && (
-                                props.buttons.map( item => {
+                                    props.buttons.map( (item, index) => {
                                     return <Pressable
+                                        key={index}
                                         style={[styles.button, styles.buttonClose]}
                                         onPress={() => item.fn()}>
                                         <Text style={styles.textStyle}>{item.name}</Text>

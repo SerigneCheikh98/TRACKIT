@@ -79,23 +79,27 @@ const HomePage = ({ navigation, route }) => {
   const [page, setPage] = useState('home'); // home OR notification
 
   const applyChange = () => {
-    // API call for precise search
-    // found => setUsers(results)
-    // not found
-    setAvailable(false)
-    // API call for the day
-    setUsers(static_users)
-  }
-
-  function handleToggle(pos) {
-    if(bookingType == 'left' && pos != 'left') {
-      setBookingType('right')
-      setUsers([])
+    const paramsObj = {
+      "location": params.location,
+      "date": params.date,
+      "time": params.time,
+      "duration": params.duration,
+      "timeUnit": params.timeUnit
     }
-    else if(bookingType == 'right' && pos != 'right') {
-      setBookingType('left')
-      setUsers([])
-    }
+    API.searchRide(paramsObj)
+      .then( resp => {
+        if(resp.length > 0) {
+          setUsers(resp)
+          setAvailable(true)
+        }
+        else {
+          setAvailable(false)
+          setUsers([])
+        }
+      })
+      .catch( err => {
+        console.log(err)
+      })
   }
 
   function handleSetFilter(choice) {
@@ -113,21 +117,6 @@ const HomePage = ({ navigation, route }) => {
     }
   }
 
-
-  function handleSetFilter(choice) {
-    if (inUseFilter == 1 && choice != 1) {
-      setInUseFilter(2)
-    }
-    else if (inUseFilter == 2 && choice != 2) {
-      setInUseFilter(1)
-    }
-    else if (inUseFilter == 0) {
-      setInUseFilter(choice)
-    }
-    else {
-      setInUseFilter(0)
-    }
-  }
   const [modalVisible, setModalVisible] = useState(false);
   const [popupText, setPopupText] = useState('')
   const [popupFn, setPopupFn] = useState([{
@@ -147,11 +136,11 @@ const HomePage = ({ navigation, route }) => {
 
   // params
 
-  const [time, setTime] = useState('')
-  const [date, setDate] = useState(undefined);
-  const [location, setLocation] = useState("");
+  const [time, setTime] = useState('14:30')
+  const [date, setDate] = useState('17/01/2024');
+  const [location, setLocation] = useState("Torino");
 
-  const [duration, setDuration] = useState("");
+  const [duration, setDuration] = useState("30");
   const [timeUnit, setTimeUnit] = useState('min');
 
 

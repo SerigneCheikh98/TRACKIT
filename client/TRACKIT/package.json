@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@expo/ngrok": "^2.5.0",
     "@ant-design/icons": "^5.2.6",
     "@expo/webpack-config": "^19.0.0",
     "@react-native-community/datetimepicker": "^6.7.5",
@@ -52,7 +53,8 @@
     "undefined": "styled-components/dist/sheet/Sheet"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0"
+    "@babel/core": "^7.20.0",
+    "@expo/ngrok": "^4.1.0"
   },
   "private": true
 }
