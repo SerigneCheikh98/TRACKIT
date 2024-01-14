@@ -14,7 +14,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import NotificationPage from './components/NotificationPage';
 import ProfilePage from './components/Profile';
 import Booking from './components/BookingPage';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import * as Font from 'expo-font';
 const Stack = createNativeStackNavigator();
 
 registerTranslation('en', {
@@ -65,7 +66,7 @@ const ProfileStack = createNativeStackNavigator();
 function ProfileStackScreen({ setIsLoggedIn }) {
   return (
     <ProfileStack.Navigator screenOptions={() => ({ headerShown: false })}>
-      <ProfileStack.Screen name="Profile" >
+      <ProfileStack.Screen name="ProfilePage" >
         {(props) => <ProfilePage {...props} setIsLoggedIn={setIsLoggedIn} />}
       </ProfileStack.Screen>
       <ProfileStack.Screen name="NotificationPage" component={NotificationPage} />
@@ -90,6 +91,18 @@ const Tab = createBottomTabNavigator();
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    async function loadFont() {
+      await Font.loadAsync({
+        'serif': require('./assets/fonts/Noto_Serif/NotoSerif.ttf'),
+        'serif-semiBold' : require('./assets/fonts/Noto_Serif/static/NotoSerif-SemiBold.ttf')
+      });
+
+    }
+
+    loadFont();
+  }, []);
 
   return(
     <NavigationContainer>

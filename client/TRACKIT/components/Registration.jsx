@@ -75,7 +75,7 @@ const RegisterScreen = ({navigation, route}) =>{
             
                 else{
                   
-                    source ? navigation.navigate('Profile') :setStep("1");
+                    source ? navigation.navigate('ProfilePage') :setStep("1");
                 }
                }}/>}
             <Appbar.Content  title={step != 3 ?"Registration": "Request Status"} titleStyle={{color: "white"}}/>
