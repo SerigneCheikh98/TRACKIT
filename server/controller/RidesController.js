@@ -18,17 +18,32 @@ function afterHour(timeChosen, timeReceived) {
 }
 
 function calculateEndingHour(startingTime, slots) {
-    const noHours = Math.floor(slots / 2)
-    const noAfHour = slots - (noHours*2)
+    // const noHours = Math.floor(slots / 2)
+    // const noAfHour = slots - (noHours*2)
+    // const start = startingTime.split(':').map(item => parseInt(item))
+    // start[0] = (start[0]+noHours)%24
+    // start[1] = start[1]+(30*noAfHour)
+    // if(start[1] > 60) {
+    //     start[0]++
+    //     start[1] -= 60
+    // } 
+    console.log(slots)
+    const noHours = Math.floor(slots / 2);
+    const noAfHour = slots - (noHours * 2);
+    console.log(`${slots}/2 = ${slots/2}`)
+
     const start = startingTime.split(':').map(item => parseInt(item))
-    start[0] = (start[0]+noHours)%24
-    start[1] = start[1]+(30*noAfHour)
-    if(start[1] > 60) {
-        start[0]++
-        start[1] -= 60
-    } 
-    
-    return `${start[0] < 10 ? '0'+start[0] : start[0]}:${start[1] < 10 ? '0'+start[1] : start[1]}`
+    start[0] = start[0] + noHours
+    start[1] = start[1] + noAfHour*30
+
+    if(start[1] == 60) {
+        start[1] = 0
+        start[0] += 1
+    }
+
+    const s = `${start[0] < 10 ? '0'+start[0] : start[0]}:${start[1] < 10 ? '0'+start[1] : start[1]}`
+    console.log(s)
+    return s
 }
 /**
  * Search for a still pending ride for the current user
@@ -55,6 +70,7 @@ function calculateEndingHour(startingTime, slots) {
  * @param {*} res [{ride_obj1}, {ride_obj2}, ...]
  */
 exports.searchRide = function searchRide(req, res) {
+    console.log(req.query)
     if(!req.query.location) {
         return res.status(400).json({message: 'Location is missing'})
     }
@@ -81,6 +97,10 @@ exports.searchRide = function searchRide(req, res) {
             resp = resp.filter( (ride) => {
                 return afterHour(req.query.time, ride.StartingTime) 
             })
+            .filter( (ride) => {
+                return !afterHour(dayjs().format('HH:mm'), ride.StartingTime)
+            })
+            console.log(resp)
             resp = resp.map( item => {
                 return {
                     userId: item.DriverId,
@@ -88,8 +108,9 @@ exports.searchRide = function searchRide(req, res) {
                     lastname: item.Surname,
                     rating: item.Rating,
                     distance: Math.floor(Math.random()*100),
+                    date: item.Date,
                     from: item.StartingTime,
-                    to: calculateEndingHour(item.StartingTime, slots)
+                    to: calculateEndingHour(item.StartingTime, item.Slot)
                 }
             })
             res.status(200).json(resp)

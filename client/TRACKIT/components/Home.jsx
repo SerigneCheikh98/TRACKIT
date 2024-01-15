@@ -74,6 +74,7 @@ const HomePage = ({ navigation, route }) => {
   const [users, setUsers] = useState([])
   const [inUseFilter, setInUseFilter] = useState(0) // 0 none - 1 distance - 2 rating
   const [available, setAvailable] = useState(true)
+  const [noAvailability, setNoAvailability] = useState(false)
 
   const [badgeOn, setBadgeOn] = useState(false);
   const [page, setPage] = useState('home'); // home OR notification
@@ -85,7 +86,9 @@ const HomePage = ({ navigation, route }) => {
       "time": params.time,
       "duration": params.duration,
       "timeUnit": params.timeUnit
-    }
+    }         
+    setNoAvailability(false)
+
     API.searchRide(paramsObj)
       .then( resp => {
         if(resp.length > 0) {
@@ -93,8 +96,25 @@ const HomePage = ({ navigation, route }) => {
           setAvailable(true)
         }
         else {
-          setAvailable(false)
-          setUsers([])
+          const tmp_params = {
+            ...paramsObj,
+            "time": "00:00"
+          }
+          API.searchRide(tmp_params)
+            .then( resp => {
+
+              setAvailable(false)
+              if(resp.length > 0) {
+                setUsers(resp)
+              }
+              else {
+                setNoAvailability(true)
+                setUsers([])
+              }
+            })
+            .catch( err => {
+              console.log(err)
+            })
         }
       })
       .catch( err => {
@@ -174,8 +194,11 @@ const HomePage = ({ navigation, route }) => {
               {
                 available == false &&
                 <>
-                  <RequestCard throwPopup={throwPopup} closePopup={closePopup} badgeOn={badgeOn} setBadgeOn={setBadgeOn} />
-                  <Separator text={'OR'} />
+                  <RequestCard throwPopup={throwPopup} closePopup={closePopup} badgeOn={badgeOn} text={'We are sorry, currently no drivers are available at this time :\'('} setBadgeOn={setBadgeOn} />
+                  {
+                    noAvailability == false && 
+                    <Separator text={'OR'} />
+                  }
                 </>
               }
               <UsersList users={users} params={params} inUseFilter={inUseFilter} handleSetFilter={handleSetFilter} available={available} throwPopup={throwPopup} closePopup={closePopup} />
@@ -183,8 +206,6 @@ const HomePage = ({ navigation, route }) => {
           }
         </SafeAreaView>
       </ScrollView>
-      {/* <BottomBar /> */}
-      {/* <BottomBar /> */}
     </SafeAreaProvider>
   );
 }

@@ -7,7 +7,7 @@ const RequestCard = (props) => {
     return (
         <Card elevation={3} mode='elevated' style={{ paddingHorizontal: '2%' }}>
             <Card.Content>
-                <Text variant="bodyLarge">We are sorry, currently no drivers are available at this time :'(</Text>
+                <Text variant="bodyLarge">{props.text}</Text>
             </Card.Content>
             <View style={styles.container}>
                 <Button style={styles.submitButton} buttonColor='#00c89e' mode="contained" onPress={() => {

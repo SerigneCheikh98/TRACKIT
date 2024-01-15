@@ -106,7 +106,7 @@ const InputForm = (props) => {
           {/* DATE */}
           <View style={{ flex: 2, paddingRight: '2%' }}>
 
-            <Pressable onPress={() => setOpen(true)}>
+            <Pressable onPress={() => {props.params.setDate(undefined);setOpen(true)}}>
               <View pointerEvents="none">
                 <TextInput
                   mode='outlined'

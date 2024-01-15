@@ -71,12 +71,13 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         padding: 10,
         elevation: 2,
+        backgroundColor: '#00c89e'
     },
     buttonOpen: {
-        backgroundColor: '#F194FF',
+        backgroundColor: '#00c89e',
     },
     buttonClose: {
-        backgroundColor: '#2196F3',
+        backgroundColor: '#00c89e',
     },
     textStyle: {
         color: 'white',
