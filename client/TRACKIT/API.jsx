@@ -1,6 +1,10 @@
-const your_ip_address = '172.20.10.2'
+const your_ip_address = '192.168.93.69'
 const locationKEY = '6596e0ad9314e091225752fijd9e70a'
 const basepath = `http://${your_ip_address}:3000/api`
+
+const dayjs = require('dayjs')
+var customParseFormat = require('dayjs/plugin/customParseFormat')
+dayjs.extend(customParseFormat)
 
 async function getCity(latitude, longitude) {
   return getJson(fetch(`https://geocode.maps.co/reverse?lat=${latitude}&lon=${longitude}&api_key=${locationKEY}`, {
@@ -46,22 +50,21 @@ function getJson(httpResponsePromise) {
 }
 
 async function searchRide(params) {
-  const queryParams = new URLSearchParams([
-    ['location', params.location], 
-    ["date", params.date],
-    ["time", params.time], 
-    ["duration", params.duration], 
-    ["timeUnit", params.timeUnit]
-  ])
-  return getJson(fetch(`${basepath}/rides?location=${params.location}&date=${params.date}&time=${params.time}&duration=${params.duration}&timeUnit=${params.timeUnit}`, {
+  return getJson(fetch(`${basepath}/rides?location=${params.location}&date=${dayjs(params.date, 'DD/MM/YYYY').format('YYYY/MM/DD').toString()}&time=${params.time}&duration=${params.duration}&timeUnit=${params.timeUnit}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
     },
   })).then(json => {
-    return json
+    const res = json.map( item => {
+      return  {
+        ...item,
+        date: dayjs(item.date, 'YYYY/MM/DD').format('DD/MM/YYYY').toString()
+      }
+    })
+    return res
   }).catch(err => {
-    throw new Error(err)
+    throw err
   })
 
 }
