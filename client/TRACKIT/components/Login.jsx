@@ -3,11 +3,12 @@ import { Image, Linking, ScrollView } from 'react-native'
 import { KeyboardAvoidingView, TouchableOpacity, View, StyleSheet} from 'react-native'
 import { Link, useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
+import API from '../API';
 
 const Login = ({setIsLoggedIn}) =>{
     const navigate = useNavigation();
-    const [email,setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [email,setEmail] = useState("mariorossi@hotmail.com");
+    const [password, setPassword] = useState("password1234");
 
     const [onFocus, setOnFocus] = useState(false);
     const [passIcon, setPassIcon] = useState("eye-off");
@@ -31,7 +32,7 @@ const Login = ({setIsLoggedIn}) =>{
         <TextInput
         keyboardType='email-address'
         label="Email"
-        //value={}
+        value={email}
         onChangeText={(text) => setEmail(text) }
         mode='outlined'
         outlineColor='#1F1937'
@@ -41,7 +42,7 @@ const Login = ({setIsLoggedIn}) =>{
         />
         <TextInput
         label='Password'
-        //value={}
+        value={password}
         onChangeText={(text) => setPassword(text) }
         mode='outlined'
         onFocus={()=>{setOnFocus(false)
@@ -77,12 +78,23 @@ const Login = ({setIsLoggedIn}) =>{
         <View style={styles.buttonContainer}>
         <TouchableOpacity
         onPress={()=>{
-            if(email.toLocaleLowerCase()=="mariorossi@hotmail.com" && password=="123123") 
-            {
-                setIsLoggedIn(true);
-            }
-            console.log(email.toLocaleLowerCase())
-            console.log(password)
+
+            const username = email.toLowerCase()
+            const credentials = {username, password}
+            API.login(credentials)
+                .then( () => {
+                    setIsLoggedIn(true)
+                })
+                .catch( err => {
+                    console.log(err)
+                })
+            // if(email.toLocaleLowerCase()=="mariorossi@hotmail.com" && password=="123123") 
+            // {
+
+            //     setIsLoggedIn(true);
+            // }
+            // console.log(email.toLocaleLowerCase())
+            // console.log(password)
 
            
             //navigate.navigate('HomePage')

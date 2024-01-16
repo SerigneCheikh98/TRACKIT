@@ -55,6 +55,7 @@ async function searchRide(params) {
     headers: {
       "Content-Type": "application/json",
     },
+    credentials: 'include',
   })).then(json => {
     const res = json.map( item => {
       return  {
@@ -68,5 +69,49 @@ async function searchRide(params) {
   })
 
 }
-const API = { getCity, searchRide }
+
+
+
+// ========================================== LOGIN ==========================================
+
+const login = async (credentials) => {
+  return getJson( fetch(`${basepath}/login`, {
+      method: "POST",
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      credentials: 'include',
+      body: JSON.stringify(credentials)
+  })).then( json => {
+      return json
+  })
+}
+
+const logout = async () => {
+  return getJson( fetch(`${basepath}/login`, {
+      method: 'DELETE',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      credentials: 'include',   
+  }))
+  .then( json => {
+      return json
+  })
+}
+
+const stillLoggedIn = async () => {
+  return getJson( fetch(`${basepath}/login/current`, {
+      method: 'GET',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      credentials: 'include'
+  }))
+  .then( json => {
+      return json
+  })
+}
+
+const API = { getCity, searchRide, login, logout, stillLoggedIn }
 export default API;

@@ -8,6 +8,7 @@ import { StarOutlined, StarFilled, StarTwoTone } from '@ant-design/icons';
 
 import React, { useState,useEffect } from 'react';
 import * as Font from 'expo-font';
+import API from "../API";
 
 
 
@@ -93,7 +94,14 @@ const ProfilePage = ({ route, setIsLoggedIn }) => {
                     <Icon name= {'chevron-right'} type="font-awesome" color={'#1F1937'} size={20} style={styles.arrow_right}/>
                 </View>
 
-                <TouchableOpacity style={styles.item} onPress={()=>{setIsLoggedIn(false)}}>
+                <TouchableOpacity style={styles.item} onPress={()=>{
+                    
+                    API.logout()
+                        .then( resp => {
+                            setIsLoggedIn(false)
+                        })
+                        .catch( err => console.log(err) )    
+                }}>
                     <CircleIcon dimensione={0.14} tipo={'exit'} fonte={"ionicon"} size={36}/>
                     <View style={styles.textContainerItem}>
                         <Text style={styles.iconTitle}>Log out</Text>
