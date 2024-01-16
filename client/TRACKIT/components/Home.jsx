@@ -177,7 +177,9 @@ const HomePage = ({ navigation, route }) => {
     setTimeUnit: setTimeUnit
   } 
 
-
+  function handleInsertRequest() {
+    API.addRequestRide(params)
+  } 
 
 
   return (
@@ -194,7 +196,7 @@ const HomePage = ({ navigation, route }) => {
               {
                 available == false &&
                 <>
-                  <RequestCard throwPopup={throwPopup} closePopup={closePopup} badgeOn={badgeOn} text={'We are sorry, currently no drivers are available at this time :\'('} setBadgeOn={setBadgeOn} />
+                  <RequestCard handleInsertRequest={handleInsertRequest} throwPopup={throwPopup} closePopup={closePopup} badgeOn={badgeOn} text={'We are sorry, currently no drivers are available at this time :\'('} setBadgeOn={setBadgeOn} />
                   {
                     noAvailability == false && 
                     <Separator text={'OR'} />

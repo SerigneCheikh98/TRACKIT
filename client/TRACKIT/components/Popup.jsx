@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Alert, Modal, StyleSheet, Text, Pressable, View } from 'react-native';
+import {  Modal, StyleSheet, Text, Pressable, View } from 'react-native';
 /**
  * buttons: [ 
  * {
@@ -23,18 +23,20 @@ const Popup = (props) => {
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
                         <Text style={styles.modalText}>{props.text}</Text>
-                        {
-                            props.buttons != undefined && (
-                                    props.buttons.map( (item, index) => {
-                                    return <Pressable
-                                        key={index}
-                                        style={[styles.button, styles.buttonClose]}
-                                        onPress={() => item.fn()}>
-                                        <Text style={styles.textStyle}>{item.name}</Text>
-                                    </Pressable>
-                                })
-                            )
-                        }
+                        <View style={{flexDirection: 'row', alignContent: 'space-between'}}>
+                            {
+                                props.buttons != undefined && (
+                                        props.buttons.map( (item, index) => {
+                                        return <Pressable
+                                            key={index}
+                                            style={[styles.button, styles.buttonClose]}
+                                            onPress={() => item.fn()}>
+                                            <Text style={styles.textStyle}>{item.name}</Text>
+                                        </Pressable>
+                                    })
+                                )
+                            }
+                        </View>
 
                     </View>
                 </View>
@@ -44,7 +46,8 @@ const Popup = (props) => {
 };
 const styles = StyleSheet.create({
     submitButton: {
-        borderRadius: 10
+        borderRadius: 10,
+        flex: 1
     },
     centeredView: {
         flex: 1,
@@ -68,9 +71,11 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     button: {
-        borderRadius: 20,
+        borderRadius: 10,
         padding: 10,
+        marginHorizontal: '5%',
         elevation: 2,
+        flex: 1,
         backgroundColor: '#00c89e'
     },
     buttonOpen: {

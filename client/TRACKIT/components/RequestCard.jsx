@@ -12,10 +12,15 @@ const RequestCard = (props) => {
             <View style={styles.container}>
                 <Button style={styles.submitButton} buttonColor='#00c89e' mode="contained" onPress={() => {
                     props.setBadgeOn(true)
-                    props.throwPopup(msg, [{
-                    name: 'Close',
-                    fn: props.closePopup
-                }])}}>
+                    props.throwPopup(msg, [
+                    {
+                        name: 'Insert',
+                        fn: props.handleInsertRequest
+                    },
+                    {
+                        name: 'Close',
+                        fn: props.closePopup
+                    }])}}>
                     Request a practice for this time
                 </Button>
             </View>
@@ -31,7 +36,6 @@ const styles = StyleSheet.create({
         paddingVertical: '5%'
     },
     submitButton: {
-        // flex: 1,
         borderRadius: 10
     },
 });

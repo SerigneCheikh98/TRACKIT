@@ -112,7 +112,6 @@ exports.searchRide = function searchRide(req, res) {
  * The currect logged in student ask for a practice request to any available driver because there were none 
  * when he searched for it. Same parameters of the previous performed search are going to be used
  * 
- * TODO: the id of the student should be taken for the authentication process
  * 
  * req {
  *  location: String - whatever, is not going to be used for the prototype
@@ -127,10 +126,6 @@ exports.searchRide = function searchRide(req, res) {
  * }
  */
 exports.addRequestRide = function addRequestRide(req, res) {
-    console.log('calling addRequestRide')
-    console.log(req.body)
-    const student_id = 1        // TODO
-
     if(!req.body.location || req.body.location.trim() == '') {
         return res.status(400).json({message: 'Location is missing'})
     }
@@ -151,7 +146,7 @@ exports.addRequestRide = function addRequestRide(req, res) {
     req.body.duration *= 60
 
     const slots = req.body.duration/30
-    ridesQuery.addRequestRide(student_id, req.body.location, req.body.date, req.body.time, slots)
+    ridesQuery.addRequestRide(req.user.id, req.body.location, req.body.date, req.body.time, slots)
         .then( resp => {
             return res.status(200).json({message: 'Request sent'})
         })

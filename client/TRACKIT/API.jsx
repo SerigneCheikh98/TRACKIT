@@ -49,6 +49,8 @@ function getJson(httpResponsePromise) {
   });
 }
 
+// ========================================== RIDES ==========================================
+
 async function searchRide(params) {
   return getJson(fetch(`${basepath}/rides?location=${params.location}&date=${dayjs(params.date, 'DD/MM/YYYY').format('YYYY/MM/DD').toString()}&time=${params.time}&duration=${params.duration}&timeUnit=${params.timeUnit}`, {
     method: "GET",
@@ -70,6 +72,34 @@ async function searchRide(params) {
 
 }
 
+async function addRequestRide(params) {
+  return getJson(fetch(`${basepath}/rides`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: 'include',
+    body: JSON.stringify({
+      location: params.location,
+      date: dayjs(params.date, 'DD/MM/YYYY').format('YYYY/MM/DD').toString(),
+      time: params.time,
+      duration: params.duration,
+      timeUnit: params.timeUnit
+    })
+  })).then(json => {
+    const res = json.map( item => {
+      return  {
+        ...item,
+        date: dayjs(item.date, 'YYYY/MM/DD').format('DD/MM/YYYY').toString()
+      }
+    })
+    return res
+  }).catch(err => {
+    throw err
+  })
+
+}
+// ========================================== NOTIFICATION ==========================================
 
 
 // ========================================== LOGIN ==========================================
@@ -113,5 +143,5 @@ const stillLoggedIn = async () => {
   })
 }
 
-const API = { getCity, searchRide, login, logout, stillLoggedIn }
+const API = { getCity, searchRide, addRequestRide, login, logout, stillLoggedIn }
 export default API;

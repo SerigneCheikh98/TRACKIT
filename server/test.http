@@ -25,7 +25,7 @@ POST {{APIURL}}/login HTTP/1.1
 content-type: application/json
 
 {
-    "username": "david.miller@email.com",
+    "username": "mariorossi@hotmail.com",
     "password": "password1234"
 }
 

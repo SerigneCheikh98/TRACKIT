@@ -41,7 +41,6 @@ exports.deleteNotification = function deleteNotification(req, res) {
  * 
  * Different types of notification will be sent to the client
  * 
- * TODO: the id of the student should be taken for the authentication process
  * 
  * @param {*} req None
  * @param {*} res [
@@ -50,9 +49,7 @@ exports.deleteNotification = function deleteNotification(req, res) {
  * ]
  */
 exports.getNotification = function getNotification(req, res) {
-    const student_id = 1        // TODO
-
-    notificationQuery.getNotification(student_id)
+    notificationQuery.getNotification(req.user.id)
         .then((result) => {
             return res.status(200).json(result)
         }).catch((err) => {
