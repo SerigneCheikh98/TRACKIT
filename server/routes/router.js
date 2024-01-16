@@ -1,3 +1,4 @@
+const notificationController = require('../controller/NotificationController');
 const ridesController = require('../controller/RidesController')
 
 const express = require('express');
@@ -28,10 +29,10 @@ router.get('/topic')
 router.get('/evaluations')
 
 // get all the notification for the student
-router.get('/notification/:id')
+router.get('/notification', notificationController.getNotification)
 
 // delete a notification for a student
-router.delete('/notification/:id')
+router.delete('/notification/:id', notificationController.deleteNotification)
 
 
 module.exports = router;

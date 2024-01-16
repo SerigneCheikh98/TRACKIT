@@ -1,8 +1,8 @@
+"use strict";
 const dayjs = require('dayjs')
 const ridesQuery = require('../query/RidesQuery')
 
 
-"use strict";
 
 
 function afterHour(timeChosen, timeReceived) {

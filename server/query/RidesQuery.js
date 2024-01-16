@@ -40,7 +40,7 @@ exports.addRequestRide = function addRequestRide(student_id, location, date, tim
                 return
             }
             if(this.changes === 0) {
-                reject(new Error('No rows updated. Request ID not found.'));
+                reject(new Error('No rows updated'));
                 return;
             }
             resolve(this.changes);
