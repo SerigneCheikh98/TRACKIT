@@ -6,10 +6,6 @@ const express = require('express');
 
 const router = express.Router();
 
-router.post('/login')
-router.delete('/logout')
-router.get('/loggedin')
-
 // fake registration
 router.post('/register')
 

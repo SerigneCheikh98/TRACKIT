@@ -19,3 +19,18 @@ Content-Type: application/json
 ###
 GET {{APIURL}}/notification/
 Content-Type: application/json
+
+### LOGIN user1
+POST {{APIURL}}/login HTTP/1.1
+content-type: application/json
+
+{
+    "username": "david.miller@email.com",
+    "password": "password1234"
+}
+
+### Still logged in
+GET {{APIURL}}/login/current HTTP/1.1
+
+### Logout
+DELETE {{APIURL}}/login HTTP/1.1
