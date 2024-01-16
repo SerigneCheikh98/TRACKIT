@@ -2,9 +2,17 @@ import { Button, TextInput, Text} from 'react-native-paper'
 import { Image, Linking, ScrollView } from 'react-native'
 import { KeyboardAvoidingView, TouchableOpacity, View, StyleSheet} from 'react-native'
 import { Link, useNavigation } from '@react-navigation/native';
+import { useState } from 'react';
 
 const Login = ({setIsLoggedIn}) =>{
     const navigate = useNavigation();
+    const [email,setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    const [onFocus, setOnFocus] = useState(false);
+    const [passIcon, setPassIcon] = useState("eye-off");
+    const [hidePass, setHidePass] = useState(true);
+
 
     return (
         <ScrollView>
@@ -21,32 +29,62 @@ const Login = ({setIsLoggedIn}) =>{
         </View>
         <View>
         <TextInput
-        
+        keyboardType='email-address'
         label="Email"
         //value={}
-        //onChangeText={text => }
+        onChangeText={(text) => setEmail(text) }
         mode='outlined'
         outlineColor='#1F1937'
         activeOutlineColor='#1F1937'
         style={styles.input}
+        onFocus={()=>{setOnFocus(false)}}
         />
         <TextInput
         label='Password'
         //value={}
-        //onChangeText={text => }
+        onChangeText={(text) => setPassword(text) }
         mode='outlined'
+        onFocus={()=>{setOnFocus(false)
+            setOnFocus(true)}}
+        right={
+            onFocus &&
+            <TextInput.Icon
+            style={{screenLeft: 0, color: "#1F1937", size:20}}
+              icon={passIcon}
+              color= "#1F1937"
+              onPress={() => {
+                
+                if(hidePass)
+                {
+                    setPassIcon("eye");
+                    setHidePass(false)
+                }
+                else{
+                    setPassIcon("eye-off");
+                    setHidePass(true)
+                }
+            }}
+            />
         
+          }
         activeOutlineColor='#1F1937'
         style={styles.input}
         
-        secureTextEntry
+        secureTextEntry={hidePass}
         />
         </View> 
 
         <View style={styles.buttonContainer}>
         <TouchableOpacity
         onPress={()=>{
-            setIsLoggedIn(true);
+            if(email.toLocaleLowerCase()=="mariorossi@hotmail.com" && password=="123123") 
+            {
+                setIsLoggedIn(true);
+            }
+            console.log(email.toLocaleLowerCase())
+            console.log(password)
+
+           
             //navigate.navigate('HomePage')
         }}
         style={styles.button}

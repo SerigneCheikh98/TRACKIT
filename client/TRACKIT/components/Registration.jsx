@@ -1,4 +1,4 @@
-import { Button, TextInput, Text, Appbar, Divider,  Title, Tooltip, Card, Avatar, IconButton} from 'react-native-paper'
+import { Button, TextInput, Text, Appbar, Divider,  Title, Tooltip, Card, Avatar, IconButton, HelperText} from 'react-native-paper'
 import { Image, Linking, ScrollView } from 'react-native'
 import {Icon} from '@rneui/themed'
 import Checkbox from 'expo-checkbox'
@@ -29,14 +29,40 @@ const RegisterScreen = ({navigation, route}) =>{
     const [onFocusp, setOnFocusp] = useState(false);
     const [onFocuscp, setOnFocuscp] = useState(false);
 
+    
+    
+    //  input fields --- step 1 ---
+    const [uname, setUname] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [mail, setMail] = useState("");
+    const [password, setPassword] = useState("");
+    const [conpassword, setConfPassword] = useState("");
+    
+    // submit
+    const [submit, setSubmit] = useState(false);
+    
+    // input fields --- step 2 ---
+
     const  [gender, setGender] = useState(null);
     const  [onFocusg, setOnFocusg] = useState(false);
+
+    const [birthDate, setBirthDate] = useState('');
+    const [idImage, setIdImage] = useState('');
+    
 
     const [selectedCountry, setSelectedCountry] = useState('');
     const [inputValue, setInputValue] = useState('');
 
 
     const [checked, setChecked] = useState(false);
+    
+
+
+    const hashErrors = () => {
+      return !mail.includes('@');
+    };
+
+   
 
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
@@ -50,8 +76,11 @@ const RegisterScreen = ({navigation, route}) =>{
         console.log(result);
     
         if (!result.canceled) {
-          setImage(result.assets[0].uri);
+          console.log(result.assets[0].uri);
+          setIdImage(result.assets[0].uri);
+          console.log("image", idImage);
         }
+        
       };
    
     function handleInputValue(phoneNumber) {
@@ -71,6 +100,7 @@ const RegisterScreen = ({navigation, route}) =>{
             <Appbar.Header style={{mode: 'center-aligned', backgroundColor:"#1F1937"}}>
            {  (step == 1 || step== 2) && <Appbar.BackAction color='white' onPress={()=>{
                 if(step == 1){
+                setSubmit(false);
                 navigation.navigate('LoginPage')}
             
                 else{
@@ -91,43 +121,60 @@ const RegisterScreen = ({navigation, route}) =>{
                     <View style={styles.TextContainer}>
                      <TextInput  
                     label='Name'
+                    value={uname}
                     //value={}
-                    //onChangeText={text => }
+                    onChangeText={text => 
+                      {
+                        setSubmit(false)
+                        setUname(text)}}
                     mode='outlined'
-                    outlineColor='#1F1937'
-                    activeOutlineColor='#1F1937'
+                    outlineColor = {submit && uname === '' ? 'red' : '#1F1937'}
+                    activeOutlineColor = {submit && uname === '' ? 'red' : '#1F1937'}
                     style={styles.input}
                     
                     />
                    
                     <TextInput  
                     label='Last Name'
+                    value={lastName}
                     //value={}
-                    //onChangeText={text => }
+                    onChangeText={text => 
+                      {setSubmit(false)
+                      setLastName(text)
+                    } }
                     mode='outlined'
-                    outlineColor='#1F1937'
-                    activeOutlineColor='#1F1937'
+                    outlineColor = {submit=== true && lastName === '' ? 'red' : '#1F1937'}
+                    activeOutlineColor = {submit === true && lastName === '' ? 'red' : '#1F1937'}
                     style={styles.input}
                     
                     />
                     <TextInput  keyboardType='email-address'
                     label='Email'
+                    value={mail}
                     //value={}
-                    //onChangeText={text => }
+                    onChangeText={text => 
+                      {
+                        setSubmit(false)
+                      setMail(text)
+                    }}
                     mode='outlined'
-                    outlineColor='#1F1937'
-                    activeOutlineColor='#1F1937'
+                    outlineColor = {submit && mail === '' ? 'red' : '#1F1937'}
+                    activeOutlineColor = {submit && mail === '' ? 'red' : '#1F1937'}
                     style={styles.input}
                     onFocus={()=>{setOnFocuscp(false)
                     setOnFocusp(false)}}
                     />
+                    
                     <TextInput  
                     label='Password'
+                    value={password}
                     //value={}
-                    //onChangeText={text => }
+                    onChangeText={text => {
+                      setSubmit(false)
+                      setPassword(text)} }
                     mode='outlined'
-                    outlineColor='#1F1937'
-                    activeOutlineColor='#1F1937'
+                    outlineColor = {submit && password === '' ? 'red' : '#1F1937'}
+                    activeOutlineColor = {submit && password === '' ? 'red' : '#1F1937'}
                     style={styles.input}
                     onFocus={()=>{setOnFocusp(true)
                     setOnFocuscp(false)}}
@@ -159,9 +206,13 @@ const RegisterScreen = ({navigation, route}) =>{
                     <TextInput  
                     label='Confirm password'
                     mode='outlined'
-                    outlineColor='#1F1937'
-                    activeOutlineColor='#1F1937'
+                    outlineColor = {(submit && conpassword=== '')||(submit && conpassword!=password)  ? 'red' : '#1F1937'}
+                    activeOutlineColor = {(submit && conpassword=== '')||(submit && conpassword!=password)  ? 'red' : '#1F1937'}
                     style={styles.input}
+                    onChangeText={text => {
+                      setSubmit(false);
+                      setConfPassword(text)} }
+                    value={conpassword}
                     onFocus={()=>{setOnFocusp(false)
                         setOnFocuscp(true)}}
                     right={
@@ -188,13 +239,28 @@ const RegisterScreen = ({navigation, route}) =>{
                     />
                     <TouchableOpacity
         onPress={()=>{
+          setSubmit(true);
+          console.log(submit);
+          if((uname!="") && (lastName!="") && (mail!="") && (password!="") && (conpassword!="") && (password == conpassword))
+           { 
             setStep('2');
+            setSubmit(false);
+            }
         }}
         style={styles.button}
         >
           
             <Text style={styles.buttonText}>Submit</Text>
         </TouchableOpacity>
+
+        {(submit===true &&
+        ((uname==="") || (lastName==="") || (mail==="") || (password==="") || (conpassword===""))) &&
+        <Text variant="labelSmall" style={{ marginTop: '7%', color:"red"}} >Fill in all fields before submitting</Text>}
+
+        {(submit===true &&
+        (uname!="") && (lastName!="") && (mail!="") && (password!="") && (conpassword!="") && (password != conpassword)) &&
+        <Text variant="labelSmall" style={{ marginTop: '7%', color:"red"}} >Password confirmation is wrong</Text>}
+          
         <Text variant="labelSmall" style={{ marginTop: '7%' }} >Already Registered?</Text>
         
        
@@ -262,6 +328,8 @@ const RegisterScreen = ({navigation, route}) =>{
       <Button icon="camera" mode="contained" onPress={pickImage}  textColor="#1F1937" style={[styles.buttonOutlineImport, { marginRight: "70%", fontSize: 8 }]}>
         Upload photo
       </Button>
+      {idImage !="" && <View> <Image source={{uri:{idImage}}}></Image> <Button> hi </Button> </View>
+       }
     </View>
    
                      </View >
