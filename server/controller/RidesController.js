@@ -18,19 +18,8 @@ function afterHour(timeChosen, timeReceived) {
 }
 
 function calculateEndingHour(startingTime, slots) {
-    // const noHours = Math.floor(slots / 2)
-    // const noAfHour = slots - (noHours*2)
-    // const start = startingTime.split(':').map(item => parseInt(item))
-    // start[0] = (start[0]+noHours)%24
-    // start[1] = start[1]+(30*noAfHour)
-    // if(start[1] > 60) {
-    //     start[0]++
-    //     start[1] -= 60
-    // } 
-    console.log(slots)
     const noHours = Math.floor(slots / 2);
     const noAfHour = slots - (noHours * 2);
-    console.log(`${slots}/2 = ${slots/2}`)
 
     const start = startingTime.split(':').map(item => parseInt(item))
     start[0] = start[0] + noHours
@@ -42,16 +31,18 @@ function calculateEndingHour(startingTime, slots) {
     }
 
     const s = `${start[0] < 10 ? '0'+start[0] : start[0]}:${start[1] < 10 ? '0'+start[1] : start[1]}`
-    console.log(s)
     return s
 }
 /**
  * Search for a still pending ride for the current user
  * 
  * The student ask according to the following parameters which define the req object
+ * 
+ * !NOTE: req object is sent using URL so data is inside the req.query 
+ * 
  * req {
  *  location: String - whatever, is not going to be used for the prototype
- *  date: String - format `DD/MM/YYYY`
+ *  date: String - format `YYYY/MM/DD`
  *  time: String - format `HH:mm` so in 24 hours
  *  duration: Number - this value is going to be parsed in time slot in the teacher side
  *  timeUnit: String ('min' or 'hours')
@@ -70,11 +61,9 @@ function calculateEndingHour(startingTime, slots) {
  * @param {*} res [{ride_obj1}, {ride_obj2}, ...]
  */
 exports.searchRide = function searchRide(req, res) {
-    console.log(req.query)
     if(!req.query.location) {
         return res.status(400).json({message: 'Location is missing'})
     }
-    // !dayjs(req.query.date, 'DD/MM/YYYY').isValid()
     if(!req.query.date) {
         return res.status(400).json({message: 'Date is missing or not valid'})
     }
@@ -98,9 +87,8 @@ exports.searchRide = function searchRide(req, res) {
                 return afterHour(req.query.time, ride.StartingTime) 
             })
             .filter( (ride) => {
-                return !afterHour(dayjs().format('HH:mm'), ride.StartingTime)
+                return afterHour(dayjs().format('HH:mm'), ride.StartingTime)
             })
-            console.log(resp)
             resp = resp.map( item => {
                 return {
                     userId: item.DriverId,
@@ -117,5 +105,58 @@ exports.searchRide = function searchRide(req, res) {
         })
         .catch( err => {
             res.status(500).json({message: 'DB error'})
+        })
+}
+
+/**
+ * The currect logged in student ask for a practice request to any available driver because there were none 
+ * when he searched for it. Same parameters of the previous performed search are going to be used
+ * 
+ * TODO: the id of the student should be taken for the authentication process
+ * 
+ * req {
+ *  location: String - whatever, is not going to be used for the prototype
+ *  date: String - format `YYYY/MM/DD`
+ *  time: String - format `HH:mm` so in 24 hours
+ *  duration: Number - this value is going to be parsed in time slot in the teacher side
+ *  timeUnit: String ('min' or 'hours')
+ * }
+ * @param {*} req obj
+ * @param {*} res {
+ *  message: 'Request sent'
+ * }
+ */
+exports.addRequestRide = function addRequestRide(req, res) {
+    console.log('calling addRequestRide')
+    console.log(req.body)
+    const student_id = 1        // TODO
+
+    if(!req.body.location || req.body.location.trim() == '') {
+        return res.status(400).json({message: 'Location is missing'})
+    }
+    if(!req.body.date) {
+        return res.status(400).json({message: 'Date is missing or not valid'})
+    }
+    if(!req.body.time || req.body.time.split(':').length != 2) {
+        return res.status(400).json({message: 'Time is missing or not valid'})
+    }
+    if(!req.body.duration || req.body.duration <= 0) {j
+        return res.status(400).json({message: 'Duration is missing or not valid'})
+    }
+    if(!req.body.timeUnit || !(req.body.timeUnit == 'min' || req.body.timeUnit == 'hours')) {
+        return res.status(400).json({message: 'Time unit is missing or not valid'})
+    }
+
+    if(req.body.timeUnit === 'hours')
+    req.body.duration *= 60
+
+    const slots = req.body.duration/30
+    ridesQuery.addRequestRide(student_id, req.body.location, req.body.date, req.body.time, slots)
+        .then( resp => {
+            return res.status(200).json({message: 'Request sent'})
+        })
+        .catch( err => {
+            console.log(err)
+            return res.status(500).json({message: 'DB error'})
         })
 }

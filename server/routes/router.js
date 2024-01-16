@@ -19,7 +19,7 @@ router.get('/rides', ridesController.searchRide);
 router.put('/rides')
 
 // request by the current student
-router.post('/rides')
+router.post('/rides', ridesController.addRequestRide)
 
 // get all topics
 router.get('/topic')
@@ -27,7 +27,11 @@ router.get('/topic')
 // get all evaluations for the student
 router.get('/evaluations')
 
+// get all the notification for the student
+router.get('/notification/:id')
+
 // delete a notification for a student
 router.delete('/notification/:id')
+
 
 module.exports = router;

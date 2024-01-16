@@ -11,7 +11,7 @@ const app = express();
 app.use(morgan('combined'));
 app.use(express.json());
 const corsOptions = {
-    origin: 'http://localhost:8080',
+    origin: 'http://localhost:8081',
     optionsSuccessStatus: 200,
     credentials: true
   }

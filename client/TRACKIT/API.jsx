@@ -1,4 +1,4 @@
-const your_ip_address = '192.168.1.184'
+const your_ip_address = '192.168.93.69'
 const locationKEY = '6596e0ad9314e091225752fijd9e70a'
 const basepath = `http://${your_ip_address}:3000/api`
 
@@ -56,7 +56,6 @@ async function searchRide(params) {
       "Content-Type": "application/json",
     },
   })).then(json => {
-    console.log(json)
     const res = json.map( item => {
       return  {
         ...item,
@@ -65,7 +64,7 @@ async function searchRide(params) {
     })
     return res
   }).catch(err => {
-    throw new Error(err)
+    throw err
   })
 
 }
