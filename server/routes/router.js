@@ -1,5 +1,6 @@
 const notificationController = require('../controller/NotificationController');
 const ridesController = require('../controller/RidesController')
+const reportController = require('../controller/ReportController')
 
 const express = require('express');
 
@@ -19,7 +20,7 @@ router.put('/rides')
 router.post('/rides', ridesController.addRequestRide)
 
 // get all topics
-router.get('/topic')
+router.get('/topics', reportController.getAllTopics)
 
 // get all evaluations for the student
 router.get('/evaluations')

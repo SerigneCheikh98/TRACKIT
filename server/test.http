@@ -34,3 +34,6 @@ GET {{APIURL}}/login/current HTTP/1.1
 
 ### Logout
 DELETE {{APIURL}}/login HTTP/1.1
+
+### Get all topics
+GET {{APIURL}}/topics HTTP/1.1
