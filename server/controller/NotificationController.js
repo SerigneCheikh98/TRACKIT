@@ -18,13 +18,11 @@ const notificationQuery = require('../query/NotificationQuery')
  * }
  */
 exports.deleteNotification = function deleteNotification(req, res) {
-    const student_id = 1        // TODO
-    
     if(!req.params.id || req.params.id < 0) {
         return res.status(400).json({message: 'Id is missing or not valid'})
     }
 
-    notificationQuery.deleteNotification(student_id, req.params.id)
+    notificationQuery.deleteNotification(req.user.id, req.params.id)
         .then((result) => {
             return res.status(200).json({message: 'Deleted'})
         }).catch((err) => {

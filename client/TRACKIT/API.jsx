@@ -102,6 +102,34 @@ async function addRequestRide(params) {
 // ========================================== NOTIFICATION ==========================================
 
 
+async function getNotification() {
+  return getJson(fetch(`${basepath}/notification`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: 'include',
+  })).then(json => {
+    return json
+  }).catch(err => {
+    throw err
+  })
+}
+
+async function deleteNotification(id) {
+  return getJson(fetch(`${basepath}/notification/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: 'include',
+  })).then(json => {
+    return json
+  }).catch(err => {
+    throw err
+  })
+}
+
 // ========================================== LOGIN ==========================================
 
 const login = async (credentials) => {
@@ -143,5 +171,5 @@ const stillLoggedIn = async () => {
   })
 }
 
-const API = { getCity, searchRide, addRequestRide, login, logout, stillLoggedIn }
+const API = { getCity, searchRide, addRequestRide, getNotification, deleteNotification, login, logout, stillLoggedIn }
 export default API;
