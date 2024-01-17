@@ -67,7 +67,7 @@ async function searchRide(params) {
     })
     return res
   }).catch(err => {
-    throw err
+    return err
   })
 
 }
@@ -95,7 +95,7 @@ async function addRequestRide(params) {
     })
     return res
   }).catch(err => {
-    throw err
+    return err
   })
 
 }
@@ -104,7 +104,7 @@ async function addRequestRide(params) {
 
 // ========================================== LOGIN ==========================================
 
-const login = async (credentials) => {
+const login = (credentials) => {
   return getJson( fetch(`${basepath}/login`, {
       method: "POST",
       headers: {
@@ -117,7 +117,7 @@ const login = async (credentials) => {
   })
 }
 
-const logout = async () => {
+const logout = () => {
   return getJson( fetch(`${basepath}/login`, {
       method: 'DELETE',
       headers: {
@@ -130,7 +130,7 @@ const logout = async () => {
   })
 }
 
-const stillLoggedIn = async () => {
+const stillLoggedIn = () => {
   return getJson( fetch(`${basepath}/login/current`, {
       method: 'GET',
       headers: {
@@ -143,5 +143,23 @@ const stillLoggedIn = async () => {
   })
 }
 
-const API = { getCity, searchRide, addRequestRide, login, logout, stillLoggedIn }
+// ========================================== REPORT ==========================================
+
+const getAllTopics = () => {
+  return getJson( fetch(`${basepath}/topics`, {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  }))
+  .then( json => {
+    return json
+  })
+  .catch((err) => {
+    return err
+  })
+}
+
+const API = { getCity, searchRide, addRequestRide, login, logout, stillLoggedIn, getAllTopics }
 export default API;
