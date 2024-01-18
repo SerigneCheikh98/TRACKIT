@@ -21,7 +21,7 @@ function parseDuration(value, type) {
   else return value * 60
 }
 const UserItem = (props) => {
-  const [showDrop, setShowDrop] = useState(false)
+  // const [showDrop, setShowDrop] = useState(false)
   const [visible, setVisible] = useState(false)
   const [start, setStart] = useState(-1)
   const [end, setEnd] = useState(-1)
@@ -43,21 +43,9 @@ const UserItem = (props) => {
 
   const startingTime = dayjs(props.user.from).format('HH;mm')
 
-  function pressed(index) {
-    if (start != -1) {
-      setStart(index)
-    }
-    else if (end != -1) {
-      setEnd(index)
-    }
-    else {
-      setStart(-1)
-      setEnd(-1)
-    }
-  }
-  const toggleDropdown = () => {
-    setShowDrop(!showDrop);
-  };
+  // const toggleDropdown = () => {
+  //   setShowDrop(!showDrop);
+  // };
 
   return (
     <Pressable onPress={() => {
@@ -68,7 +56,7 @@ const UserItem = (props) => {
         }])
       }
       else {
-        toggleDropdown()
+        props.toggleDropdown(props.index)
       }
     }}>
       <View style={styles.container} pointerEvents="none">
@@ -88,9 +76,16 @@ const UserItem = (props) => {
           }
         </View>
       </View>
-      {showDrop && (
+      {props.showDrop == props.index && (
         <View style={{ flexDirection: 'column', alignItems: 'center', borderWidth: 0.5, borderColor: 'grey', borderRadius: 10, borderTopWidth: 0}}>
-          <Slots from={props.user.from} to={props.user.to} pressed={pressed} start={start} end={end} />
+          <Slots from={props.user.from} to={props.user.to} start={start} end={end} />
+          <Button mode="outlined" style={[{ flex: 1, width: '90%', borderRadius: 10, marginBottom: '2%' }]} onPress={() => console.log('asd')}>
+            Confirm
+          </Button>
+        </View>
+      )}
+      {props.showDrop == props.index && (
+        <View style={{ flexDirection: 'column', alignItems: 'center', borderWidth: 0.5, borderColor: 'grey', borderRadius: 10, borderTopWidth: 0}}>
         </View>
       )}
     </Pressable>
@@ -117,7 +112,7 @@ const Rating = (props) => {
 
 
 
-const Slots = ({ from, to, pressed, start, end }) => {
+const Slots = ({ from, to }) => {
   const min_from = from.split(':').map(val => parseInt(val))
   const min_to = to.split(':').map(val => parseInt(val))
   const label = []
@@ -148,20 +143,22 @@ const Slots = ({ from, to, pressed, start, end }) => {
 
   const [selectedButtons, setSelectedButtons] = useState([]);
   const [flag, setFlag] = useState(false)
+
   const handleButtonClick = (index) => {
-    if(flag || index < selectedButtons[0]) 
+    if(selectedButtons.length > 1) {
       setSelectedButtons([])
-    let sel = []
-    if(!selectedButtons.includes(index)) {
-      for(let i = index; i < label.length; i++) sel.push(i)
+    }
+    else if(selectedButtons.length == 0) {
+      setSelectedButtons([index])
     }
     else {
-      sel = selectedButtons.filter(n => n <= index)
-      setFlag(true)
+      const start = selectedButtons.pop()
+      const sel = []
+      for(let i = start; i <= index; i++)
+        sel.push(i)
+    
+      setSelectedButtons(sel)
     }
-    console.log(sel)
-    setSelectedButtons(sel)
-
   };
 
   const getButtonStyle = (index) => {

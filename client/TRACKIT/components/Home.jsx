@@ -160,8 +160,8 @@ const HomePage = ({ navigation, route }) => {
 
   // params
 
-  const [time, setTime] = useState('14:30')
-  const [date, setDate] = useState('17/01/2024');
+  const [time, setTime] = useState('12:00')
+  const [date, setDate] = useState('17/02/2024');
   const [location, setLocation] = useState("Torino");
 
   const [duration, setDuration] = useState("30");

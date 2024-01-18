@@ -1,4 +1,4 @@
-const your_ip_address = '172.20.10.2'
+const your_ip_address = '192.168.146.108'
 const locationKEY = '6596e0ad9314e091225752fijd9e70a'
 const basepath = `http://${your_ip_address}:3000/api`
 
@@ -67,7 +67,7 @@ async function searchRide(params) {
     })
     return res
   }).catch(err => {
-    throw err
+    return err
   })
 
 }
@@ -95,16 +95,44 @@ async function addRequestRide(params) {
     })
     return res
   }).catch(err => {
-    throw err
+    return err
   })
 
 }
 // ========================================== NOTIFICATION ==========================================
 
 
+async function getNotification() {
+  return getJson(fetch(`${basepath}/notification`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: 'include',
+  })).then(json => {
+    return json
+  }).catch(err => {
+    throw err
+  })
+}
+
+async function deleteNotification(id) {
+  return getJson(fetch(`${basepath}/notification/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: 'include',
+  })).then(json => {
+    return json
+  }).catch(err => {
+    throw err
+  })
+}
+
 // ========================================== LOGIN ==========================================
 
-const login = async (credentials) => {
+const login = (credentials) => {
   return getJson( fetch(`${basepath}/login`, {
       method: "POST",
       headers: {
@@ -117,7 +145,7 @@ const login = async (credentials) => {
   })
 }
 
-const logout = async () => {
+const logout = () => {
   return getJson( fetch(`${basepath}/login`, {
       method: 'DELETE',
       headers: {
@@ -130,7 +158,7 @@ const logout = async () => {
   })
 }
 
-const stillLoggedIn = async () => {
+const stillLoggedIn = () => {
   return getJson( fetch(`${basepath}/login/current`, {
       method: 'GET',
       headers: {
@@ -143,5 +171,23 @@ const stillLoggedIn = async () => {
   })
 }
 
-const API = { getCity, searchRide, addRequestRide, login, logout, stillLoggedIn }
+// ========================================== REPORT ==========================================
+
+const getAllTopics = () => {
+  return getJson( fetch(`${basepath}/topics`, {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  }))
+  .then( json => {
+    return json
+  })
+  .catch((err) => {
+    return err
+  })
+}
+
+const API = { getCity, searchRide, addRequestRide, getNotification, deleteNotification, login, logout, stillLoggedIn, getAllTopics }
 export default API;
