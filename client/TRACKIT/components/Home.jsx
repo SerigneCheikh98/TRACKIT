@@ -124,6 +124,10 @@ const HomePage = ({ navigation, route }) => {
 
   function handleInsertRequest() {
     API.addRequestRide(params)
+      .then( resp => {
+        closePopup()
+      })
+      .catch( err => console.log(err) )
   } 
 
   useEffect( () => {

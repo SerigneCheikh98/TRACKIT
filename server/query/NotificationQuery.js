@@ -1,17 +1,16 @@
 const db = require('../db')
 
 exports.deleteNotification = function deleteNotification(student_id, id) {
-    const sql = `DELETE FROM Notifications WHERE idUser = ? AND id = ?`
+    const sql = `DELETE FROM Notifications WHERE idUser = ? AND idRide = ?`
     return new Promise((resolve, reject) => {
         db.run(sql, [student_id, id], function (err) {
             if (err) {
+                console.log(err)
                 reject(new Error(err.message))
                 return
             }
-            if (this.changes === 0) {
-                reject(new Error('No rows deleted'));
-                return;
-            }
+
+            console.log(this.changes)
             resolve(this.changes);
         })
     })
@@ -28,7 +27,6 @@ exports.getNotificationApproved = function getNotificationApproved(student_id) {
                 reject(new Error(err.message))
                 return
             }
-            console.log(rows)
             if (!rows) {
                 resolve([])
                 return;
@@ -48,7 +46,6 @@ exports.getNotificationPending = function getNotificationPending(student_id) {
                 reject(new Error(err.message))
                 return
             }
-            console.log(rows)
             if (!rows) {
                 resolve([])
                 return;

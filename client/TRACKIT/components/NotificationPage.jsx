@@ -22,6 +22,7 @@ const NotificationPage = ({ navigation, route }) => {
         name: '',
         fn: () => { }
     }])
+    const [dirty, setDirty] = useState(false)
 
     function throwPopup(text, buttons) {
         setModalVisible(true)
@@ -33,20 +34,24 @@ const NotificationPage = ({ navigation, route }) => {
         setModalVisible(false)
     }
 
-    const [bookings, setBookings] = useState(
-        [
-            { bookingId: 1, driverName: null, Date: "01/01/2024", time: "13:00", duration: "3", state: "Pending" },
-            { bookingId: 2, driverName: "Oliver Patel", Date: "02/01/2024", time: "13:00", duration: "3", state: "Approved" }
-        ]
-    );
-
-    useEffect(() =>{
-        API.getNotification()
-            .then( result => {
-                setBookings(result)
+    function handleDeleteNotification(id) {
+        API.deleteNotification(id)
+            .then(resp => {
+                setDirty(true)
             })
-            .catch( err => console.log(err)) 
-    }, [])
+            .catch(err => console.log(err))
+    }
+    const [bookings, setBookings] = useState([]);
+
+
+    useEffect(() => {
+        API.getNotification()
+            .then(result => {
+                setBookings(result)
+                setDirty(false)
+            })
+            .catch(err => console.log(err))
+    }, [dirty])
     return (
         <SafeAreaProvider>
             <TopBar navigation={navigation} />
@@ -58,7 +63,7 @@ const NotificationPage = ({ navigation, route }) => {
                         <View>
 
                             {bookings.map((booking, index) => (
-                                <CardBooking key={index} date={booking.Date} driverName={booking.driverName} time={booking.time} duration={booking.duration} state={booking.state} throwPopup={throwPopup} closePopup={closePopup} />
+                                <CardBooking handleDeleteNotification={handleDeleteNotification} key={index} id={booking.bookingId} date={booking.Date} driverName={booking.driverName} time={booking.time} duration={booking.duration} state={booking.state} throwPopup={throwPopup} closePopup={closePopup} />
 
 
                             ))}
@@ -106,12 +111,15 @@ const CardBooking = (props) => {
                 {props.state == "Pending" && <Text variant='bodySmall' style={{ paddingLeft: "7%", paddingTop: "7%" }}>Estimated response time: 3-4 hours</Text>}
             </Card.Content>
             <Card.Actions>
-                <Button style={styles.buttonSubmit} textColor="white" onPress={() => props.throwPopup(msg, [{
+                <Button style={styles.buttonSubmit} textColor="white" onPress={() => {
+                    props.throwPopup(msg, [{
                     name: 'Close',
                     fn: props.closePopup
-                }])}>{
-                    props.state == "Pending" ?
-                        "Cancel Request" : "Cancel Booking"}</Button>
+                }])
+                props.handleDeleteNotification(props.id)
+            }}>{
+                        props.state == "Pending" ?
+                            "Cancel Request" : "Cancel Booking"}</Button>
             </Card.Actions>
         </Card>
     )

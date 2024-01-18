@@ -26,11 +26,6 @@ exports.searchRide = function searchRide(location, date, time, slots) {
 }
 
 exports.addRequestRide = function addRequestRide(student_id, location, date, time, slots) {
-    console.log(student_id)
-    console.log(location)
-    console.log(date)
-    console.log(time)
-    console.log(slots)
     const sql = `INSERT INTO Rides(StudentId, Status, StartingTime, Slot, Date, Location)
                     VALUES (?, 2, ?, ?, ?, ?)`
     return new Promise((resolve, reject) => {
