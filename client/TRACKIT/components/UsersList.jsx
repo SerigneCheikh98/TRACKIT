@@ -7,9 +7,11 @@ const UsersList = (props) => {
     const sortingFn = (props.inUseFilter == 1 ? (a, b) => a.distance-b.distance : (a, b) => b.rating - a.rating)
 
     const toggleDropdown = (index) => {
-        setShowDrop(index);
+        if(showDrop == index)
+            setShowDrop(-1)
+        else setShowDrop(index);
     };
-    const [showDrop, setShowDrop] = useState(false)
+    const [showDrop, setShowDrop] = useState(-1)
 
     return (
         <>
