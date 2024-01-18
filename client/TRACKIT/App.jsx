@@ -99,8 +99,8 @@ export default function App() {
   useEffect(() => {
     async function loadFont() {
       await Font.loadAsync({
-        'serif': require('./assets/fonts/Noto_Serif/NotoSerif.ttf'),
-        'serif-semiBold' : require('./assets/fonts/Noto_Serif/static/NotoSerif-SemiBold.ttf')
+        'roboto': require('./assets/fonts/Roboto/Roboto-Regular.ttf'),
+        'roboto-semiBold' : require('./assets/fonts/Roboto/Roboto-Medium.ttf')
       });
 
     }

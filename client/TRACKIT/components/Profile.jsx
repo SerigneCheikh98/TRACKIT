@@ -152,7 +152,7 @@ const ProfilePage = ({ route, setIsLoggedIn }) => {
 }
 
 const commonTextStyles = {
-    fontFamily: 'serif',
+    fontFamily: 'roboto',
   };
 
 const debug = {
@@ -220,12 +220,12 @@ const styles = StyleSheet.create({
         ...commonTextStyles,
         color: '#FFFFFF',
         fontSize: 20,
-        fontFamily: 'serif-semiBold',
+        fontFamily: 'roboto-semiBold',
     },
 
     textUsername : {
         fontSize: 10,
-        fontFamily: 'serif',
+        fontFamily: 'roboto',
 
         
     },
@@ -234,7 +234,7 @@ const styles = StyleSheet.create({
         ...debug,
         ...commonTextStyles,
         fontSize: 20,
-        fontFamily: 'serif-semiBold',
+        fontFamily: 'roboto-semiBold',
 
 
     },
@@ -243,7 +243,7 @@ const styles = StyleSheet.create({
         ...debug,
         fontSize: 10,
         color: 'rgba(0, 0, 0, 0.3)',
-        fontFamily: 'serif',
+        fontFamily: 'roboto',
     },
 
     textContainer: {
@@ -286,7 +286,7 @@ const styles = StyleSheet.create({
         ...commonTextStyles,
         marginLeft: '5%',
         fontSize: 17,
-        fontFamily: 'serif-semiBold'
+        fontFamily: 'roboto-semiBold'
     },
 
     item:{
