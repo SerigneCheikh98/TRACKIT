@@ -81,15 +81,19 @@ exports.searchRide = function searchRide(req, res) {
     if(req.query.timeUnit === 'hours')
         req.query.duration *= 60
 
-    const slots = req.query.duration/30 
+    const slots = Math.floor(req.query.duration/30) 
     ridesQuery.searchRide(req.query.location, req.query.date, req.query.time, slots)
         .then( resp => {
             resp = resp.filter( (ride) => {
                 return afterHour(req.query.time, ride.StartingTime) 
             })
-            .filter( (ride) => {
-                return afterHour(dayjs().format('HH:mm'), ride.StartingTime)
-            })
+
+            if(dayjs().isSame(req.query.date, 'day')) {
+                resp = resp.filter( (ride) => {
+                    return afterHour(dayjs().format('HH:mm'), ride.StartingTime)
+                })
+            }
+            
             resp = resp.map( item => {
                 return {
                     userId: item.DriverId,
