@@ -43,7 +43,7 @@ exports.addRequestRide = function addRequestRide(student_id, location, date, tim
                 reject(new Error('No rows updated'));
                 return;
             }
-            resolve(this.changes);
+            resolve(this.lastID);
         })
     })
 }

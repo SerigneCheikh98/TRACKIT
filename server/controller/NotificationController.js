@@ -47,9 +47,39 @@ exports.deleteNotification = function deleteNotification(req, res) {
  * ]
  */
 exports.getNotification = function getNotification(req, res) {
-    notificationQuery.getNotification(req.user.id)
+    notificationQuery.getNotificationApproved(req.user.id)
         .then((result) => {
-            return res.status(200).json(result)
+            notificationQuery.getNotificationPending(req.user.id)
+                .then( inner => {
+                    let rows = inner.concat(result)
+                    rows = rows.map( item => {
+                        let s = ''
+                        const hours = Math.floor(item.Slot / 2)
+                        const alf = item.Slot - hours
+                        if(hours == 0) {
+                            s = `30 minutes`
+                        }
+                        else if(alf == 1) {
+                            s = `${hours} hour(s) and 30 minutes`
+                        }
+                        else {
+                            s = `${hours} hour(s)`
+                        }
+    
+                        return {
+                            bookingId: item.idRide,
+                            driverName: item.Name == undefined && item.Surname == undefined ? null : `${item.Name} ${item.Surname}` ,
+                            Date: item.Date,
+                            time: item.StartingTime,
+                            duration: s,
+                            state: item.status
+                        }
+                    })
+                    return res.status(200).json(rows)
+                    
+                })
+                .catch( err => console.log(err) )
+            
         }).catch((err) => {
             return res.status(500).json({message: 'DB error'})
     });

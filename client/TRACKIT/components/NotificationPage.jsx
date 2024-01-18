@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { KeyboardAvoidingView, ScrollView, StyleSheet } from "react-native"
 import { Card, Avatar, IconButton } from "react-native-paper"
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context"
@@ -6,6 +6,7 @@ import { View } from "react-native"
 import { Text, Button } from "react-native-paper"
 import Popup from './Popup';
 import TopBar from "./TopBar"
+import API from "../API"
 
 //assume we have props: bookings for each user
 //so we have a list of bookings
@@ -34,10 +35,18 @@ const NotificationPage = ({ navigation, route }) => {
 
     const [bookings, setBookings] = useState(
         [
-            { bookingId: 1, driverName: null, Date: "01/01/2024", time: "13:00", duration: "3", unit: "hours", state: "Pending" },
-            { bookingId: 2, driverName: "Oliver Patel", Date: "02/01/2024", time: "13:00", duration: "3", unit: "hours", state: "Approved" }
+            { bookingId: 1, driverName: null, Date: "01/01/2024", time: "13:00", duration: "3", state: "Pending" },
+            { bookingId: 2, driverName: "Oliver Patel", Date: "02/01/2024", time: "13:00", duration: "3", state: "Approved" }
         ]
     );
+
+    useEffect(() =>{
+        API.getNotification()
+            .then( result => {
+                setBookings(result)
+            })
+            .catch( err => console.log(err)) 
+    }, [])
     return (
         <SafeAreaProvider>
             <TopBar navigation={navigation} />
@@ -49,7 +58,7 @@ const NotificationPage = ({ navigation, route }) => {
                         <View>
 
                             {bookings.map((booking, index) => (
-                                <CardBooking key={index} date={booking.Date} driverName={booking.driverName} time={booking.time} duration={booking.duration} state={booking.state} unit={booking.unit} throwPopup={throwPopup} closePopup={closePopup} />
+                                <CardBooking key={index} date={booking.Date} driverName={booking.driverName} time={booking.time} duration={booking.duration} state={booking.state} throwPopup={throwPopup} closePopup={closePopup} />
 
 
                             ))}
@@ -88,7 +97,7 @@ const CardBooking = (props) => {
             />
             <Card.Content>
                 <Text variant="bodySmall">{`
-     Date: ${props.date}          Duration: ${props.duration}${props.unit == "hours" ? "h" : "mins"}
+     Date: ${props.date}          Duration: ${props.duration}
      
      Time: ${props.time}`}
                 </Text>

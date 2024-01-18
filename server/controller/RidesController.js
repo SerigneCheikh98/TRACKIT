@@ -1,6 +1,7 @@
 "use strict";
 const dayjs = require('dayjs')
 const ridesQuery = require('../query/RidesQuery')
+const notificationQuery = require('../query/NotificationQuery')
 
 
 
@@ -148,6 +149,7 @@ exports.addRequestRide = function addRequestRide(req, res) {
     const slots = req.body.duration/30
     ridesQuery.addRequestRide(req.user.id, req.body.location, req.body.date, req.body.time, slots)
         .then( resp => {
+            notificationQuery.addNotification(req.user.id, resp, 'new notification', 'Pending')
             return res.status(200).json({message: 'Request sent'})
         })
         .catch( err => {
