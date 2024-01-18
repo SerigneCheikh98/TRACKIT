@@ -20,9 +20,6 @@ const HomePage = ({ navigation, route }) => {
 
   const [logging, setLogging] = useState(false)
 
-
-  const [logging, setLogging] = useState(false)
-
   const [users, setUsers] = useState([])
   const [inUseFilter, setInUseFilter] = useState(0) // 0 none - 1 distance - 2 rating
   const [available, setAvailable] = useState(true)
