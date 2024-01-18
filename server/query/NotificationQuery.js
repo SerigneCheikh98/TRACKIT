@@ -4,7 +4,7 @@ exports.deleteNotification = function deleteNotification(student_id, id) {
     const sql = `DELETE FROM Notifications WHERE idUser = ? AND id = ?`
     return new Promise((resolve, reject) => {
         db.run(sql, [student_id, id], function (err) {
-            if (err) {
+            if (err) { 
                 reject(new Error(err.message))
                 return
             }

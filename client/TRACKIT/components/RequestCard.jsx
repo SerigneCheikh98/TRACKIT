@@ -3,18 +3,20 @@ import { Button, Card, Text } from 'react-native-paper';
 import { View, StyleSheet } from 'react-native';
 
 const RequestCard = (props) => {
-    const msg = 'Your request has been sent, check on the notification page'
+
+    const msg = `Are you sure you want to request a ride in ${props.params.location} on ${props.params.date} at ${props.params.time} for ${props.params.duration} ${props.params.timeUnit} `
     return (
-        <Card elevation={3} mode='elevated' style={{ paddingHorizontal: '2%' }}>
+       
+        <Card   style={{ paddingHorizontal: '2%', marginLeft:"2%", marginRight: "2%", marginBottom:"2%",}}>
             <Card.Content>
                 <Text variant="bodyLarge">{props.text}</Text>
             </Card.Content>
             <View style={styles.container}>
-                <Button style={styles.submitButton} buttonColor='#00c89e' mode="contained" onPress={() => {
+                <Button style={styles.submitButton} buttonColor='#F9C977' mode="contained" onPress={() => {
                     props.setBadgeOn(true)
                     props.throwPopup(msg, [
                     {
-                        name: 'Insert',
+                        name: 'Send Request',
                         fn: props.handleInsertRequest
                     },
                     {
@@ -25,6 +27,7 @@ const RequestCard = (props) => {
                 </Button>
             </View>
         </Card>
+        
     )
 };
 
@@ -33,10 +36,14 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         paddingHorizontal: '5%',
-        paddingVertical: '5%'
+        paddingVertical: '5%',
+        
     },
     submitButton: {
-        borderRadius: 10
+        borderRadius: 10,
+    
+        
+        
     },
 });
 export default RequestCard;

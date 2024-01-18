@@ -1,4 +1,4 @@
-const your_ip_address = '192.168.93.69'
+const your_ip_address = '172.20.10.2'
 const locationKEY = '6596e0ad9314e091225752fijd9e70a'
 const basepath = `http://${your_ip_address}:3000/api`
 

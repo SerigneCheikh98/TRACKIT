@@ -29,6 +29,7 @@ const time_value = {
 
 const InputForm = (props) => {
   const [onFocusg, setOnFocusg] = useState(false);
+  const [locationhi ,setLocationhi] = useState('Torino')
 
   //TIME PICKER
   const [visible, setVisible] = useState(false)
@@ -60,6 +61,7 @@ const InputForm = (props) => {
     API.getCity(JSON.parse(text).coords.latitude, JSON.parse(text).coords.longitude)
       .then(res => {
           props.params.setLocation(`${res.address.city} ${res.address.road}`)
+          props.setLogging(false)
       })
       .catch(err => console.log(err))
     console.log(location)
@@ -97,7 +99,10 @@ const InputForm = (props) => {
             onChangeText={location => props.params.setLocation(location)}
           />
           <View style={{ flex: 0.25, justifyContent: 'center', alignItems: 'center' }}>
-            <IconButton style={styles.submitButton} size={25} iconColor="white" backgroundColor="#00c89e" icon='crosshairs-gps' buttonColor='black' mode="contained" onPress={() => { handleGetLocation() }} />
+            <IconButton style={styles.submitButton} size={30} iconColor="white" backgroundColor="#F9C977" icon='crosshairs-gps' buttonColor='black' mode="contained" onPress={() => { handleGetLocation();
+            props.setLogging(true);
+            
+            }} />
           </View>
         </View>
 
@@ -161,7 +166,7 @@ const InputForm = (props) => {
               data={time_value[props.params.timeUnit]}
               placeholderStyle={styles.placeholderStyle}
               selectedTextStyle={styles.selectedTextStyle}
-              activeColor='#00c89e'
+              activeColor='#F9C977'
               placeholder={"Duration"}
 
               maxHeight={300}
@@ -183,7 +188,7 @@ const InputForm = (props) => {
               data={slots}
               placeholderStyle={styles.placeholderStyle}
               selectedTextStyle={styles.selectedTextStyle}
-              activeColor='#00c89e'
+              activeColor='#F9C977'
 
               maxHeight={300}
               labelField="label"
@@ -225,7 +230,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingBottom: '4%',
     backgroundColor: 'white',
-    backgroundColor: 'white',
+   
   },
   submitButton: {
     // flex: 1,

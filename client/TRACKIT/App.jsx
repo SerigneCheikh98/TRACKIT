@@ -16,6 +16,9 @@ import ProfilePage from './components/Profile';
 import Booking from './components/BookingPage';
 import { useState, useEffect } from 'react';
 import * as Font from 'expo-font';
+
+
+
 const Stack = createNativeStackNavigator();
 
 registerTranslation('en', {
@@ -90,6 +93,7 @@ function AuthStackScreen({ setIsLoggedIn }) {
 const Tab = createBottomTabNavigator();
 
 export default function App() {
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
