@@ -86,9 +86,9 @@ exports.searchRide = function searchRide(req, res) {
             resp = resp.filter( (ride) => {
                 return afterHour(req.query.time, ride.StartingTime) 
             })
-            .filter( (ride) => {
+            /* .filter( (ride) => {
                 return afterHour(dayjs().format('HH:mm'), ride.StartingTime)
-            })
+            }) */
             resp = resp.map( item => {
                 return {
                     userId: item.DriverId,
