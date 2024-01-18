@@ -12,6 +12,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 
 import PhoneInput from 'react-native-international-phone-number';
 import { Tile, color } from '@rneui/base';
+import { findLastIndex, pick } from 'lodash'
 const genders = [
     {label: "Female", value: '1'},
     {label: "Male", value: '2'},
@@ -47,8 +48,8 @@ const RegisterScreen = ({navigation, route}) =>{
     const  [onFocusg, setOnFocusg] = useState(false);
 
     const [birthDate, setBirthDate] = useState('');
-    const [idImage, setIdImage] = useState('');
-    
+    const [idImage, setIdImage] = useState(null);
+    const [licImage, setLicImage] = useState(null);
 
     const [selectedCountry, setSelectedCountry] = useState('');
     const [inputValue, setInputValue] = useState('');
@@ -64,7 +65,7 @@ const RegisterScreen = ({navigation, route}) =>{
 
    
 
-    const pickImage = async () => {
+    const pickImage = async (licenseImage) => {
         // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
           mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -77,8 +78,15 @@ const RegisterScreen = ({navigation, route}) =>{
     
         if (!result.canceled) {
           console.log(result.assets[0].uri);
-          setIdImage(result.assets[0].uri);
-          console.log("image", idImage);
+          if(licenseImage){
+            setLicImage(result.assets[0].uri);
+          }
+          else
+          
+          {setIdImage(result.assets[0].uri);
+          }
+          console.log("image lic", licImage);
+          console.log("image id:", idImage);
         }
         
       };
@@ -280,7 +288,7 @@ const RegisterScreen = ({navigation, route}) =>{
  
 
     <View style={styles.TextContainer}>
-
+ 
 <Text variant="titleLarge" style={{marginTop:0, marginBottom:"2%"}} textColor="#1F1937">Personal Information</Text>
                   <View style={{width:"100%", height:"58%", marginLeft:"15%", marginBottom:"3%"}}>
                   <Text variant="titleSmall" style={{marginTop:"7%", marginLeft:"3%", marginBottom:"2%"}} textColor="#1F1937">1. Gender</Text>
@@ -296,19 +304,20 @@ const RegisterScreen = ({navigation, route}) =>{
                     valueField="value"
                     placeholder="Select Gender"
                     onChange={(item)=>{
-                        setGender(item.value);
-                        setOnFocusg(false);
+                      setGender(item.value);
+                      setOnFocusg(false);
                     }}
                     onFocus={()=>{
-                    setOnFocusg(true);
+                      setOnFocusg(true);
                     }}
                     onBlur={()=>{setOnFocusg(false)}}
                     
-
+                    
                     />
                    
+                   
                     <Text variant="titleSmall" style={{marginTop:"7%", marginLeft:"3%"}} textColor="#1F1937">2. Birth Date</Text>
-                     <DateTimePicker  mode="date" display='spinner' value={new Date()}  style={{width:"80%", height:"20%"}} />
+                     <DateTimePicker  mode="date" display='spinner' value={new Date() }  style={{width:"80%", height:"20%"}} onChange={()=>{setBirthDate(value)}} />
                      
                      {/* <Text variant="titleSmall" style={{marginTop:"7%", marginLeft:"3%"}}  textColor="#1F1937">3. Profile Picture</Text>
                      <View style={{ flexDirection: 'row' }}>
@@ -318,18 +327,89 @@ const RegisterScreen = ({navigation, route}) =>{
       </View>           */}
                      <Text variant="titleSmall" style={{marginTop:"7%", marginLeft:"3%"}}  textColor="#1F1937">3. Driving License</Text>
                      <View style={{ flexDirection: 'row' }}>
-      <Button icon="camera" mode="contained" onPress={pickImage} textColor="#1F1937" style={[styles.buttonOutlineImport, { marginRight: "70%", fontSize: 8 }]}>
+     { !licImage  && <Button icon="camera" mode="contained" onPress={()=>pickImage(true)} textColor="#1F1937" style={[styles.buttonOutlineImport, { marginRight: "0%", fontSize: 8 }]}>
         Upload photo
-      </Button>
+      </Button>}
+      {licImage  &&  
       
+      <View style={{
+        flexDirection: 'row'}}>
+        <TouchableOpacity style={{flexBasis: "30%"}} onPress={()=>{}}>
+      <Image source={{uri:licImage}}  style={{  width: 140,
+        height: 110,
+        borderWidth: 1.5, 
+        borderColor: '#1F1937',
+        marginBottom:10,
+        marginTop:10,
+        borderRadius:5, }}></Image> 
+      </TouchableOpacity>
+      
+  <View style={{flexDirection: 'column', height: "50%",  width: "100%", marginLeft:"5%"}}>
+  <Button
+    icon="close"
+    mode="contained"
+    onPress={() => setLicImage(null)}
+    textColor="#1F1937"
+   
+    style={[styles.buttonOutlineImport, {marginLeft: "7%", marginTop: 10, fontSize: 2, marginBottom: 10, width:"30%",   flexBasis: "50%", alignItems:'center' }]}
+  >
+    Cancel
+  </Button>
+
+  <Button
+    icon="sync"
+    mode="contained"
+    onPress={() => pickImage(true)}
+    textColor="#1F1937"
+    style={[styles.buttonOutlineImport, { marginLeft: "7%", marginTop: 10, fontSize: 2, marginBottom: 10, width:"30%",   flexBasis: "50%",  alignItems:'center'  }]}
+  >
+    Change
+  </Button>
+  </View>
+      </View>             }
     </View>
     <Text variant="titleSmall" style={{marginTop:"7%", marginLeft:"3%"}} textColor="#1F1937">4. Identity Card</Text>
-     <View style={{ flexDirection: 'row' }}>
-      <Button icon="camera" mode="contained" onPress={pickImage}  textColor="#1F1937" style={[styles.buttonOutlineImport, { marginRight: "70%", fontSize: 8 }]}>
+    <View style={{ flexDirection: 'row' }}>
+     { !idImage  && <Button icon="camera" mode="contained" onPress={()=>pickImage(false)} textColor="#1F1937" style={[styles.buttonOutlineImport, { marginRight: "0%", fontSize: 8, marginBottom:"3" }]}>
         Upload photo
-      </Button>
-      {idImage !="" && <View> <Image source={{uri:{idImage}}}></Image> <Button> hi </Button> </View>
-       }
+      </Button>}
+      {idImage  &&  
+      
+      <View style={{
+        flexDirection: 'row'}}>
+        <TouchableOpacity style={{flexBasis: "30%"}} onPress={()=>{}}>
+      <Image source={{uri:idImage}}  style={{  width: 140,
+        height: 110,
+        borderWidth: 1.5, 
+        borderColor: '#1F1937',
+        marginBottom:10,
+        marginTop:10,
+        borderRadius:5, }}></Image> 
+      </TouchableOpacity>
+      
+  <View style={{flexDirection: 'column', height: "50%",  width: "100%", marginLeft:"5%"}}>
+  <Button
+    icon="close"
+    mode="contained"
+    onPress={() => setIdImage(null)}
+    textColor="#1F1937"
+   
+    style={[styles.buttonOutlineImport, {marginLeft: "7%", marginTop: 10, fontSize: 2, marginBottom: 10, width:"30%",   flexBasis: "50%", alignItems:'center' }]}
+  >
+    Cancel
+  </Button>
+
+  <Button
+    icon="sync"
+    mode="contained"
+    onPress={() => pickImage(false)}
+    textColor="#1F1937"
+    style={[styles.buttonOutlineImport, { marginLeft: "7%", marginTop: 10, fontSize: 2, marginBottom: 10, width:"30%",   flexBasis: "50%",  alignItems:'center'  }]}
+  >
+    Change
+  </Button>
+  </View>
+      </View>             }
     </View>
    
                      </View >
@@ -526,6 +606,7 @@ const styles = StyleSheet.create({
         paddingLeft: 13,
         height:"100%",
         marginBottom: "7%",
+        marginTop:"10%"
         
         
       },

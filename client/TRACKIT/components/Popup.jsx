@@ -76,13 +76,18 @@ const styles = StyleSheet.create({
         marginHorizontal: '5%',
         elevation: 2,
         flex: 1,
-        backgroundColor: '#00c89e'
+        backgroundColor: '#F9C977',
+        textAlign: "center",
+        justifyContent: 'center'
     },
     buttonOpen: {
-        backgroundColor: '#00c89e',
+        backgroundColor: '#F9C977',
     },
     buttonClose: {
-        backgroundColor: '#00c89e',
+        backgroundColor: '#F9C977',
+        textAlign: "center",
+        justifyContent: 'center'
+
     },
     textStyle: {
         color: 'white',

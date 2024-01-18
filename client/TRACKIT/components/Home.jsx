@@ -11,10 +11,17 @@ import Popup from './Popup';
 import TopBar from './TopBar';
 import { Modal, Pressable } from 'react-native';
 
+import { ActivityIndicator } from 'react-native';
 import Badge from 'react-native-paper';
 import NotificationPage from './NotificationPage';
 
 const HomePage = ({ navigation, route }) => {
+
+
+  const [logging, setLogging] = useState(false)
+
+
+  const [logging, setLogging] = useState(false)
 
   const [users, setUsers] = useState([])
   const [inUseFilter, setInUseFilter] = useState(0) // 0 none - 1 distance - 2 rating
@@ -139,27 +146,31 @@ const HomePage = ({ navigation, route }) => {
   return (
     <SafeAreaProvider>
       <TopBar navigation={navigation} />
-      <ScrollView>
-        <SafeAreaView style={styles.container}>
+      <ScrollView style={{backgroundColor: "#FFFFFF"}}>
+        <SafeAreaView style={{backgroundColor: "#FFFFFF"}}>
           {modalVisible && <View style={styles.overlay} />}
+         <View style={{flex: 1}}>
           <Popup modalVisible={modalVisible} setModalVisible={setModalVisible} text={popupText} buttons={popupFn} />
           {page == 'notification' && <NotificationPage throwPopup={throwPopup} closePopup={closePopup}/>}
           {page == 'home' &&
-            <>
-              <InputForm params={params} applyChange={applyChange} />
+          <View style={styles.container}>
+              <InputForm params={params} applyChange={applyChange} logging={logging} setLogging={setLogging} />
+             <ActivityIndicator animating={logging}/>
               {
                 available == false &&
-                <>
-                  <RequestCard handleInsertRequest={handleInsertRequest} throwPopup={throwPopup} closePopup={closePopup} badgeOn={badgeOn} text={'We are sorry, currently no drivers are available at this time :\'('} setBadgeOn={setBadgeOn} />
+                <View style={{backgroundColor:"#ffffff"}}>
+                
+                  <RequestCard params={params}   handleInsertRequest={handleInsertRequest} throwPopup={throwPopup} closePopup={closePopup} badgeOn={badgeOn} text={'We are sorry, currently no drivers are available at this time :\'('} setBadgeOn={setBadgeOn} />
                   {
                     noAvailability == false && 
                     <Separator text={'OR'} />
                   }
-                </>
+                </View>
               }
               <UsersList users={users} params={params} inUseFilter={inUseFilter} handleSetFilter={handleSetFilter} available={available} throwPopup={throwPopup} closePopup={closePopup} />
-            </>
+            </View>
           }
+          </View>
         </SafeAreaView>
       </ScrollView>
     </SafeAreaProvider>
@@ -167,8 +178,14 @@ const HomePage = ({ navigation, route }) => {
 }
 
 const styles = StyleSheet.create({
-  container: {
-  },
+  container:
+    {
+        flex: 1,
+        borderRadius:5,
+        backgroundColor:"#FFFFFF",
+        height:"100%"
+       
+    },
   overlay: {
     position: 'absolute',
     top: 0,
@@ -177,6 +194,10 @@ const styles = StyleSheet.create({
     right: 0,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     zIndex: 999,
+    height: "100%",
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
