@@ -1,4 +1,4 @@
-const your_ip_address = '192.168.146.108'
+const your_ip_address = '172.22.17.160'
 const locationKEY = '6596e0ad9314e091225752fijd9e70a'
 const basepath = `http://${your_ip_address}:3000/api`
 
@@ -110,19 +110,28 @@ async function getNotification() {
     },
     credentials: 'include',
   })).then(json => {
-    return json
+    const res = json.map( item => {
+      return  {
+        ...item,
+        Date: dayjs(item.Date, 'YYYY/MM/DD').format('DD/MM/YYYY').toString()
+      }
+    })
+    return res
   }).catch(err => {
     throw err
   })
 }
 
-async function deleteNotification(id) {
+async function deleteNotification(id, status) {
   return getJson(fetch(`${basepath}/notification/${id}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
     },
     credentials: 'include',
+    body: JSON.stringify({
+      status: status
+    })
   })).then(json => {
     return json
   }).catch(err => {
@@ -189,5 +198,21 @@ const getAllTopics = () => {
   })
 }
 
-const API = { getCity, searchRide, addRequestRide, getNotification, deleteNotification, login, logout, stillLoggedIn, getAllTopics }
+const getEvaluationsByStudentId = () => {
+  return getJson( fetch(`${basepath}/evaluations`, {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  }))
+  .then( json => {
+    return json
+  })
+  .catch((err) => {
+    return err
+  })
+}
+
+const API = { getCity, searchRide, addRequestRide, getNotification, deleteNotification, login, logout, stillLoggedIn, getAllTopics, getEvaluationsByStudentId }
 export default API;

@@ -20,61 +20,6 @@ const HomePage = ({ navigation, route }) => {
 
   const [logging, setLogging] = useState(false)
 
-  const static_users = [{
-    userId: 1,
-    name: 'Liam',
-    lastname: 'Carter',
-    rating: 4,
-    distance: 0.5,
-    from: '08:00',
-    to: '12:30'
-  },
-  {
-    userId: 2,
-    name: 'Sophia',
-    lastname: 'Chang',
-    rating: 3,
-    distance: 120,
-    from: '13:00',
-    to: '16:00'
-  },
-  {
-    userId: 3,
-    name: 'Oliver',
-    lastname: 'Patel',
-    rating: 5,
-    distance: 200,
-    from: '17:00',
-    to: '18:00'
-  },
-  {
-    userId: 4,
-    name: 'Gianni',
-    lastname: ' ',
-    rating: 2,
-    distance: 15,
-    from: '17:00',
-    to: '20:00'
-  },
-  {
-    userId: 5,
-    name: 'Oliver',
-    lastname: 'Patel',
-    rating: 1,
-    distance: 150,
-    from: '19:00',
-    to: '22:00'
-  },
-  {
-    userId: 6,
-    name: 'Oliver',
-    lastname: 'Patel',
-    rating: 0,
-    distance: 24,
-    from: '21:00',
-    to: '22:30'
-  }
-  ]
   const [users, setUsers] = useState([])
   const [inUseFilter, setInUseFilter] = useState(0) // 0 none - 1 distance - 2 rating
   const [available, setAvailable] = useState(true)
@@ -183,15 +128,28 @@ const HomePage = ({ navigation, route }) => {
 
   function handleInsertRequest() {
     API.addRequestRide(params)
+      .then( resp => {
+        closePopup()
+      })
+      .catch( err => console.log(err) )
   } 
 
+  useEffect( () => {
+    if(users.length == 0 && available == false) {
+      setAvailable(true)
+    }
+  }, [params.time, params.date, params.location, params.duration, params.timeUnit])
 
   return (
     <SafeAreaProvider>
       <TopBar navigation={navigation} />
       <ScrollView style={{backgroundColor: "#FFFFFF"}}>
+<<<<<<< HEAD
         {/* <SafeAreaView style={{backgroundColor: "#FFFFFF"}}> */}
           {modalVisible && <View style={styles.overlay} />}
+=======
+        <SafeAreaView style={{backgroundColor: "#FFFFFF"}}>
+>>>>>>> e5810d7cfb8e5a228c140d234de2a0be9d3bcd7f
          <View style={{flex: 1}}>
           <Popup modalVisible={modalVisible} setModalVisible={setModalVisible} text={popupText} buttons={popupFn} />
           {page == 'notification' && <NotificationPage throwPopup={throwPopup} closePopup={closePopup}/>}
@@ -229,19 +187,6 @@ const styles = StyleSheet.create({
         height:"100%"
        
     },
-  overlay: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    zIndex: 999,
-    height: "100%",
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
 });
 
 export default HomePage

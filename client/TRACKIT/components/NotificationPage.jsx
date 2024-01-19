@@ -1,11 +1,12 @@
-import { useState } from "react"
-import { KeyboardAvoidingView, ScrollView, StyleSheet } from "react-native"
+import { useEffect, useState } from "react"
+import { KeyboardAvoidingView, ScrollView, StyleSheet, Dimensions } from "react-native"
 import { Card, Avatar, IconButton } from "react-native-paper"
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context"
 import { View } from "react-native"
 import { Text, Button } from "react-native-paper"
 import Popup from './Popup';
 import TopBar from "./TopBar"
+import API from "../API"
 
 //assume we have props: bookings for each user
 //so we have a list of bookings
@@ -21,6 +22,7 @@ const NotificationPage = ({ navigation, route }) => {
         name: '',
         fn: () => { }
     }])
+    const [dirty, setDirty] = useState(false)
 
     function throwPopup(text, buttons) {
         setModalVisible(true)
@@ -32,24 +34,36 @@ const NotificationPage = ({ navigation, route }) => {
         setModalVisible(false)
     }
 
-    const [bookings, setBookings] = useState(
-        [
-            { bookingId: 1, driverName: null, Date: "01/01/2024", time: "13:00", duration: "3", unit: "hours", state: "Pending" },
-            { bookingId: 2, driverName: "Oliver Patel", Date: "02/01/2024", time: "13:00", duration: "3", unit: "hours", state: "Approved" }
-        ]
-    );
+    function handleDeleteNotification(id, state) {
+        API.deleteNotification(id, state)
+            .then(resp => {
+                setDirty(true)
+                closePopup()
+            })
+            .catch(err => console.log(err))
+    }
+    const [bookings, setBookings] = useState([]);
+
+
+    useEffect(() => {
+        API.getNotification()
+            .then(result => {
+                setBookings(result)
+                setDirty(false)
+            })
+            .catch(err => console.log(err))
+    }, [dirty])
     return (
         <SafeAreaProvider>
             <TopBar navigation={navigation} />
             <KeyboardAvoidingView>
                 <ScrollView>
                     <SafeAreaView>
-                        {modalVisible && <View style={styles.overlay} />}
                         <Popup modalVisible={modalVisible} setModalVisible={setModalVisible} text={popupText} buttons={popupFn} />
                         <View>
 
                             {bookings.map((booking, index) => (
-                                <CardBooking key={index} date={booking.Date} driverName={booking.driverName} time={booking.time} duration={booking.duration} state={booking.state} unit={booking.unit} throwPopup={throwPopup} closePopup={closePopup} />
+                                <CardBooking handleDeleteNotification={handleDeleteNotification} key={index} id={booking.bookingId} date={booking.Date} driverName={booking.driverName} time={booking.time} duration={booking.duration} state={booking.state} throwPopup={throwPopup} closePopup={closePopup} />
 
 
                             ))}
@@ -68,6 +82,7 @@ const NotificationPage = ({ navigation, route }) => {
 }
 
 const CardBooking = (props) => {
+
     let msg
     //used for the pop up when the booking/request is cancelled
     if (props.state = "Pending") {
@@ -88,7 +103,7 @@ const CardBooking = (props) => {
             />
             <Card.Content>
                 <Text variant="bodySmall">{`
-     Date: ${props.date}          Duration: ${props.duration}${props.unit == "hours" ? "h" : "mins"}
+     Date: ${props.date}          Duration: ${props.duration}
      
      Time: ${props.time}`}
                 </Text>
@@ -97,12 +112,18 @@ const CardBooking = (props) => {
                 {props.state == "Pending" && <Text variant='bodySmall' style={{ paddingLeft: "7%", paddingTop: "7%" }}>Estimated response time: 3-4 hours</Text>}
             </Card.Content>
             <Card.Actions>
-                <Button style={styles.buttonSubmit} textColor="white" onPress={() => props.throwPopup(msg, [{
-                    name: 'Close',
-                    fn: props.closePopup
-                }])}>{
-                    props.state == "Pending" ?
-                        "Cancel Request" : "Cancel Booking"}</Button>
+                <Button style={styles.buttonSubmit} textColor="white" onPress={() => {
+                    props.throwPopup(msg, [{
+                        name:  props.state == "Pending" ? "Cancel Request" : "Cancel Booking",
+                        fn: () => props.handleDeleteNotification(props.id, props.state)
+                    },
+                    {
+                        name: 'Close',
+                        fn: props.closePopup
+                    }])
+            }}>{
+                        props.state == "Pending" ?
+                            "Cancel Request" : "Cancel Booking"}</Button>
             </Card.Actions>
         </Card>
     )
@@ -118,8 +139,6 @@ const styles = StyleSheet.create({
         marginTop: '10%',
         width: "60%",
         marginLeft: "60%",
-
-
     }
 })
 
