@@ -144,12 +144,8 @@ const HomePage = ({ navigation, route }) => {
     <SafeAreaProvider>
       <TopBar navigation={navigation} />
       <ScrollView style={{backgroundColor: "#FFFFFF"}}>
-<<<<<<< HEAD
         {/* <SafeAreaView style={{backgroundColor: "#FFFFFF"}}> */}
           {modalVisible && <View style={styles.overlay} />}
-=======
-        <SafeAreaView style={{backgroundColor: "#FFFFFF"}}>
->>>>>>> e5810d7cfb8e5a228c140d234de2a0be9d3bcd7f
          <View style={{flex: 1}}>
           <Popup modalVisible={modalVisible} setModalVisible={setModalVisible} text={popupText} buttons={popupFn} />
           {page == 'notification' && <NotificationPage throwPopup={throwPopup} closePopup={closePopup}/>}

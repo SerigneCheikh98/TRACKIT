@@ -57,7 +57,6 @@ const ProfilePage = ({ route, setIsLoggedIn }) => {
 
                 <View style={[styles.textContainer, {width : '53%'}]}>
                     <Text style={styles.textName}>Mario Rossi </Text>
-                    <Text style={[styles.textName, styles.textUsername]}>@mariorossi99</Text>
                 </View>
                 <Icon name='edit' color={'white'} size={28} style={debug}/>
             </View>
@@ -79,7 +78,7 @@ const ProfilePage = ({ route, setIsLoggedIn }) => {
                 <TouchableOpacity style={styles.item} onPress={()=> navigation.navigate('Registration', {source: "2"})}>
                     <CircleIcon dimensione={0.14} tipo={'chalkboard-teacher'} fonte={"font-awesome-5"}/>
                     <View style={styles.textContainerItem}>
-                        <Text style={styles.iconTitle}>Upgrade to Teacher </Text>
+                        <Text style={styles.iconTitle}>Upgrade to Driver </Text>
                         <Text style={[styles.iconTitle, styles.iconDescription]}>Start teaching and become a millionaire!</Text>
                     </View>
                     <Icon name= {'chevron-right'} type="font-awesome" color={'#1F1937'} size={20} style={styles.arrow_right}/>
