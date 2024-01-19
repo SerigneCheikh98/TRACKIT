@@ -60,7 +60,7 @@ function ReportStackScreen() {
   return (
     <ReportStack.Navigator screenOptions={() => ({ headerShown: false })}>
       <ReportStack.Screen name="ReportPage" component={ReportScreen} />
-      <ReportStack.Screen name="NotificationPage" component={NotificationPage} />
+      {/* <ReportStack.Screen name="NotificationPage" component={NotificationPage} /> */}
     </ReportStack.Navigator>
   );
 }
@@ -72,7 +72,7 @@ function ProfileStackScreen({ setIsLoggedIn }) {
       <ProfileStack.Screen name="ProfilePage" >
         {(props) => <ProfilePage {...props} setIsLoggedIn={setIsLoggedIn} />}
       </ProfileStack.Screen>
-      <ProfileStack.Screen name="NotificationPage" component={NotificationPage} />
+      {/* <ProfileStack.Screen name="NotificationPage" component={NotificationPage} /> */}
       <ProfileStack.Screen name="Registration" component={RegisterScreen} />
     </ProfileStack.Navigator>
   );

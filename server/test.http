@@ -37,3 +37,6 @@ DELETE {{APIURL}}/login HTTP/1.1
 
 ### Get all topics
 GET {{APIURL}}/topics HTTP/1.1
+
+### Get all evaluations of the logged student
+GET {{APIURL}}/evaluations/1 HTTP/1.1

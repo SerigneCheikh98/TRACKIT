@@ -22,6 +22,9 @@ router.post('/rides', ridesController.addRequestRide)
 // get all topics
 router.get('/topics', reportController.getAllTopics)
 
+// get all evaluations of the logged student
+router.get('/evaluations', reportController.getEvaluationsByStudentId)
+
 // get all evaluations for the student
 router.get('/evaluations')
 
