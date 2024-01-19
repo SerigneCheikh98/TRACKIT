@@ -14,9 +14,9 @@ const Login = ({setIsLoggedIn}) =>{
     const [passIcon, setPassIcon] = useState("eye-off");
     const [hidePass, setHidePass] = useState(true);
 
-
+    
     return (
-        <ScrollView>
+        <ScrollView style={{backgroundColor:'white'}}>
         <View
         style={styles.container}
         behavior='padding'
