@@ -32,7 +32,6 @@ const styles = StyleSheet.create({
 
   topbar: {
     flexDirection: 'row',
-    borderWidth:2,
     height: '12%',
     width: '100%',
     alignItems: 'center',
