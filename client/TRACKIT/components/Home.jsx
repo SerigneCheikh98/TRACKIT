@@ -145,7 +145,6 @@ const HomePage = ({ navigation, route }) => {
       <TopBar navigation={navigation} />
       <ScrollView style={{backgroundColor: "#FFFFFF"}}>
         <SafeAreaView style={{backgroundColor: "#FFFFFF"}}>
-          {modalVisible && <View style={styles.overlay} />}
          <View style={{flex: 1}}>
           <Popup modalVisible={modalVisible} setModalVisible={setModalVisible} text={popupText} buttons={popupFn} />
           {page == 'notification' && <NotificationPage throwPopup={throwPopup} closePopup={closePopup}/>}
@@ -183,19 +182,6 @@ const styles = StyleSheet.create({
         height:"100%"
        
     },
-  overlay: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    zIndex: 999,
-    height: "100%",
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
 });
 
 export default HomePage

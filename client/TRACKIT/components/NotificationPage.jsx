@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { KeyboardAvoidingView, ScrollView, StyleSheet } from "react-native"
+import { KeyboardAvoidingView, ScrollView, StyleSheet, Dimensions } from "react-native"
 import { Card, Avatar, IconButton } from "react-native-paper"
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context"
 import { View } from "react-native"
@@ -34,10 +34,11 @@ const NotificationPage = ({ navigation, route }) => {
         setModalVisible(false)
     }
 
-    function handleDeleteNotification(id) {
-        API.deleteNotification(id)
+    function handleDeleteNotification(id, state) {
+        API.deleteNotification(id, state)
             .then(resp => {
                 setDirty(true)
+                closePopup()
             })
             .catch(err => console.log(err))
     }
@@ -58,7 +59,6 @@ const NotificationPage = ({ navigation, route }) => {
             <KeyboardAvoidingView>
                 <ScrollView>
                     <SafeAreaView>
-                        {modalVisible && <View style={styles.overlay} />}
                         <Popup modalVisible={modalVisible} setModalVisible={setModalVisible} text={popupText} buttons={popupFn} />
                         <View>
 
@@ -82,6 +82,7 @@ const NotificationPage = ({ navigation, route }) => {
 }
 
 const CardBooking = (props) => {
+
     let msg
     //used for the pop up when the booking/request is cancelled
     if (props.state = "Pending") {
@@ -113,10 +114,13 @@ const CardBooking = (props) => {
             <Card.Actions>
                 <Button style={styles.buttonSubmit} textColor="white" onPress={() => {
                     props.throwPopup(msg, [{
-                    name: 'Close',
-                    fn: props.closePopup
-                }])
-                props.handleDeleteNotification(props.id)
+                        name:  props.state == "Pending" ? "Cancel Request" : "Cancel Booking",
+                        fn: () => props.handleDeleteNotification(props.id, props.state)
+                    },
+                    {
+                        name: 'Close',
+                        fn: props.closePopup
+                    }])
             }}>{
                         props.state == "Pending" ?
                             "Cancel Request" : "Cancel Booking"}</Button>
@@ -135,8 +139,6 @@ const styles = StyleSheet.create({
         marginTop: '10%',
         width: "60%",
         marginLeft: "60%",
-
-
     }
 })
 

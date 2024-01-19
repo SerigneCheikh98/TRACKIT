@@ -1,6 +1,6 @@
 'use state'
 const notificationQuery = require('../query/NotificationQuery')
-
+const ridesQuery = require('../query/RidesQuery')
 /**
  * Given a logged in student, deleting a notification action is performend 
  * throught this function call
@@ -10,21 +10,38 @@ const notificationQuery = require('../query/NotificationQuery')
  * 
  * The id of the notification is received by parameter using req.params.id
  * 
- * TODO: the id of the student should be taken for the authentication process
- * 
- * @param {*} req None
+ * The id and the status of the ride are sent using the body instead
+ * @param {*} req {
+ *  id: INTEGER
+ *  status: INTEGER,
+ * }
  * @param {*} res {
  *  message: String
  * }
  */
-exports.deleteNotification = function deleteNotification(req, res) {
+exports.deleteNotification = async function deleteNotification(req, res) {
     if(!req.params.id || req.params.id < 0) {
         return res.status(400).json({message: 'Id is missing or not valid'})
     }
-
+    if( (await ridesQuery.selectRide(req.params.id)) == undefined ) {
+        return res.status(400).json({message: 'Ride is missing or not valid'})
+    }  
     notificationQuery.deleteNotification(req.user.id, req.params.id)
         .then((result) => {
-            return res.status(200).json({message: 'Deleted'})
+            if(req.body.status === 'Approved') {
+                ridesQuery.deleteBooking(req.user.id, req.params.id)
+                    .then( inner => {
+                        return res.status(200).json({message: 'Deleted'})
+                    })
+                    .catch( err => console.log(err))
+            }
+            else {
+                ridesQuery.deleteRequestRide(req.user.id, req.params.id)
+                    .then( inner => {
+                        return res.status(200).json({message: 'Deleted'})
+                    })
+                    .catch( err => console.log(err))
+            }
         }).catch((err) => {
             return res.status(500).json({message: 'DB error'})
     });

@@ -1,3 +1,4 @@
+const e = require('cors')
 const db = require('../db')
 
 /*
@@ -39,6 +40,46 @@ exports.addRequestRide = function addRequestRide(student_id, location, date, tim
                 return;
             }
             resolve(this.lastID);
+        })
+    })
+}
+
+exports.deleteRequestRide = function deleteRequestRide(student_id, ride_id) {
+    const sql = `DELETE FROM Rides WHERE StudentId = ? AND RideId = ? AND DriverId IS NULL`
+    return new Promise((resolve, reject) => {
+        db.run(sql, [student_id, ride_id], function (err) {
+            if (err) {
+                reject(new Error(err.message))
+                return
+            }
+            resolve(this.changes);
+        })
+    })
+}
+
+exports.deleteBooking = function deleteRequestRide(student_id, ride_id) {
+    const sql = `UPDATE Rides SET StudentId = NULL WHERE StudentId = ? AND RideId = ? AND DriverId IS NOT NULL`
+    return new Promise((resolve, reject) => {
+        db.run(sql, [student_id, ride_id], function (err) {
+            if (err) {
+                reject(new Error(err.message))
+                return
+            }
+            resolve(this.changes);
+        })
+    })
+}
+
+exports.selectRide = function selectRide(ride_id) {
+    const sql = 'SELECT * FROM Rides WHERE RideId = ?'
+    return new Promise((resolve, reject) => {
+        db.get(sql, [ride_id], (err, row) => {
+            if (err) {
+                reject(new Error(err.message));
+            }
+            else {
+                resolve(row)
+            }
         })
     })
 }

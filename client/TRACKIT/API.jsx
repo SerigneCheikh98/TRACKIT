@@ -1,4 +1,4 @@
-const your_ip_address = '192.168.1.51'
+const your_ip_address = '192.168.93.69'
 const locationKEY = '6596e0ad9314e091225752fijd9e70a'
 const basepath = `http://${your_ip_address}:3000/api`
 
@@ -122,13 +122,16 @@ async function getNotification() {
   })
 }
 
-async function deleteNotification(id) {
+async function deleteNotification(id, status) {
   return getJson(fetch(`${basepath}/notification/${id}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
     },
     credentials: 'include',
+    body: JSON.stringify({
+      status: status
+    })
   })).then(json => {
     return json
   }).catch(err => {

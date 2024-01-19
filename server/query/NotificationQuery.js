@@ -5,12 +5,9 @@ exports.deleteNotification = function deleteNotification(student_id, id) {
     return new Promise((resolve, reject) => {
         db.run(sql, [student_id, id], function (err) {
             if (err) {
-                console.log(err)
                 reject(new Error(err.message))
                 return
             }
-
-            console.log(this.changes)
             resolve(this.changes);
         })
     })
