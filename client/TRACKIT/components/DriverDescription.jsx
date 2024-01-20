@@ -4,7 +4,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 const DriverDescription = (props) => {
     const [count, setCount] = useState(0);
     const onPress = () => setCount(1 - count);
-    const text = "I am a highly qualified driver with extensive experience in the transportation sector. My passion for safe driving and excellent customer service has made me a reliable professional in my field. With a proactive approach and a thorough understanding of road regulations, I can ensure a comfortable and safe journey for passengers."
+    const text = props.description
 
     return (
         <View style={styles.container}>

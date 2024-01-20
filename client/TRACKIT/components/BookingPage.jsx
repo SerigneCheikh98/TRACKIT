@@ -23,14 +23,14 @@ const getItem = (_data, index) => ({
 const Booking = ({navigation, route}) => {
   console.log(route.params);
 
-  const { name, lastname, rating } = route.params;
+  const { name, lastname, rating, description } = route.params;
 
   return (
             <View>
                 <TopBar />
                 <View style={styles.bigContainer} >
                     <DriverBar name = {name} lastname = {lastname} rating = {rating}/>
-                    <DriverDescription name = {name}/>
+                    <DriverDescription name = {name} description = {description}/>
                     <Topics/>
 
                 </View>

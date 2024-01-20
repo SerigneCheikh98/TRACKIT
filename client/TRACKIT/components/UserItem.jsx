@@ -81,7 +81,7 @@ const UserItem = (props) => {
       {props.showDrop == props.index && (
         <View style={{ flexDirection: 'column', alignItems: 'center', borderWidth: 0.5, borderColor: 'grey', borderRadius: 10, borderTopWidth: 0}}>
           <Slots from={props.user.from} to={props.user.to} start={start} end={end} />
-          <Button mode="outlined" style={[{ flex: 1, width: '90%', borderRadius: 10, marginBottom: '2%' }]} onPress={() => navigation.navigate("BookingPage", {name : props.user.name, lastname : props.user.lastname, rating : props.user.rating}) }>
+          <Button mode="outlined" style={[{ flex: 1, width: '90%', borderRadius: 10, marginBottom: '2%' }]} onPress={() => navigation.navigate("BookingPage", {name : props.user.name, lastname : props.user.lastname, rating : props.user.rating, description : props.user.description}) }>
             Confirm
           </Button>
         </View>
