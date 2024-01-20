@@ -16,6 +16,7 @@ import ProfilePage from './components/Profile';
 import Booking from './components/BookingPage';
 import { useState, useEffect } from 'react';
 import * as Font from 'expo-font';
+import { PaperProvider, DefaultTheme } from 'react-native-paper';
 
 
 
@@ -108,44 +109,57 @@ export default function App() {
     loadFont();
   }, []);
 
+  const theme = {
+    ...DefaultTheme,
+    roundness: 2,
+    colors: {
+      ...DefaultTheme.colors,
+      primary: '#1F1937',
+      accent: '#F9C977'
+    },
+  };
+
   return(
+    <PaperProvider theme={theme}>
+
     <NavigationContainer>
       {!isLoggedIn ? <AuthStackScreen setIsLoggedIn={setIsLoggedIn} /> : 
     (<Tab.Navigator
         screenOptions={({ route }) => ({
-          tabBarActiveTintColor: 'tomato',
+          tabBarActiveTintColor: '#F9C977',
           tabBarInactiveTintColor: 'gray',
           // header: ({ navigation, route, options }) => {
-          //   const title = getHeaderTitle(options, route.name);
-          //   if (title != 'Home'){
-          //     return <TopBar navigation={navigation} />;
-          //   }
-            
-          // },
-          //tabBarShowLabel: false,
-          headerShown: false,
-        })}
-      >
+            //   const title = getHeaderTitle(options, route.name);
+            //   if (title != 'Home'){
+              //     return <TopBar navigation={navigation} />;
+              //   }
+              
+              // },
+              //tabBarShowLabel: false,
+              headerShown: false,
+            })}
+            >
         <Tab.Screen name="Home" component={HomeStackScreen} options={{
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="home" color={color} size={size} />
-          ),
-        }}/>
+            ),
+          }}/>
         <Tab.Screen name="Report" component={ReportStackScreen} options={{
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="chart-arc" color={color} size={size} />
-          ),
-        }}/>
+            ),
+          }}/>
         <Tab.Screen name="Profile" options={{
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="account-circle" color={color} size={size} />
-          ),
-        }}>
+            ),
+          }}>
           {(props) => <ProfileStackScreen {...props} setIsLoggedIn={setIsLoggedIn} />}
         </Tab.Screen>
       </Tab.Navigator>)
     }
   </NavigationContainer>
+</PaperProvider>
   );
 }
 
