@@ -12,8 +12,8 @@ const DriverBar = (props) => {
                         <Avatar.Text size={80} style={styles.avatar} color={'white'} label={"LC"}/>
                     </View>
                     <View style={{flex: 3}}>
-                        <Text style={{fontSize: 30}}>Liam Carter</Text>
-                        <Text><Rating num={4} /> </Text>
+                        <Text style={{fontSize: 30}}>{props.name + " " + props.lastname}</Text>
+                        <Text><Rating num={props.rating} /> </Text>
                     </View>
 
                 </View>
@@ -40,7 +40,7 @@ const Rating = (props) => {
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        paddingTop: '10%',
+        paddingTop: '0%',
         padding: '4%',
         paddingBottom: '5%'
       },
