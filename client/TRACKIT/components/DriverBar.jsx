@@ -42,7 +42,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         paddingTop: '0%',
         padding: '4%',
-        paddingBottom: '5%'
+        paddingBottom: '5%',
+        alignItems: 'center'
       },
     icon: {
       flex: 1,

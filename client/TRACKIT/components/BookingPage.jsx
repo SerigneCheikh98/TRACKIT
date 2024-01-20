@@ -21,7 +21,6 @@ const getItem = (_data, index) => ({
   );
 
 const Booking = ({navigation, route}) => {
-  console.log(route.params);
 
   const { name, lastname, rating, description } = route.params;
 
@@ -57,8 +56,8 @@ const styles = StyleSheet.create({
     scroll: {
     },
     bigContainer:{
-      marginTop: '5%',
-      height: '83%'
+      marginTop: '3%',
+      height: '85%'
     }
   });
 

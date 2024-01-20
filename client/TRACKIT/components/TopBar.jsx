@@ -14,7 +14,7 @@ const TopBar = (props) => {
   
   return (
     <View style={styles.topbar}>
-      <Icon name= {'arrow-back-ios'} type="material-icons" color={props.back ? 'white' : '#1F1937'} size={30} style={styles.arrow_left} onPress={goBack}/>
+      <Icon name= {'arrow-back-ios'} type="material-icons" color={props.back ? 'white' : '#1F1937'} size={30} style={styles.arrow_left} onPress={props.back ? goBack : () => 0}/>
 
       <Text style={styles.title}>TrackIT</Text>
       <TouchableOpacity onPress={() => {
@@ -30,7 +30,7 @@ const TopBar = (props) => {
 const styles = StyleSheet.create({
   badge: {
     position: 'absolute',
-    top: '27%',
+    top: '20%',
     right: '30%',
   },
 
@@ -41,11 +41,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: "#1F1937",
-    paddingTop: '5%'
+    paddingTop: '10%'
     
   },
 
   title: {
+    fontFamily: 'roboto',
     fontSize: 40,
     color: 'white'
   },
