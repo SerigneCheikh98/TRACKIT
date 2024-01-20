@@ -19,8 +19,8 @@ const ReportScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
 
   const pieData = [
-    { value: 70, color: '#009FFF', gradientCenterColor: '#006DFF', focused: true },
-    { value: 30, color: '#93FCF8', gradientCenterColor: '#3BE9DE' },
+    { value: 70, color: '#F9C977', gradientCenterColor: '#F9C977', focused: true },
+    { value: 30, color: '#1F1937', gradientCenterColor: '#1F1937' },
     // { value: 40, color: '#93FCF8', gradientCenterColor: '#3BE9DE' },
     // { value: 16, color: '#BDB2FA', gradientCenterColor: '#8F80F3' },
     // { value: 3, color: '#FFA5BA', gradientCenterColor: '#FF7F97' },
@@ -175,7 +175,7 @@ const ReportScreen = ({ navigation }) => {
   //   </View>
   // );
 
-  const LeftContent = props => <Avatar.Icon {...props} icon="lightbulb" color='yellow' />
+  const LeftContent = props => <Avatar.Icon {...props} icon="lightbulb" color='#F9C977' backgroundColor='#1F1937' />
   const topics = allTopics.filter((t) => {
     return !evaluations.some((e) => (e.TopicId === t.Id))
   });
@@ -199,7 +199,7 @@ const ReportScreen = ({ navigation }) => {
               marginBottom:'0.5%',
               padding: '5%',
               borderRadius: 20,
-              backgroundColor: '#1F1937',
+              backgroundColor: '#507dbc',
             }}>
             <View style={{ padding: 20, alignItems: 'center' }}>
               <Text style={{ color: 'white', fontSize: 15, paddingBottom:5 }}> Average performance over all rides  </Text>
@@ -210,7 +210,7 @@ const ReportScreen = ({ navigation }) => {
                 sectionAutoFocus
                 radius={90}
                 innerRadius={60}
-                innerCircleColor={'#1F1937'}
+                innerCircleColor={'#507dbc'}
                 centerLabelComponent={() => {
                   return (
                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
@@ -230,7 +230,7 @@ const ReportScreen = ({ navigation }) => {
         <View style={{ paddingVertical: 1 }}>
           <View>
             {/* <List.Section title={`Top ${weaknesses.length} weaknesses:`} titleStyle={{ fontSize: 20, fontWeight: 'bold', textDecorationLine: 'underline', color: 'black' }}> */}
-              <View style={{backgroundColor:'#1F1937', padding:"5%", borderRadius:20, marginLeft:'3%', marginRight:'3%', marginTop:'3%'}}>
+              <View style={{backgroundColor:'#507dbc', padding:"5%", borderRadius:20, marginLeft:'3%', marginRight:'3%', marginTop:'3%'}}>
             <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white', marginLeft:'5%', marginBottom:'2%',  }}>Top weaknesses:</Text>
               {weaknesses.map((weakness, index) => (
               //   <TopicCard key={index} title={`\u2022 ${weakness}`} titleStyle={styles.title} description="more.." descriptionStyle={styles.description} style={{ marginBottom: -5 }} onPress={() => handleWeaknessTopic(weakness)} />
@@ -240,7 +240,7 @@ const ReportScreen = ({ navigation }) => {
             {/* </List.Section> */}
             </View>
           </View>
-          <View style={{backgroundColor:'#1F1937', padding:"5%", borderRadius:20, marginLeft:'3%', marginRight:'3%', marginTop:'7%'}}>
+          <View style={{backgroundColor:'#507dbc', padding:"5%", borderRadius:20, marginLeft:'3%', marginRight:'3%', marginTop:'7%'}}>
           <Card mode='contained' style={{marginLeft:10, marginRight:10, marginTop:'3%', backgroundColor:'white'}}>
             <Card.Title title="Feedback: Good" titleVariant='titleLarge' left={LeftContent} />
             <Card.Content>
@@ -249,7 +249,7 @@ const ReportScreen = ({ navigation }) => {
                 {tips()}
             </Card.Content>
           </Card>
-          <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white', marginLeft:'5%', marginBottom:'2%', marginTop:'2%'  }}>Topic to start with:</Text>
+          <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white', marginLeft:'5%', marginBottom:'2%', marginTop:'2%'  }}>Topics to start with:</Text>
              
              { topics && topics.length > 0 && (
               topics.map((topic, index) => (
