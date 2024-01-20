@@ -27,7 +27,7 @@ const Booking = ({navigation, route}) => {
 
   return (
             <View>
-                <TopBar />
+                <TopBar back={'HomePage'}/>
                 <View style={styles.bigContainer} >
                     <DriverBar name = {name} lastname = {lastname} rating = {rating}/>
                     <DriverDescription name = {name} description = {description}/>
