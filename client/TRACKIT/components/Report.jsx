@@ -1,10 +1,11 @@
 import { ScrollView, StyleSheet, Text, View, TouchableOpacity, Modal, Pressable } from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
-import { Icon, Card, List, Avatar, Portal, PaperProvider } from 'react-native-paper';
+import { Icon, Card, List, Avatar, Portal, PaperProvider, IconButton } from 'react-native-paper';
 import { useState, useCallback, useEffect } from 'react';
 import { PieChart } from "react-native-gifted-charts";
 import TopBar from './TopBar';
 import API from '../API';
+import { Button } from 'react-native-paper';
 
 const ReportScreen = ({ navigation }) => {
   const [allTopics, setAllTopics] = useState([]);
@@ -18,8 +19,8 @@ const ReportScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
 
   const pieData = [
-    { value: 70, color: '#009FFF', gradientCenterColor: '#006DFF', focused: true },
-    { value: 30, color: '#93FCF8', gradientCenterColor: '#3BE9DE' },
+    { value: 70, color: '#F9C977', gradientCenterColor: '#F9C977', focused: true },
+    { value: 30, color: '#1F1937', gradientCenterColor: '#1F1937' },
     // { value: 40, color: '#93FCF8', gradientCenterColor: '#3BE9DE' },
     // { value: 16, color: '#BDB2FA', gradientCenterColor: '#8F80F3' },
     // { value: 3, color: '#FFA5BA', gradientCenterColor: '#FF7F97' },
@@ -86,7 +87,7 @@ const ReportScreen = ({ navigation }) => {
     const weakness = weaknessesAvg.find((w) => (w.title === topic));
     const value = weakness? weakness.avg*10 : 0;
 
-    const data = [{value: value, color: 'red', gradientCenterColor: '#3BE9DE'}, { value: 100-value, color: 'lightgrey', gradientCenterColor: 'lightgrey' }];
+    const data = [{value: value, color: '#F9C977', gradientCenterColor: '#F9C977'}, { value: 100-value, color: 'lightgrey', gradientCenterColor: 'lightgrey' }];
     return data;
   };
 
@@ -103,17 +104,10 @@ const ReportScreen = ({ navigation }) => {
   };
 
   const tips = () => {
-    const topics = allTopics.filter((t) => {
-      return !evaluations.some((e) => (e.TopicId === t.Id))
-    });
-
+   
     return <>
-      <Text style={{ paddingBottom: 6, fontSize:16}}> Here is a list of topics you didn't practice yet:</Text>
-      { topics && topics.length > 0 && (
-        topics.map((topic) => (
-          <Text key={topic.Id} style={{fontSize:16}}>{`\u2022 ${topic.Title}`} </Text>
-        ))
-      )}
+      <Text style={{ paddingBottom: 6, fontSize:16}}>You're on the right track! for next lesson practice on your weaknesses or on topics you never covered before</Text>
+     
     </>
   }
 
@@ -181,7 +175,12 @@ const ReportScreen = ({ navigation }) => {
   //   </View>
   // );
 
-  const LeftContent = props => <Avatar.Icon {...props} icon="lightbulb" color='yellow' />
+  const LeftContent = props => <Avatar.Icon {...props} icon="lightbulb" color='#F9C977' backgroundColor='#1F1937' />
+  const topics = allTopics.filter((t) => {
+    return !evaluations.some((e) => (e.TopicId === t.Id))
+  });
+
+  const [morePressed, setMorePressed] = useState(false)
 
   return (
     <SafeAreaProvider>
@@ -190,15 +189,17 @@ const ReportScreen = ({ navigation }) => {
         <View
           style={{
             paddingVertical: 10,
-            backgroundColor: '#34448B',
+            
             flex: 1,
           }}>
           <View
             style={{
-              margin: 20,
-              padding: 16,
+              marginLeft:'3%',
+              marginRight:'3%',
+              marginBottom:'0.5%',
+              padding: '5%',
               borderRadius: 20,
-              backgroundColor: '#232B5D',
+              backgroundColor: '#507dbc',
             }}>
             <View style={{ padding: 20, alignItems: 'center' }}>
               <Text style={{ color: 'white', fontSize: 15, paddingBottom:5 }}> Average performance over all rides  </Text>
@@ -209,7 +210,7 @@ const ReportScreen = ({ navigation }) => {
                 sectionAutoFocus
                 radius={90}
                 innerRadius={60}
-                innerCircleColor={'#232B5D'}
+                innerCircleColor={'#507dbc'}
                 centerLabelComponent={() => {
                   return (
                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
@@ -217,7 +218,7 @@ const ReportScreen = ({ navigation }) => {
                         style={{ fontSize: 22, color: 'white', fontWeight: 'bold' }}>
                         70%
                       </Text>
-                      <Text style={{ fontSize: 14, color: 'white' }}>Excellent</Text>
+                      <Text style={{ fontSize: 14, color: 'white' }}>Good</Text>
                     </View>
                   );
                 }}
@@ -228,20 +229,42 @@ const ReportScreen = ({ navigation }) => {
         </View>
         <View style={{ paddingVertical: 1 }}>
           <View>
-            <List.Section title={`Top ${weaknesses.length} weaknesses:`} titleStyle={{ fontSize: 20, fontWeight: 'bold', textDecorationLine: 'underline', color: 'black' }}>
+            {/* <List.Section title={`Top ${weaknesses.length} weaknesses:`} titleStyle={{ fontSize: 20, fontWeight: 'bold', textDecorationLine: 'underline', color: 'black' }}> */}
+              <View style={{backgroundColor:'#507dbc', padding:"5%", borderRadius:20, marginLeft:'3%', marginRight:'3%', marginTop:'3%'}}>
+            <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white', marginLeft:'5%', marginBottom:'2%',  }}>Top weaknesses:</Text>
               {weaknesses.map((weakness, index) => (
-                <List.Item key={index} title={`\u2022 ${weakness}`} titleStyle={styles.title} description="more.." descriptionStyle={styles.description} style={{ marginBottom: -5 }} onPress={() => handleWeaknessTopic(weakness)} />
+              //   <TopicCard key={index} title={`\u2022 ${weakness}`} titleStyle={styles.title} description="more.." descriptionStyle={styles.description} style={{ marginBottom: -5 }} onPress={() => handleWeaknessTopic(weakness)} />
+              // ))}
+               <TopicCard key={index} title={weakness}  handleWeaknessTopic={handleWeaknessTopic} />
               ))}
-            </List.Section>
+            {/* </List.Section> */}
+            </View>
           </View>
-          <Card mode='contained' style={{marginLeft:10, marginRight:10}}>
-            <Card.Title title="Feedback: Good" subtitle="Tips for next practice" titleVariant='titleLarge' left={LeftContent} />
+          <View style={{backgroundColor:'#507dbc', padding:"5%", borderRadius:20, marginLeft:'3%', marginRight:'3%', marginTop:'7%'}}>
+          <Card mode='contained' style={{marginLeft:10, marginRight:10, marginTop:'3%', backgroundColor:'white'}}>
+            <Card.Title title="Feedback: Good" titleVariant='titleLarge' left={LeftContent} />
             <Card.Content>
               
               {/* <Text variant="bodyLarge"> Tips for next practice: </Text> */}
                 {tips()}
             </Card.Content>
           </Card>
+          <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white', marginLeft:'5%', marginBottom:'2%', marginTop:'2%'  }}>Topics to start with:</Text>
+             
+             { topics && topics.length > 0 && (
+              topics.map((topic, index) => (
+              ((index <3) || morePressed == true) ? <TopicCardNotCovered key={topic.Id} title= {topic.Title}> </TopicCardNotCovered>: (null)
+              ))
+            )}
+          {(morePressed ==false) && 
+          <TouchableOpacity>
+          <Text  style={{fontSize:15, color:'white', paddingLeft:'5%', marginTop:'3%'}}onPress={()=>{setMorePressed(true)}}>Show more...</Text>
+          </TouchableOpacity>}
+          {(morePressed ==true) && 
+          <TouchableOpacity>
+          <Text  style={{fontSize:15, color:'white', paddingLeft:'5%', marginTop:'3%'}}onPress={()=>{setMorePressed(false)}}>Show less...</Text>
+          </TouchableOpacity>}
+          </View>
           <Modal visible={modalVisible} transparent={true} animationType="slide" onDismiss={() => setModalVisible(false)} contentContainerStyle={styles.containerStyle}>
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
@@ -278,6 +301,74 @@ const ReportScreen = ({ navigation }) => {
     </SafeAreaProvider>
   );
 }
+
+
+
+
+
+
+const TopicCard = ({key, title, handleWeaknessTopic} ) => (
+  <Card
+  style={{
+    marginBottom:'1%',
+    marginTop:'1%',
+    marginLeft:'3%',
+    marginRight:'3%',
+    backgroundColor:'white',
+    borderRadius:5,
+
+
+  }}>
+    <Card.Content ><Text style={{fontSize:20, fontWeight:'bold', color:'#1F1937'}}>{title}</Text></Card.Content>
+    <Card.Actions>
+     <Button textColor='#1F1937' style={{borderColor:'#1F1937',}}
+     onPress={() => handleWeaknessTopic(title)}
+     > Check chart</Button>
+      <IconButton
+    icon="information-variant"
+    size={20}
+    backgroundColor='#1F1937'
+    iconColor='white'
+    ></IconButton> 
+    </Card.Actions>
+  </Card>
+);
+
+const TopicCardNotCovered = ({key, title} ) => (
+  <Card
+  style={{
+    marginBottom:'1%',
+    marginTop:'1%',
+    marginLeft:'3%',
+    marginRight:'3%',
+    backgroundColor:'white',
+    borderRadius:5,
+
+
+  }}>
+    <Card.Content ><Text style={{fontSize:20, fontWeight:'bold', color:'#1F1937'}}>{title}</Text></Card.Content>
+    <Card.Actions>
+     
+      <IconButton
+    icon="information-variant"
+    size={20}
+    backgroundColor='#1F1937'
+    iconColor='white'
+    ></IconButton> 
+    </Card.Actions>
+  </Card>
+);
+
+
+
+
+
+
+
+
+
+
+
 
 const styles = StyleSheet.create({
   item: {
@@ -344,7 +435,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   buttonClose: {
-    backgroundColor: '#2196F3',
+    backgroundColor: '#F9C977',
   },
   textStyle: {
     color: 'white',
