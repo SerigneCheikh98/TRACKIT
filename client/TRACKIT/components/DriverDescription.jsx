@@ -4,7 +4,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 const DriverDescription = (props) => {
     const [count, setCount] = useState(0);
     const onPress = () => setCount(1 - count);
-    const text = props.description
+    const text = props.description;
 
     return (
         <View style={styles.container}>

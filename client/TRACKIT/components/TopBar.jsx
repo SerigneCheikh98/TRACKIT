@@ -30,8 +30,8 @@ const TopBar = (props) => {
 const styles = StyleSheet.create({
   badge: {
     position: 'absolute',
-    top: '20%',
-    right: '30%',
+    top: 17,
+    right: 17,
   },
 
   topbar: {
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   },
 
   arrow_left:{
-    marginLeft: '6%'
+    marginLeft: '7%'
   }
 });
 

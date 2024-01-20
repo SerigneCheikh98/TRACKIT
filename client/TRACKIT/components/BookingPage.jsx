@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text,SafeAreaView,VirtualizedList } from "react-native"
+import { View, StyleSheet, Text,SafeAreaView,VirtualizedList, TouchableOpacity,Dimensions, PixelRatio } from "react-native"
 import TopBar from "./TopBar"
 import UserItem from "./UserItem"
 import { Avatar } from "react-native-paper";
@@ -23,6 +23,16 @@ const getItem = (_data, index) => ({
 const Booking = ({navigation, route}) => {
 
   const { name, lastname, rating, description } = route.params;
+  const { width, height } = Dimensions.get('window');
+
+  // Calculate a scaling factor based on the screen dimensions and PixelRatio
+  const scaleFactor = PixelRatio.get() / 0.3;
+
+  // Function to calculate the responsive font size
+  const getResponsiveFontSize = (baseFontSize) => {
+    const responsiveFontSize = baseFontSize * scaleFactor;
+    return responsiveFontSize;
+  };
 
   return (
             <View>
@@ -31,6 +41,13 @@ const Booking = ({navigation, route}) => {
                     <DriverBar name = {name} lastname = {lastname} rating = {rating}/>
                     <DriverDescription name = {name} description = {description}/>
                     <Topics/>
+                    <View style = {styles.buttonContainer}>
+                      <TouchableOpacity style={styles.button} onPress={()=> 0}>
+                      <Text style={[styles.textStyle, { fontSize: getResponsiveFontSize(2) }]}>
+                        Book driving lesson
+                      </Text>
+                      </TouchableOpacity>
+                    </View>
 
                 </View>
 
@@ -39,16 +56,46 @@ const Booking = ({navigation, route}) => {
     )
 }
 
+const debug = {
+  borderWidth: 0,
+  borderColor: 'red',
+
+};
+
+
 const styles = StyleSheet.create({
     container: {
     flex: 1    },
-    item: {
-      backgroundColor: '#f9c2ff',
-      height: 150,
+    textStyle : {
+      color: 'white',
+      fontFamily: 'roboto-semiBold',
+
+    },
+
+    button : {
+      ...debug,
+      backgroundColor: '#1F1937',
+      width: '50%',
+      height: '50%',
+      alignItems: 'center',
       justifyContent: 'center',
-      marginVertical: 8,
-      marginHorizontal: 16,
-      padding: 20,
+      borderRadius: 10,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.5,
+      shadowRadius: 4,
+      elevation: 5, // Android only
+
+      
+
+    },
+    buttonContainer: {
+      ...debug,
+      height: '14%',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginBottom: '2%'
+      
     },
     title: {
       fontSize: 32,
