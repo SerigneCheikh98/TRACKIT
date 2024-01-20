@@ -27,49 +27,8 @@ const HomePage = ({ navigation, route }) => {
 
   const [badgeOn, setBadgeOn] = useState(false);
   const [page, setPage] = useState('home'); // home OR notification
+  const [alarmInput, setAlarmInput] = useState([false, false, false, false, false])
 
-  const applyChange = () => {
-    const paramsObj = {
-      "location": params.location,
-      "date": params.date,
-      "time": params.time,
-      "duration": params.duration,
-      "timeUnit": params.timeUnit
-    }         
-    setNoAvailability(false)
-
-    API.searchRide(paramsObj)
-      .then( resp => {
-        if(resp.length > 0) {
-          setUsers(resp)
-          setAvailable(true)
-        }
-        else {
-          const tmp_params = {
-            ...paramsObj,
-            "time": "00:00"
-          }
-          API.searchRide(tmp_params)
-            .then( resp => {
-
-              setAvailable(false)
-              if(resp.length > 0) {
-                setUsers(resp)
-              }
-              else {
-                setNoAvailability(true)
-                setUsers([])
-              }
-            })
-            .catch( err => {
-              console.log(err)
-            })
-        }
-      })
-      .catch( err => {
-        console.log(err)
-      })
-  }
 
   function handleSetFilter(choice) {
     if(inUseFilter == 1 && choice != 1) {
@@ -109,9 +68,10 @@ const HomePage = ({ navigation, route }) => {
   const [date, setDate] = useState('17/02/2024');
   const [location, setLocation] = useState("Torino");
 
-  const [duration, setDuration] = useState("30");
+  const [duration, setDuration] = useState("");
   const [timeUnit, setTimeUnit] = useState('min');
 
+  const [dirty, setDirty] = useState(false)
 
   const params = {
     time: time,
@@ -140,6 +100,73 @@ const HomePage = ({ navigation, route }) => {
     }
   }, [params.time, params.date, params.location, params.duration, params.timeUnit])
 
+  const applyChange = () => {
+    const paramsObj = {
+      "location": params.location,
+      "date": params.date,
+      "time": params.time,
+      "duration": params.duration,
+      "timeUnit": params.timeUnit
+    }         
+
+    setNoAvailability(false)
+    let tmp 
+    tmp = alarmInput
+    if(params.location.trim() === '') {
+      tmp[0] = true
+    } else tmp[0] = false
+    if(params.date === '') {
+      tmp[1] = true
+    } else tmp[1] = false
+    if(params.time === '') {
+      tmp[2] = true
+    } else tmp[2] = false
+    if(params.duration === '') {
+      tmp[3] = true
+    } else tmp[3] = false
+    if(params.timeUnit === '') {
+      tmp[4] = true
+    } else tmp[4] = false
+    if(alarmInput.some( item => item === true)) {
+      setDirty(true)
+      return
+    }
+    setAlarmInput([false, false, false, false, false])
+    setDirty(false)
+
+    API.searchRide(paramsObj)
+      .then( resp => {
+        if(resp.length > 0) {
+          setUsers(resp)
+          setAvailable(true)
+        }
+        else {
+          const tmp_params = {
+            ...paramsObj,
+            "time": "00:00"
+          }
+          API.searchRide(tmp_params)
+            .then( resp => {
+
+              setAvailable(false)
+              if(resp.length > 0) {
+                setUsers(resp)
+              }
+              else {
+                setNoAvailability(true)
+                setUsers([])
+              }
+            })
+            .catch( err => {
+              console.log(err)
+            })
+        }
+      })
+      .catch( err => {
+        console.log(err)
+      })
+  }
+
   return (
     <SafeAreaProvider>
       <TopBar navigation={navigation} />
@@ -151,8 +178,8 @@ const HomePage = ({ navigation, route }) => {
           {page == 'notification' && <NotificationPage throwPopup={throwPopup} closePopup={closePopup}/>}
           {page == 'home' &&
           <View style={styles.container}>
-              <InputForm params={params} applyChange={applyChange} logging={logging} setLogging={setLogging} />
-             <ActivityIndicator animating={logging}/>
+              <InputForm params={params} applyChange={applyChange} logging={logging} setLogging={setLogging} alarmInput={alarmInput} dirty={dirty}/>
+              <ActivityIndicator animating={logging}/>
               {
                 available == false &&
                 <View style={{backgroundColor:"#ffffff"}}>

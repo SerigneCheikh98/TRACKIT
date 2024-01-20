@@ -15,7 +15,6 @@ const slots = [
 
 const time_value = {
   'min': [
-    { label: "15", value: 15 },
     { label: "30", value: 30 },
     { label: "45", value: 45 }
   ],
@@ -57,16 +56,15 @@ const InputForm = (props) => {
 
     let text = await Location.getCurrentPositionAsync({});
     text = JSON.stringify(text);
-    console.log(JSON.parse(text))
+    // console.log(JSON.parse(text))
     API.getCity(JSON.parse(text).coords.latitude, JSON.parse(text).coords.longitude)
       .then(res => {
           props.params.setLocation(`${res.address.city} ${res.address.road}`)
           props.setLogging(false)
       })
       .catch(err => console.log(err))
-    console.log(location)
+    // console.log(location)
   }
-
 
 
   // DATE PICKER
@@ -90,11 +88,11 @@ const InputForm = (props) => {
         {/* LOCATION */}
         <View style={styles.textInputContainer}>
           <TextInput
-            style={{ flex: 1 }}
+            style={{ flex: 1, backgroundColor: 'white' }}
             mode='outlined'
             label="Location"
-            outlineColor='#1F1937'
-            activeOutlineColor='#1F1937'
+            outlineColor={props.alarmInput[0] == true  ? 'red' : '#1F1937'}
+            activeOutlineColor={props.alarmInput[0] == true ? 'red' : '#1F1937'}
             value={props.params.location}
             onChangeText={location => props.params.setLocation(location)}
           />
@@ -109,15 +107,15 @@ const InputForm = (props) => {
         {/* DATE TIME*/}
         <View style={{ ...styles.textInputContainer, alignItems: 'center' }}>
           {/* DATE */}
-          <View style={{ flex: 2, paddingRight: '2%' }}>
+          <View style={{ flex: 2, paddingRight: '2%', backgroundColor: 'white' }}>
 
             <Pressable onPress={() => {props.params.setDate(undefined);setOpen(true)}}>
               <View pointerEvents="none">
                 <TextInput
                   mode='outlined'
                   label="DD/MM/YYYY"
-                  outlineColor='#1F1937'
-                  activeOutlineColor='#1F1937'
+                  outlineColor={props.alarmInput[1] == true ? 'red' : '#1F1937'}
+                  activeOutlineColor={props.alarmInput[1] == true ? 'red' : '#1F1937'}
                   value={props.params.date}
                   labelStyle={{ color: '#1F1937' }}
                 />
@@ -127,6 +125,8 @@ const InputForm = (props) => {
                   visible={open}
                   onDismiss={onDismissSingle}
                   date={props.params.date}
+                  validRange={{startDate: new Date()}}
+                  presentationStyle={'pageSheet'}
                   onConfirm={onConfirmSingle}
                 />
               </View>
@@ -134,15 +134,15 @@ const InputForm = (props) => {
           </View>
 
           {/* TIME */}
-          <View style={{ flex: 1, paddingRight: '2%' }} >
+          <View style={{ flex: 1, paddingRight: '2%', backgroundColor: 'white' }} >
 
             <Pressable onPress={() => setVisible(true)}>
               <View pointerEvents="none">
                 <TextInput
                   mode='outlined'
                   label="Time"
-                  outlineColor='#1F1937'
-                  activeOutlineColor='#1F1937'
+                  outlineColor={props.alarmInput[2] == true ? 'red' : '#1F1937'}
+                  activeOutlineColor={props.alarmInput[2] == true ? 'red' : '#1F1937'}
                   value={props.params.time}
                   labelStyle={{ color: '#1F1937' }}
                 />
@@ -160,14 +160,15 @@ const InputForm = (props) => {
 
         {/* DURATION */}
         <View style={{ ...styles.textInputContainer, alignItems: 'center' }}>
-          <View style={{ flex: 2, paddingRight: '2%' }}>
+          <View style={{ flex: 2 }}>
             <Dropdown
-              style={styles.dropdown}
+              style={{...styles.dropdown, borderColor: props.alarmInput[3] == true ? 'red' : '#1F1937'}}
               data={time_value[props.params.timeUnit]}
               placeholderStyle={styles.placeholderStyle}
               selectedTextStyle={styles.selectedTextStyle}
               activeColor='#F9C977'
               placeholder={"Duration"}
+              value={""}
 
               maxHeight={300}
               labelField="label"
@@ -182,9 +183,9 @@ const InputForm = (props) => {
               onBlur={() => { setOnFocusg(false) }}
             />
           </View>
-          <View style={{ flex: 1 }}>
+          <View style={{ flex: 1, paddingHorizontal: '2%' }}>
             <Dropdown
-              style={styles.dropdown}
+              style={{...styles.dropdown, borderColor: props.alarmInput[4] == true ? 'red' : '#1F1937'}}
               data={slots}
               placeholderStyle={styles.placeholderStyle}
               selectedTextStyle={styles.selectedTextStyle}
@@ -233,14 +234,13 @@ const styles = StyleSheet.create({
    
   },
   submitButton: {
-    // flex: 1,
     borderRadius: 10
   },
   dropdown: {
-    borderColor: 'black',
     borderWidth: 1,
-    borderRadius: 10,
+    borderRadius: 5,
     paddingHorizontal: 8,
+    
   },
   placeholderStyle: {
     fontSize: 16,

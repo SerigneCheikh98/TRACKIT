@@ -162,7 +162,7 @@ const Slots = ({ from, to }) => {
   };
 
   const getButtonStyle = (index) => {
-    return selectedButtons.includes(index) ? { backgroundColor: '#00c89e' } : {};
+    return selectedButtons.includes(index) ? { backgroundColor: '#F9C977' } : {};
   };
 
   return (
