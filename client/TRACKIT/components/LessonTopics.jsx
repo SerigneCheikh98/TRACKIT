@@ -51,27 +51,15 @@ const Item = ({contenuto}) => (
 );
 
 const Topics = () => {
-  const [allTopics, setAllTopics] = useState([]);
-  const [evaluations, setEvaluations] = useState([]);
   const [weaknesses, setWeaknesses] = useState([]);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [selectedWeakness, setSelectedWeakness] = useState('');
-  const [weaknessesAvg, setWeaknessesAvg] = useState([]);
-  const [weaknessData, setWeaknessData] = useState([]);
-  const [generalPieData, setGeneralPieData] = useState([]);
+  
+  
   const [loading, setLoading] = useState(true);
 
-  const pieData = [
-    { value: 70, color: '#009FFF', gradientCenterColor: '#006DFF', focused: true },
-    { value: 30, color: '#93FCF8', gradientCenterColor: '#3BE9DE' },
-    // { value: 40, color: '#93FCF8', gradientCenterColor: '#3BE9DE' },
-    // { value: 16, color: '#BDB2FA', gradientCenterColor: '#8F80F3' },
-    // { value: 3, color: '#FFA5BA', gradientCenterColor: '#FF7F97' },
-  ];
+  
 
   useEffect(() => {
     API.getEvaluationsByStudentId().then((evals) => {
-      setEvaluations(evals);
       // Group data by TopicId
       const groupedByTopic = evals.reduce((acc, item) => {
         const key = item.TopicId;
@@ -107,26 +95,17 @@ const Topics = () => {
             avgTopic.add({title: match.Title, avg: AverageRating});
           }
         });
-
         topics.forEach((topic) => {
           if(!uniqueTitles.has(topic.Title)){
             uniqueTitles.add({topicName : topic.Title , critical : false});
           }
         });
-
-        setAllTopics(topics);
-        console.log(topics[0].Title)
         setWeaknesses([...uniqueTitles]);
-        console.log(weaknesses)
-        // [{"avg": 2, "title": "Hill start"}, {"avg": 3, "title": "Parking"}, {"avg": 3.5, "title": "Emergency break"}]
-        setWeaknessesAvg([...avgTopic]);
       })
-      
-      
 
       setLoading(false);
     });
-  }, [selectedWeakness]);
+  }, []);
 
   const getItem = (_data, index) => ({
     id: Math.random().toString(12).substring(0),
