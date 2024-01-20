@@ -4,10 +4,7 @@ import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 
-
-
-
-const TopBar = () => {
+const TopBar = (props) => {
   const navigation = useNavigation();
   
   return (
@@ -32,7 +29,7 @@ const styles = StyleSheet.create({
 
   topbar: {
     flexDirection: 'row',
-    height: '12%',
+    height: '14%',
     width: '100%',
     alignItems: 'center',
     justifyContent: 'space-between',

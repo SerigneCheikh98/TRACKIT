@@ -1,4 +1,7 @@
-import React from 'react';
+import { useState, useCallback, useEffect, React } from 'react';
+import API from '../API';
+
+
 import {
   SafeAreaView,
   View,
@@ -35,12 +38,7 @@ const staticTopics = [{
 },
 ]
 
-const getItem = (_data, index) => ({
-  id: Math.random().toString(12).substring(0),
-  contenuto: staticTopics[index],
-});
 
-const getItemCount = _data => staticTopics.length;
 
 const Item = ({contenuto}) => (
     contenuto.critical === true ? (<View style={styles.itemCritical}>
@@ -53,6 +51,70 @@ const Item = ({contenuto}) => (
 );
 
 const Topics = () => {
+  const [weaknesses, setWeaknesses] = useState([]);
+  
+  
+  const [loading, setLoading] = useState(true);
+
+  
+
+  useEffect(() => {
+    API.getEvaluationsByStudentId().then((evals) => {
+      // Group data by TopicId
+      const groupedByTopic = evals.reduce((acc, item) => {
+        const key = item.TopicId;
+        if (!acc[key]) {
+          acc[key] = [];
+        }
+        acc[key].push(item);
+        return acc;
+      }, {});
+
+      // Calculate the average rating for each TopicId
+      const averageRatingsByTopic = Object.entries(groupedByTopic).map(([topicId, ratings]) => {
+        const totalRatings = ratings.length;
+        const sumOfRatings = ratings.reduce((sum, item) => sum + parseFloat(item.Rating), 0);
+        const averageRating = sumOfRatings / totalRatings;
+        return { TopicId: parseInt(topicId), AverageRating: averageRating };
+      });
+
+      averageRatingsByTopic.sort((a, b) => parseFloat(a.AverageRating) - parseFloat(b.AverageRating));
+      const lowestRatings = averageRatingsByTopic.slice(0, 3);
+      
+      // [{"AverageRating": 2, "TopicId": 4}, {"AverageRating": 3, "TopicId": 3}, {"AverageRating": 3.5, "TopicId": 6}]
+      //console.log(lowestRatings);
+
+      API.getAllTopics().then((topics) => {
+        const uniqueTitles = new Set();
+        const avgTopic = new Set();
+
+        lowestRatings.forEach(({ TopicId, AverageRating }) => {
+          const match = topics.find(({ Id }) => Id === TopicId);
+          if (match && !uniqueTitles.has(match.Title)) {
+            uniqueTitles.add({topicName : match.Title, critical : true});
+            avgTopic.add({title: match.Title, avg: AverageRating});
+          }
+        });
+        topics.forEach((topic) => {
+          if(!uniqueTitles.has(topic.Title)){
+            uniqueTitles.add({topicName : topic.Title , critical : false});
+          }
+        });
+        setWeaknesses([...uniqueTitles]);
+      })
+
+      setLoading(false);
+    });
+  }, []);
+
+  const getItem = (_data, index) => ({
+    id: Math.random().toString(12).substring(0),
+    contenuto: weaknesses[index],
+  });
+  
+  const getItemCount = _data => weaknesses.length;
+
+
   return (
     <SafeAreaView style ={styles.container}>
       <VirtualizedList style={styles.scroll}

@@ -20,13 +20,17 @@ const getItem = (_data, index) => ({
     </View>
   );
 
-const Booking = (navigation) => {
-    return (
+const Booking = ({navigation, route}) => {
+  console.log(route.params);
+
+  const { name, lastname, rating, description } = route.params;
+
+  return (
             <View>
-                <TopBar/>
+                <TopBar />
                 <View style={styles.bigContainer} >
-                    <DriverBar/>
-                    <DriverDescription/>
+                    <DriverBar name = {name} lastname = {lastname} rating = {rating}/>
+                    <DriverDescription name = {name} description = {description}/>
                     <Topics/>
 
                 </View>
@@ -53,7 +57,8 @@ const styles = StyleSheet.create({
     scroll: {
     },
     bigContainer:{
-        height: '83%'
+      marginTop: '5%',
+      height: '83%'
     }
   });
 

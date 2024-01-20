@@ -103,7 +103,9 @@ exports.searchRide = function searchRide(req, res) {
                     distance: Math.floor(Math.random()*100),
                     date: item.Date,
                     from: item.StartingTime,
-                    to: calculateEndingHour(item.StartingTime, item.Slot)
+                    description : item.Description,
+                    to: calculateEndingHour(item.StartingTime, item.Slot),
+                    
                 }
             })
             res.status(200).json(resp)
