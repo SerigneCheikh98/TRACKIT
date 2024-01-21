@@ -198,7 +198,7 @@ const topicBox = (contenuto, setModalVisible, handleTopic)=>{
           
           flexWrap: 'nowrap',
           flexBasis:'auto',
-          flexShrink: '100%',
+          // flexShrink: '100%',
         
         borderStartColor:'#1F1937',
         width: 260,

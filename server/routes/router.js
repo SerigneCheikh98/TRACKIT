@@ -34,6 +34,9 @@ router.get('/evaluations')
 // get all the notification for the student
 router.get('/notification', notificationController.getNotification)
 
+// set at seen the notification for the student
+router.put('/notification/:id', notificationController.setNotificationSeen)
+
 // delete a notification for a student
 router.delete('/notification/:id', notificationController.deleteNotification)
 

@@ -1,4 +1,4 @@
-const your_ip_address = '172.20.10.2'
+const your_ip_address = '192.168.1.51'
 const locationKEY = '6596e0ad9314e091225752fijd9e70a'
 const basepath = `http://${your_ip_address}:3000/api`
 
@@ -67,7 +67,7 @@ async function searchRide(params) {
     })
     return res
   }).catch(err => {
-    return err
+    throw new Error(err)
   })
 
 }
@@ -160,6 +160,20 @@ async function deleteNotification(id, status) {
   })
 }
 
+async function setNotificationSeen(id) {
+  return getJson(fetch(`${basepath}/notification/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: 'include'
+  })).then(json => {
+    return json
+  }).catch(err => {
+    throw err
+  })
+}
+
 // ========================================== LOGIN ==========================================
 
 const login = (credentials) => {
@@ -235,5 +249,5 @@ const getEvaluationsByStudentId = () => {
   })
 }
 
-const API = { getCity, searchRide, getDailyRide, addRequestRide, getNotification, deleteNotification, login, logout, stillLoggedIn, getAllTopics, getEvaluationsByStudentId }
+const API = { getCity, searchRide, getDailyRide, addRequestRide, getNotification, setNotificationSeen, deleteNotification, login, logout, stillLoggedIn, getAllTopics, getEvaluationsByStudentId }
 export default API;

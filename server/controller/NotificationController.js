@@ -84,12 +84,14 @@ exports.getNotification = function getNotification(req, res) {
                         }
     
                         return {
+                            id: item.id,
                             bookingId: item.idRide,
                             driverName: item.Name == undefined && item.Surname == undefined ? null : `${item.Name} ${item.Surname}` ,
                             Date: item.Date,
                             time: item.StartingTime,
                             duration: s,
-                            state: item.status
+                            state: item.status,
+                            seen: item.seen
                         }
                     })
                     return res.status(200).json(rows)
@@ -100,4 +102,18 @@ exports.getNotification = function getNotification(req, res) {
         }).catch((err) => {
             return res.status(500).json({message: 'DB error'})
     });
+}
+
+exports.setNotificationSeen = function setNotificationSeen(req, res) {
+    req.params.id = parseInt(req.params.id)
+    if(!req.params.id || req.params.id < 0) {
+        return res.status(400).json({message: 'Id is missing or not valid'})
+    }
+    notificationQuery.setNotificationSeen(req.user.id, req.params.id)
+        .then( resp => {
+            return res.status(200).json({message: 'Success'})
+        })
+        .catch( err => {
+            return res.status(500).json({message: 'DB error'})
+        })
 }

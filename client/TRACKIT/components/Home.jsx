@@ -35,14 +35,12 @@ const HomePage = ({ navigation, route }) => {
   let distances = useRef([]);
 
   function generateDist() {
-    console.log('generated')
     let randomNumbers = [];
     for (let i = 0; i < 10; i++) {
       randomNumbers.push(Math.floor(Math.random()*100));
     }
 
     distances.current = randomNumbers
-    console.log(distances.current)
   }
 
   function handleSetFilter(choice) {
@@ -81,10 +79,10 @@ const HomePage = ({ navigation, route }) => {
 
   const [time, setTime] = useState('12:00')
   const [date, setDate] = useState('17/02/2024');
-  const [location, setLocation] = useState("");
+  const [location, setLocation] = useState("Torino");
   const [lastLocation, setLastLocation] = useState("")
 
-  const [duration, setDuration] = useState("");
+  const [duration, setDuration] = useState("30");
   const [timeUnit, setTimeUnit] = useState('min');
 
   const [dirty, setDirty] = useState(false)
@@ -109,8 +107,24 @@ const HomePage = ({ navigation, route }) => {
         setNotification(true)
         closePopup()
       })
-      .catch( err => console.log(err) )
+      .catch( err => {
+        throwPopup(err.message, [{
+          name: 'Close',
+          fn: closePopup
+        }])
+      } )
   } 
+
+  useEffect( () => {
+    API.getNotification()
+      .then( resp => {
+        if(resp.length > 0 && resp.some( n => n.seen == 0 )) {
+          setNotification(true)
+        }
+        else setNotification(false)
+      })
+      .catch( err => console.log(err))
+  }, [])
 
   useEffect( () => {
     if(users.length == 0 && available == false) {
@@ -164,6 +178,7 @@ const HomePage = ({ navigation, route }) => {
     if(lastLocation !== location || lastLocation === '') {
       generateDist()
     }
+
     API.searchRide(paramsObj)
       .then( resp => {
         if(resp.length > 0) {
@@ -196,19 +211,28 @@ const HomePage = ({ navigation, route }) => {
                 setLastLocation(location)
               }
               else {
-
+                throwPopup('No available drivers found for this day', [{
+                  name: 'Close',
+                  fn: closePopup
+                }])
                 setLastLocation(location)
                 setNoAvailability(true)
                 setUsers([])
               }
             })
             .catch( err => {
-              console.log(err)
+              throwPopup('Network request failed', [{
+                name: 'Close',
+                fn: closePopup
+              }])
             })
         }
       })
       .catch( err => {
-        console.log(err)
+        throwPopup('Network request failed', [{
+          name: 'Close',
+          fn: closePopup
+        }])
       })
   }
 
@@ -222,7 +246,7 @@ const HomePage = ({ navigation, route }) => {
           {page == 'notification' && <NotificationPage throwPopup={throwPopup} closePopup={closePopup}/>}
           {page == 'home' &&
           <View style={styles.container}>
-              <InputForm params={params} applyChange={applyChange} logging={logging} setLogging={setLogging} alarmInput={alarmInput} dirty={dirty} setDirtySearch={setDirtySearch}/>
+              <InputForm params={params} throwPopup={throwPopup} closePopup={closePopup} applyChange={applyChange} logging={logging} setLogging={setLogging} alarmInput={alarmInput} dirty={dirty} setDirtySearch={setDirtySearch}/>
               <ActivityIndicator animating={logging}/>
               {
                 available == false &&

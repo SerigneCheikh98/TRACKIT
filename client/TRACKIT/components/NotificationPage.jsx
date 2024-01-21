@@ -7,6 +7,7 @@ import { Text, Button } from "react-native-paper"
 import Popup from './Popup';
 import TopBar from "./TopBar"
 import API from "../API"
+import Separator from "./Separator"
 
 //assume we have props: bookings for each user
 //so we have a list of bookings
@@ -42,13 +43,19 @@ const NotificationPage = ({ navigation, route }) => {
             })
             .catch(err => console.log(err))
     }
-    const [bookings, setBookings] = useState([]);
+    const [bookingsSeen, setBookingsSeen] = useState([]);
+    const [bookingsNotSeen, setBookingsNotSeen] = useState([]);
 
 
     useEffect(() => {
         API.getNotification()
             .then(result => {
-                setBookings(result)
+                // setBookings(result)
+                const seen = result.filter(item => item.seen == 1)
+                setBookingsSeen(seen)
+                const notSeen = result.filter(item => item.seen == 0)
+                setBookingsNotSeen(notSeen)
+
                 setDirty(false)
             })
             .catch(err => console.log(err))
@@ -58,11 +65,29 @@ const NotificationPage = ({ navigation, route }) => {
             <TopBar back = {'x'} />
                 <ScrollView>
                     <Popup modalVisible={modalVisible} setModalVisible={setModalVisible} text={popupText} buttons={popupFn} />
-                    <View>
+                    <View style={{paddingVertical: '2%'}}>
                         {
-                            bookings.map((booking, index) => (
+                            bookingsSeen.map((booking, index) => (
                                 <CardBooking handleDeleteNotification={handleDeleteNotification} key={index} id={booking.bookingId} date={booking.Date} driverName={booking.driverName} time={booking.time} duration={booking.duration} state={booking.state} throwPopup={throwPopup} closePopup={closePopup} />
-                            ))
+                                ))
+                            }
+                    </View>
+                    {
+                        bookingsNotSeen.length != 0 &&
+                        <Separator text={'New'} />
+                    }
+                    <View style={{paddingVertical: '2%'}}>
+                        {
+                            bookingsNotSeen.map((booking, index) => {
+                                let val = <></>
+                                API.setNotificationSeen(booking.id)
+                                    .then(resp => {
+                                    })
+                                    .catch(err => {
+                                        console.log(err)
+                                    })
+                                    return <CardBooking handleDeleteNotification={handleDeleteNotification} key={index} id={booking.bookingId} date={booking.Date} driverName={booking.driverName} time={booking.time} duration={booking.duration} state={booking.state} throwPopup={throwPopup} closePopup={closePopup} />
+                            })
                         }
                     </View>
                 </ScrollView>
@@ -129,7 +154,15 @@ const styles = StyleSheet.create({
         marginTop: '10%',
         width: "60%",
         marginLeft: "60%",
-    }
+    },
+    container:
+    {
+        flex: 1,
+        borderRadius:5,
+        backgroundColor:"#FFFFFF",
+        height:"100%"
+       
+    },
 })
 
 export default NotificationPage

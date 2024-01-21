@@ -125,16 +125,7 @@ export default function App() {
 
   const [notification, setNotification] = useState(false)
 
-  useEffect( () => {
-    API.getNotification()
-      .then( resp => {
-        if(resp.length > 0) {
-          setNotification(true)
-        }
-        else setNotification(false)
-      })
-      .catch( err => console.log(err))
-  }, [])
+  
 
   return(
     <PaperProvider theme={theme}>
