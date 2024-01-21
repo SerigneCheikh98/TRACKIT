@@ -55,7 +55,7 @@ const NotificationPage = ({ navigation, route }) => {
     }, [dirty])
     return (
         <SafeAreaProvider>
-            <TopBar navigation={navigation} />
+            <TopBar back = {'x'} />
             <KeyboardAvoidingView>
                 <ScrollView>
                     <SafeAreaView>

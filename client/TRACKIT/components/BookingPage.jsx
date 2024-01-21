@@ -6,6 +6,8 @@ import { Icon } from "@rneui/themed";
 import DriverBar from "./DriverBar";
 import DriverDescription from "./DriverDescription";
 import Topics from "./LessonTopics";
+import { useNavigation } from '@react-navigation/native';
+
 
 const getItem = (_data, index) => ({
     id: Math.random().toString(12).substring(0),
@@ -20,10 +22,12 @@ const getItem = (_data, index) => ({
     </View>
   );
 
-const Booking = ({navigation, route}) => {
+const Booking = ({ route}) => {
 
   const { name, lastname, rating, description } = route.params;
   const { width, height } = Dimensions.get('window');
+  const navigation = useNavigation();
+
 
   // Calculate a scaling factor based on the screen dimensions and PixelRatio
   const scaleFactor = PixelRatio.get() / 0.3;
@@ -42,7 +46,7 @@ const Booking = ({navigation, route}) => {
                     <DriverDescription name = {name} description = {description}/>
                     <Topics/>
                     <View style = {styles.buttonContainer}>
-                      <TouchableOpacity style={styles.button} onPress={()=> 0}>
+                      <TouchableOpacity style={styles.button} onPress={()=> navigation.navigate('BookingConfirmationPage', {back : 'x'})}>
                       <Text style={[styles.textStyle, { fontSize: getResponsiveFontSize(2) }]}>
                         Book driving lesson
                       </Text>
