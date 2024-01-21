@@ -39,6 +39,7 @@ const InputForm = (props) => {
 
   const onConfirm = useCallback(
     ({ hours, minutes }) => {
+      props.setDirtySearch(true)
       setVisible(false);
       props.params.setTime(`${hours}:${minutes}`)
     },
@@ -77,6 +78,7 @@ const InputForm = (props) => {
   const onConfirmSingle = useCallback(
     (params) => {
       setOpen(false);
+      props.setDirtySearch(true)
       props.params.setDate(dayjs(params.date).format('DD/MM/YYYY').toString());
     },
     [setOpen, props.params.setDate]
@@ -88,13 +90,16 @@ const InputForm = (props) => {
         {/* LOCATION */}
         <View style={styles.textInputContainer}>
           <TextInput
-            style={{ flex: 1 }}
+            style={{ flex: 1, backgroundColor: 'white' }}
             mode='outlined'
             label="Location"
             outlineColor={props.alarmInput[0] == true  ? 'red' : '#1F1937'}
             activeOutlineColor={props.alarmInput[0] == true ? 'red' : '#1F1937'}
             value={props.params.location}
-            onChangeText={location => props.params.setLocation(location)}
+            onChangeText={location => {
+              props.setDirtySearch(true)
+              props.params.setLocation(location)
+            }}
           />
           <View style={{ flex: 0.25, justifyContent: 'center', alignItems: 'center' }}>
             <IconButton style={styles.submitButton} size={30} iconColor="white" backgroundColor="#F9C977" icon='crosshairs-gps' buttonColor='black' mode="contained" onPress={() => { handleGetLocation();
@@ -114,6 +119,7 @@ const InputForm = (props) => {
                 <TextInput
                   mode='outlined'
                   label="DD/MM/YYYY"
+                  style={{backgroundColor: 'white'}}
                   outlineColor={props.alarmInput[1] == true ? 'red' : '#1F1937'}
                   activeOutlineColor={props.alarmInput[1] == true ? 'red' : '#1F1937'}
                   value={props.params.date}
@@ -141,6 +147,7 @@ const InputForm = (props) => {
                 <TextInput
                   mode='outlined'
                   label="Time"
+                  style={{backgroundColor: 'white'}}
                   outlineColor={props.alarmInput[2] == true ? 'red' : '#1F1937'}
                   activeOutlineColor={props.alarmInput[2] == true ? 'red' : '#1F1937'}
                   value={props.params.time}
@@ -174,6 +181,7 @@ const InputForm = (props) => {
               labelField="label"
               valueField="value"
               onChange={(item) => {
+                props.setDirtySearch(true)
                 props.params.setDuration(item);
                 setOnFocusg(false);
               }}
@@ -196,6 +204,7 @@ const InputForm = (props) => {
               valueField="value"
               placeholder={props.params.timeUnit}
               onChange={(item) => {
+                props.setDirtySearch(true)
                 props.params.setTimeUnit(item.value);
                 setOnFocusg(false);
               }}
@@ -210,7 +219,7 @@ const InputForm = (props) => {
         {/* SUBMIT */}
         <View style={styles.textInputContainer}>
           <View style={{ flex: 2 }}></View>
-          <Button style={styles.submitButton} buttonColor='black' mode="contained" onPress={props.applyChange}>
+          <Button style={styles.submitButton} buttonColor='#1F1937' mode="contained" onPress={props.applyChange}>
             Apply changes
           </Button>
         </View>

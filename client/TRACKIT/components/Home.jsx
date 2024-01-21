@@ -83,6 +83,7 @@ const HomePage = ({ navigation, route }) => {
   const [timeUnit, setTimeUnit] = useState('min');
 
   const [dirty, setDirty] = useState(false)
+  const [dirtySearch, setDirtySearch] = useState(false)
 
   const params = {
     time: time,
@@ -110,6 +111,13 @@ const HomePage = ({ navigation, route }) => {
       setAvailable(true)
     }
   }, [params.time, params.date, params.location, params.duration, params.timeUnit])
+
+  useEffect( () => {
+    if(dirtySearch == true) {
+      setUsers([])
+      setDirtySearch(false)
+    }
+  }, [dirtySearch])
 
   const applyChange = () => {
     const paramsObj = {
@@ -208,7 +216,7 @@ const HomePage = ({ navigation, route }) => {
           {page == 'notification' && <NotificationPage throwPopup={throwPopup} closePopup={closePopup}/>}
           {page == 'home' &&
           <View style={styles.container}>
-              <InputForm params={params} applyChange={applyChange} logging={logging} setLogging={setLogging} alarmInput={alarmInput} dirty={dirty}/>
+              <InputForm params={params} applyChange={applyChange} logging={logging} setLogging={setLogging} alarmInput={alarmInput} dirty={dirty} setDirtySearch={setDirtySearch}/>
               <ActivityIndicator animating={logging}/>
               {
                 available == false &&

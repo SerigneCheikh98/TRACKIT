@@ -41,7 +41,6 @@ const UserItem = (props) => {
   );
 
   const msg = `Attention\nYour chosen time slot is not fully covered`
-  console.log(props.params.timeUnit)
   const danger = parseDuration(props.params.duration.value, props.params.timeUnit) > getDurationMin(props.user.from, props.user.to)
   
   const startingTime = dayjs(props.user.from).format('HH;mm')
