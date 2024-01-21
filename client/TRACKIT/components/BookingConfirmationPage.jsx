@@ -28,10 +28,10 @@ const BookingConfirmation = ({ navigation, route }) => {
           </View>
 
           <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={() => { navigation.navigate('HomePage') }} style={styles.button} >
-            <Text style={styles.buttonText}>Home</Text>
-          </TouchableOpacity>
-        </View>
+            <TouchableOpacity onPress={() => { navigation.navigate('HomePage') }} style={styles.button} >
+              <Text style={styles.buttonText}>Home</Text>
+            </TouchableOpacity>
+          </View>
         </ImageBackground>
 
       </View>
@@ -49,7 +49,7 @@ const debug = {
 const styles = StyleSheet.create({
   buttonContainer: {
     ...debug,
-    position:'absolute',
+    position: 'absolute',
     bottom: 15,
     width: '100%',
     alignItems: 'center',
@@ -101,12 +101,16 @@ const styles = StyleSheet.create({
   {
     ...debug,
     backgroundColor: 'rgba( 31, 25, 55, 0.95)',
-    
+
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
     height: 50,
     width: 110,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 4,
 
   },
 
