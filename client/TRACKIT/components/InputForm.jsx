@@ -63,7 +63,12 @@ const InputForm = (props) => {
           props.params.setLocation(`${res.address.city} ${res.address.road}`)
           props.setLogging(false)
       })
-      .catch(err => console.log(err))
+      .catch(err => {
+        props.throwPopup('Error while getting your position', [{
+          name: 'Close',
+          fn: props.closePopup
+        }])
+      })
     // console.log(location)
   }
 

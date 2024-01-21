@@ -1,6 +1,6 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useContext, useRef } from 'react';
 import UsersList from './UsersList';
 import BottomBar from './BottomBar';
 import RequestCard from './RequestCard';
@@ -10,6 +10,7 @@ import Separator from './Separator';
 import Popup from './Popup';
 import TopBar from './TopBar';
 import { Modal, Pressable } from 'react-native';
+import { NotificationContext } from './NotificationContext';
 
 import { ActivityIndicator } from 'react-native';
 import Badge from 'react-native-paper';
@@ -19,6 +20,8 @@ const HomePage = ({ navigation, route }) => {
 
 
   const [logging, setLogging] = useState(false)
+  const [notification, setNotification] = useContext(NotificationContext)
+
 
   const [users, setUsers] = useState([])
   const [inUseFilter, setInUseFilter] = useState(0) // 0 none - 1 distance - 2 rating
@@ -28,17 +31,17 @@ const HomePage = ({ navigation, route }) => {
   const [badgeOn, setBadgeOn] = useState(false);
   const [page, setPage] = useState('home'); // home OR notification
   const [alarmInput, setAlarmInput] = useState([false, false, false, false, false])
-  // let distances
 
-  // function generateDist() {
-  //   console.log('generated')
-  //   let randomNumbers = [];
-  //   for (let i = 0; i < 10; i++) {
-  //     randomNumbers.push(Math.floor(Math.random()*100));
-  //   }
+  let distances = useRef([]);
 
-  //   distances = randomNumbers
-  // }
+  function generateDist() {
+    let randomNumbers = [];
+    for (let i = 0; i < 10; i++) {
+      randomNumbers.push(Math.floor(Math.random()*100));
+    }
+
+    distances.current = randomNumbers
+  }
 
   function handleSetFilter(choice) {
     if(inUseFilter == 1 && choice != 1) {
@@ -77,9 +80,9 @@ const HomePage = ({ navigation, route }) => {
   const [time, setTime] = useState('12:00')
   const [date, setDate] = useState('17/02/2024');
   const [location, setLocation] = useState("Torino");
-  // const [lastLocation, setLastLocation] = useState("")
+  const [lastLocation, setLastLocation] = useState("")
 
-  const [duration, setDuration] = useState("");
+  const [duration, setDuration] = useState("30");
   const [timeUnit, setTimeUnit] = useState('min');
 
   const [dirty, setDirty] = useState(false)
@@ -101,10 +104,27 @@ const HomePage = ({ navigation, route }) => {
   function handleInsertRequest() {
     API.addRequestRide(params)
       .then( resp => {
+        setNotification(true)
         closePopup()
       })
-      .catch( err => console.log(err) )
+      .catch( err => {
+        throwPopup(err.message, [{
+          name: 'Close',
+          fn: closePopup
+        }])
+      } )
   } 
+
+  useEffect( () => {
+    API.getNotification()
+      .then( resp => {
+        if(resp.length > 0 && resp.some( n => n.seen == 0 )) {
+          setNotification(true)
+        }
+        else setNotification(false)
+      })
+      .catch( err => console.log(err))
+  }, [])
 
   useEffect( () => {
     if(users.length == 0 && available == false) {
@@ -155,21 +175,22 @@ const HomePage = ({ navigation, route }) => {
     setDirty(false)
     // ===============
 
-    // if(lastLocation != location) {
-    //   generateDist()
-    // }
+    if(lastLocation !== location || lastLocation === '') {
+      generateDist()
+    }
+
     API.searchRide(paramsObj)
       .then( resp => {
         if(resp.length > 0) {
           resp = resp.map( (item, index) => {
             return {
               ...item,
-              // distance: distances[index % 10]
+              distance: distances.current[index % 10]
             }
           })
           setUsers(resp)
           setAvailable(true)
-          // setLastLocation(location)
+          setLastLocation(location)
         }
         else {
           const tmp_params = {
@@ -183,26 +204,35 @@ const HomePage = ({ navigation, route }) => {
                 resp = resp.map( (item, index) => {
                   return {
                     ...item,
-                    //distance: distances[index % 10]
+                    distance: distances.current[index % 10]
                   }
                 })
                 setUsers(resp)
-                // setLastLocation(location)
+                setLastLocation(location)
               }
               else {
-
-                // setLastLocation(location)
+                throwPopup('No available drivers found for this day', [{
+                  name: 'Close',
+                  fn: closePopup
+                }])
+                setLastLocation(location)
                 setNoAvailability(true)
                 setUsers([])
               }
             })
             .catch( err => {
-              console.log(err)
+              throwPopup('Network request failed', [{
+                name: 'Close',
+                fn: closePopup
+              }])
             })
         }
       })
       .catch( err => {
-        console.log(err)
+        throwPopup('Network request failed', [{
+          name: 'Close',
+          fn: closePopup
+        }])
       })
   }
 
@@ -216,7 +246,7 @@ const HomePage = ({ navigation, route }) => {
           {page == 'notification' && <NotificationPage throwPopup={throwPopup} closePopup={closePopup}/>}
           {page == 'home' &&
           <View style={styles.container}>
-              <InputForm params={params} applyChange={applyChange} logging={logging} setLogging={setLogging} alarmInput={alarmInput} dirty={dirty} setDirtySearch={setDirtySearch}/>
+              <InputForm params={params} throwPopup={throwPopup} closePopup={closePopup} applyChange={applyChange} logging={logging} setLogging={setLogging} alarmInput={alarmInput} dirty={dirty} setDirtySearch={setDirtySearch}/>
               <ActivityIndicator animating={logging}/>
               {
                 available == false &&

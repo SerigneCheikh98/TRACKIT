@@ -178,9 +178,10 @@ const Slots = ({ from, to }) => {
       {comp.map((item, index) => {
         const label = item.split('~')
         return (
-        <View style={{flexDirection: 'row', alignContent: 'space-between'}}>
+        <View key={index} style={{flexDirection: 'row', alignContent: 'space-between'}}>
           <View key={index*2} style={{paddingHorizontal: '2%', flex: 1, paddingVertical: '2%'}}>
               <Button
+                key={index*2} 
                 mode="outlined"
                 style={[{ flex: 1, borderRadius: 10 }, getButtonStyle(index*2)]}
                 onPress={() => handleButtonClick(index*2)}
@@ -192,6 +193,7 @@ const Slots = ({ from, to }) => {
               { 
                 label[1] != "undefined" &&
                 <Button
+                  key={index*2 + 1}
                   mode="outlined"
                   style={[{ flex: 1, borderRadius: 10 }, getButtonStyle(index*2 + 1)]}
                   onPress={() => handleButtonClick(index*2 + 1)}
