@@ -16,12 +16,9 @@ const BookingConfirmation = ({ navigation, route }) => {
 
   return (
     <View>
-      <TopBar back={'HomePage'} />
+      <TopBar />
       <View style={styles.bigContainer} >
-        <ImageBackground
-          source={require('../assets/background.jpg')}
-          style={styles.backgroundImage}
-        >
+        
           {/* Your other components/content go here */}
           <View style={styles.textContainer}>
             <Text style={styles.textStyle}>Your request has been sent to the driver</Text>
@@ -32,7 +29,6 @@ const BookingConfirmation = ({ navigation, route }) => {
               <Text style={styles.buttonText}>Home</Text>
             </TouchableOpacity>
           </View>
-        </ImageBackground>
 
       </View>
     </View>
@@ -60,8 +56,8 @@ const styles = StyleSheet.create({
   bigContainer: {
     ...debug,
     height: '86%',
-
-
+    alignItems: 'center',
+    justifyContent: 'center'
 
   },
   backgroundImage: {
@@ -73,7 +69,7 @@ const styles = StyleSheet.create({
   },
 
   textContainer: {
-    marginTop: ' 7%',
+    marginBottom: '40%',
     height: 130,
     width: 340,
     backgroundColor: 'rgba(255, 255, 255, 0.5)',
