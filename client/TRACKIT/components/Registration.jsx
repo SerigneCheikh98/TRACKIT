@@ -4,7 +4,7 @@ import {Icon} from '@rneui/themed'
 import Checkbox from 'expo-checkbox'
 import { KeyboardAvoidingView, TouchableOpacity, View, StyleSheet} from 'react-native'
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Dropdown } from 'react-native-element-dropdown';
 import * as ImagePicker from 'expo-image-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -116,22 +116,67 @@ const RegisterScreen = ({navigation, route}) =>{
     
     const [phoneNumber, setPhoneNumber] = useState(null)
     
-    
-    
+    function handleStep2Reset() {
+      setPhoneNumber(null)
+      setGender(null)
+      setIdImage(null)
+      setLicImage(null)
+      setBirthDate(null)
+    }
 
+    const msg = 'Are you sure to continue? You will lose your data'
+    const [modalVisible, setModalVisible] = useState(false)
+    const [popupText, setPopupText] = useState('')
+    const [popupFn, setPopupFn] = useState([{
+      name: '',
+      fn: () => { }
+    }])
+  
+    function throwPopup(text, buttons) {
+      setModalVisible(true)
+      setPopupText(text)
+      setPopupFn(buttons)
+    }
+  
+    function closePopup() {
+      setModalVisible(false)
+    }
+
+    function handleReturn() {
+      if((step == 1 && (uname.trim() !== '' || lastName.trim() !== '' || mail.trim() !== '' || password.trim() !== '' || conpassword.trim() !== '')) || (step == 2 && (gender != null || birthDate != null || idImage != null || licImage != null))){
+        throwPopup(msg, [{
+          name: 'Continue',
+          fn: () => {
+            if(step == 1){
+              setSubmit(false);
+              navigation.navigate('LoginPage')
+            }
+            else{    
+              handleStep2Reset()
+              source ? navigation.navigate('ProfilePage') :setStep("1");
+            }
+            closePopup()
+          }
+        }, {
+          name: 'Close',
+          fn: closePopup
+        }])
+      }
+      else {
+        if(step == 1){
+          setSubmit(false);
+          navigation.navigate('LoginPage')
+        }
+        else{    
+          source ? navigation.navigate('ProfilePage') :setStep("1");
+        }
+      }
+      
+    }
     return(
       <SafeAreaProvider>
             <Appbar.Header style={{mode: 'center-aligned', backgroundColor:"#1F1937"}}>
-           {  (step == 1 || step== 2 || source) && <Appbar.BackAction color='white' onPress={()=>{
-                if(step == 1){
-                setSubmit(false);
-                navigation.navigate('LoginPage')}
-            
-                else{
-                  
-                    source ? navigation.navigate('ProfilePage') :setStep("1");
-                }
-               }}/>}
+           {  (step == 1 || step== 2 || source) && <Appbar.BackAction color='white' onPress={() => handleReturn()}/>}
             <Appbar.Content  title={step != 3 ?"Registration": "Request Status"} titleStyle={{color: "white"}}/>
             {(step == 3 && source!=2) &&  <Appbar.Action icon="power" color='white' accessibilityLabel='Log out' onPress={()=>{navigation.navigate("LoginPage")}}></Appbar.Action>}
             
@@ -142,6 +187,7 @@ const RegisterScreen = ({navigation, route}) =>{
             behavior='position'>
                 <SafeAreaView>
            
+                <Popup modalVisible={modalVisible} setModalVisible={setModalVisible} text={popupText} buttons={popupFn} />
             {(step == 1) && (requestSent == false) &&
                     <View style={styles.TextContainer}>
                      <TextInput  
@@ -366,6 +412,7 @@ const RegisterScreen = ({navigation, route}) =>{
                   visible={open}
                   onDismiss={onDismissSingle}
                   date={birthDate}
+                  validRange={{endDate: new Date()}}
                   onConfirm={onConfirmSingle}
                 />
                 </View>
