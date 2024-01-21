@@ -88,7 +88,7 @@ const InputForm = (props) => {
         {/* LOCATION */}
         <View style={styles.textInputContainer}>
           <TextInput
-            style={{ flex: 1, backgroundColor: 'white' }}
+            style={{ flex: 1 }}
             mode='outlined'
             label="Location"
             outlineColor={props.alarmInput[0] == true  ? 'red' : '#1F1937'}
@@ -223,15 +223,19 @@ const InputForm = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
     paddingHorizontal: '5%',
+    borderColor: '#1F1937',
+    borderWidth: 4,
+    marginLeft:'3%',
+    marginRight:'3%',
+    marginBottom:'0.5%',
+    borderRadius: 20,
+    paddingVertical: 20
   },
   textInputContainer: {
     flexDirection: 'row',
-    paddingBottom: '4%',
-    backgroundColor: 'white',
-   
+    paddingBottom: '4%',   
   },
   submitButton: {
     borderRadius: 10

@@ -1,4 +1,4 @@
-const your_ip_address = '192.168.1.184'
+const your_ip_address = '192.168.1.51'
 const locationKEY = '6596e0ad9314e091225752fijd9e70a'
 const basepath = `http://${your_ip_address}:3000/api`
 
@@ -52,7 +52,28 @@ function getJson(httpResponsePromise) {
 // ========================================== RIDES ==========================================
 
 async function searchRide(params) {
-  return getJson(fetch(`${basepath}/rides?location=${params.location}&date=${dayjs(params.date, 'DD/MM/YYYY').format('YYYY/MM/DD').toString()}&time=${params.time}&duration=${params.duration}&timeUnit=${params.timeUnit}`, {
+  return getJson(fetch(`${basepath}/rides?location=${params.location}&date=${dayjs(params.date, 'DD/MM/YYYY').format('YYYY/MM/DD').toString()}&time=${params.time}&duration=${params.duration.value}&timeUnit=${params.timeUnit}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: 'include',
+  })).then(json => {
+    const res = json.map( item => {
+      return  {
+        ...item,
+        date: dayjs(item.date, 'YYYY/MM/DD').format('DD/MM/YYYY').toString()
+      }
+    })
+    return res
+  }).catch(err => {
+    return err
+  })
+
+}
+
+async function getDailyRide(params) {
+  return getJson(fetch(`${basepath}/rides/daily?location=${params.location}&date=${dayjs(params.date, 'DD/MM/YYYY').format('YYYY/MM/DD').toString()}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -214,5 +235,5 @@ const getEvaluationsByStudentId = () => {
   })
 }
 
-const API = { getCity, searchRide, addRequestRide, getNotification, deleteNotification, login, logout, stillLoggedIn, getAllTopics, getEvaluationsByStudentId }
+const API = { getCity, searchRide, getDailyRide, addRequestRide, getNotification, deleteNotification, login, logout, stillLoggedIn, getAllTopics, getEvaluationsByStudentId }
 export default API;

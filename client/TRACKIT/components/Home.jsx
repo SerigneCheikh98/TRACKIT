@@ -28,7 +28,17 @@ const HomePage = ({ navigation, route }) => {
   const [badgeOn, setBadgeOn] = useState(false);
   const [page, setPage] = useState('home'); // home OR notification
   const [alarmInput, setAlarmInput] = useState([false, false, false, false, false])
+  // let distances
 
+  // function generateDist() {
+  //   console.log('generated')
+  //   let randomNumbers = [];
+  //   for (let i = 0; i < 10; i++) {
+  //     randomNumbers.push(Math.floor(Math.random()*100));
+  //   }
+
+  //   distances = randomNumbers
+  // }
 
   function handleSetFilter(choice) {
     if(inUseFilter == 1 && choice != 1) {
@@ -67,6 +77,7 @@ const HomePage = ({ navigation, route }) => {
   const [time, setTime] = useState('12:00')
   const [date, setDate] = useState('17/02/2024');
   const [location, setLocation] = useState("Torino");
+  // const [lastLocation, setLastLocation] = useState("")
 
   const [duration, setDuration] = useState("");
   const [timeUnit, setTimeUnit] = useState('min');
@@ -109,6 +120,7 @@ const HomePage = ({ navigation, route }) => {
       "timeUnit": params.timeUnit
     }         
 
+    // form checks
     setNoAvailability(false)
     let tmp 
     tmp = alarmInput
@@ -133,26 +145,45 @@ const HomePage = ({ navigation, route }) => {
     }
     setAlarmInput([false, false, false, false, false])
     setDirty(false)
+    // ===============
 
+    // if(lastLocation != location) {
+    //   generateDist()
+    // }
     API.searchRide(paramsObj)
       .then( resp => {
         if(resp.length > 0) {
+          resp = resp.map( (item, index) => {
+            return {
+              ...item,
+              // distance: distances[index % 10]
+            }
+          })
           setUsers(resp)
           setAvailable(true)
+          // setLastLocation(location)
         }
         else {
           const tmp_params = {
-            ...paramsObj,
-            "time": "00:00"
+            "location": params.location,
+            "date": params.date
           }
-          API.searchRide(tmp_params)
+          API.getDailyRide(tmp_params)
             .then( resp => {
-
               setAvailable(false)
               if(resp.length > 0) {
+                resp = resp.map( (item, index) => {
+                  return {
+                    ...item,
+                    //distance: distances[index % 10]
+                  }
+                })
                 setUsers(resp)
+                // setLastLocation(location)
               }
               else {
+
+                // setLastLocation(location)
                 setNoAvailability(true)
                 setUsers([])
               }

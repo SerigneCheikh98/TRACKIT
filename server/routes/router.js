@@ -13,6 +13,9 @@ router.post('/register')
 // search a ride
 router.get('/rides', ridesController.searchRide);
 
+// get daily rides
+router.get('/rides/daily', ridesController.getDailyRide);
+
 // book a practice for the current student
 router.put('/rides')
 

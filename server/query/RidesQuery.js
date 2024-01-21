@@ -26,6 +26,23 @@ exports.searchRide = function searchRide(location, date, time, slots) {
     })
 }
 
+exports.getDailyRide = function getDailyRide(date) {
+    const sql = 'SELECT DriverId, StartingTime, Slot, Date, Name, Surname, R.Location, Rating, Description FROM Rides R, Drivers WHERE Status = 0 AND DriverId = Id AND Date = ?'
+    return new Promise((resolve, reject) => {
+        db.all(sql, [date], (err, rows) => {
+            if (err) {
+                reject(new Error(err.message));
+                return;
+            }
+            if(rows.length === 0) 
+                resolve([])
+            else {
+                resolve(rows)
+            }
+        })
+    })
+}
+
 exports.addRequestRide = function addRequestRide(student_id, location, date, time, slots) {
     const sql = `INSERT INTO Rides(StudentId, Status, StartingTime, Slot, Date, Location)
                     VALUES (?, 2, ?, ?, ?, ?)`
