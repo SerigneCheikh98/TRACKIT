@@ -53,10 +53,16 @@ const UserItem = (props) => {
   return (
     <Pressable onPress={() => {
       if (danger) {
-        props.throwPopup(msg, [{
-          name: 'Close',
-          fn: props.closePopup
-        }])
+        props.throwPopup(msg, [
+          {
+            name: 'Book anyways',
+            fn: () => navigation.navigate("BookingPage", { name: props.user.name, lastname: props.user.lastname, rating: props.user.rating, description: props.user.description })
+          }
+          ,{
+            name: 'Close',
+            fn: props.closePopup
+          }
+        ])
       }
       else {
         props.toggleDropdown(props.index)
@@ -87,10 +93,10 @@ const UserItem = (props) => {
           </Button>
         </View>
       )}
-      {props.showDrop == props.index && (
+      {/* {props.showDrop == props.index && (
         <View style={{ flexDirection: 'column', alignItems: 'center', borderWidth: 0.5, borderColor: 'grey', borderRadius: 10, borderTopWidth: 0}}>
         </View>
-      )}
+      )} */}
     </Pressable>
   )
 }
