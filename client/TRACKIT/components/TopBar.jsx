@@ -3,11 +3,13 @@ import { Appbar, Badge, Text } from 'react-native-paper';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Icon } from '@rneui/themed';
-
+import { useContext } from 'react';
+import { NotificationContext } from './NotificationContext';
 
 const TopBar = (props) => {
   const navigation = useNavigation();
 
+  const [notification, setNotification] = useContext(NotificationContext)
   const goBack = () => {
     navigation.goBack();
   };
@@ -18,10 +20,14 @@ const TopBar = (props) => {
 
       <Text style={styles.title}>TrackIT</Text>
       <TouchableOpacity onPress={() => {
-      navigation.navigate('NotificationPage')
+        setNotification(false)
+        navigation.navigate('NotificationPage')
     }} style={styles.iconContainer}>
       <Appbar.Action icon="bell" size={30} color='white' style={styles.bell} />
-      <Badge size={9} style={styles.badge} />
+      { 
+        notification == true &&
+        <Badge size={9} style={styles.badge} />
+      }
     </TouchableOpacity>
     </View>
   )

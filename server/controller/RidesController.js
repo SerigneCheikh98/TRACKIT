@@ -81,13 +81,50 @@ exports.searchRide = function searchRide(req, res) {
     if(req.query.timeUnit === 'hours')
         req.query.duration *= 60
 
-    const slots = Math.floor(req.query.duration/30) 
+    const slots = Math.round(req.query.duration/30) 
     ridesQuery.searchRide(req.query.location, req.query.date, req.query.time, slots)
         .then( resp => {
             resp = resp.filter( (ride) => {
                 return afterHour(req.query.time, ride.StartingTime) 
             })
 
+            if(dayjs().isSame(req.query.date, 'day')) {
+                resp = resp.filter( (ride) => {
+                    return afterHour(dayjs().format('HH:mm'), ride.StartingTime)
+                })
+            }
+            
+            resp = resp.map( item => {
+                return {
+                    userId: item.DriverId,
+                    name: item.Name,
+                    lastname: item.Surname,
+                    rating: item.Rating,
+                    distance: Math.floor(Math.random()*100),
+                    date: item.Date,
+                    from: item.StartingTime,
+                    description : item.Description,
+                    to: calculateEndingHour(item.StartingTime, item.Slot),
+                    
+                }
+            })
+            res.status(200).json(resp)
+        })
+        .catch( err => {
+            res.status(500).json({message: 'DB error'})
+        })
+}
+
+exports.getDailyRide = function getDailyRide(req, res) {
+    if(!req.query.location) {
+        return res.status(400).json({message: 'Location is missing'})
+    }
+    if(!req.query.date) {
+        return res.status(400).json({message: 'Date is missing or not valid'})
+    }
+
+    ridesQuery.getDailyRide(req.query.date)
+        .then( resp => {
             if(dayjs().isSame(req.query.date, 'day')) {
                 resp = resp.filter( (ride) => {
                     return afterHour(dayjs().format('HH:mm'), ride.StartingTime)

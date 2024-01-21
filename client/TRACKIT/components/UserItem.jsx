@@ -16,7 +16,7 @@ function getDurationMin(from, to) {
 }
 
 function parseDuration(value, type) {
-  if (type == 'min')
+  if (type === 'min')
     return value
   else return value * 60
 }
@@ -41,8 +41,8 @@ const UserItem = (props) => {
   );
 
   const msg = `Attention\nYour chosen time slot is not fully covered`
-  const danger = parseDuration(props.params.duration.value, props.params.timeUnit.value) > getDurationMin(props.user.from, props.user.to)
-
+  const danger = parseDuration(props.params.duration.value, props.params.timeUnit) > getDurationMin(props.user.from, props.user.to)
+  
   const startingTime = dayjs(props.user.from).format('HH;mm')
 
   // const toggleDropdown = () => {
@@ -52,10 +52,16 @@ const UserItem = (props) => {
   return (
     <Pressable onPress={() => {
       if (danger) {
-        props.throwPopup(msg, [{
-          name: 'Close',
-          fn: props.closePopup
-        }])
+        props.throwPopup(msg, [
+          {
+            name: 'Book anyways',
+            fn: () => navigation.navigate("BookingPage", { name: props.user.name, lastname: props.user.lastname, rating: props.user.rating, description: props.user.description })
+          }
+          ,{
+            name: 'Close',
+            fn: props.closePopup
+          }
+        ])
       }
       else {
         props.toggleDropdown(props.index)
@@ -86,10 +92,10 @@ const UserItem = (props) => {
           </Button>
         </View>
       )}
-      {props.showDrop == props.index && (
+      {/* {props.showDrop == props.index && (
         <View style={{ flexDirection: 'column', alignItems: 'center', borderWidth: 0.5, borderColor: 'grey', borderRadius: 10, borderTopWidth: 0}}>
         </View>
-      )}
+      )} */}
     </Pressable>
   )
 }
@@ -164,7 +170,7 @@ const Slots = ({ from, to }) => {
   };
 
   const getButtonStyle = (index) => {
-    return selectedButtons.includes(index) ? { backgroundColor: '#00c89e' } : {};
+    return selectedButtons.includes(index) ? { backgroundColor: '#F9C977' } : {};
   };
 
   return (
@@ -173,7 +179,7 @@ const Slots = ({ from, to }) => {
         const label = item.split('~')
         return (
         <View style={{flexDirection: 'row', alignContent: 'space-between'}}>
-          <View style={{paddingHorizontal: '2%', flex: 1, paddingVertical: '2%'}}>
+          <View key={index*2} style={{paddingHorizontal: '2%', flex: 1, paddingVertical: '2%'}}>
               <Button
                 mode="outlined"
                 style={[{ flex: 1, borderRadius: 10 }, getButtonStyle(index*2)]}
@@ -182,7 +188,7 @@ const Slots = ({ from, to }) => {
                 {label[0]}
               </Button>
             </View>
-            <View style={{paddingHorizontal: '2%', flex: 1, paddingVertical: '2%'}}>
+            <View key={index*2 + 1} style={{paddingHorizontal: '2%', flex: 1, paddingVertical: '2%'}}>
               { 
                 label[1] != "undefined" &&
                 <Button

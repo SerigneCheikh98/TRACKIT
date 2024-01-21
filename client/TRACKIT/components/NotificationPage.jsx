@@ -56,27 +56,16 @@ const NotificationPage = ({ navigation, route }) => {
     return (
         <SafeAreaProvider>
             <TopBar back = {'x'} />
-            <KeyboardAvoidingView>
                 <ScrollView>
-                    <SafeAreaView>
-                        <Popup modalVisible={modalVisible} setModalVisible={setModalVisible} text={popupText} buttons={popupFn} />
-                        <View>
-
-                            {bookings.map((booking, index) => (
+                    <Popup modalVisible={modalVisible} setModalVisible={setModalVisible} text={popupText} buttons={popupFn} />
+                    <View>
+                        {
+                            bookings.map((booking, index) => (
                                 <CardBooking handleDeleteNotification={handleDeleteNotification} key={index} id={booking.bookingId} date={booking.Date} driverName={booking.driverName} time={booking.time} duration={booking.duration} state={booking.state} throwPopup={throwPopup} closePopup={closePopup} />
-
-
-                            ))}
-
-
-
-
-                        </View>
-                    </SafeAreaView>
+                            ))
+                        }
+                    </View>
                 </ScrollView>
-
-            </KeyboardAvoidingView>
-
         </SafeAreaProvider>
     )
 }
@@ -86,10 +75,10 @@ const CardBooking = (props) => {
     let msg
     //used for the pop up when the booking/request is cancelled
     if (props.state = "Pending") {
-        msg = 'Your request has been cancelled'
+        msg = 'Are you sure you want to cancel the request?'
     }
     else {
-        msg = 'Your booking has been cancelled'
+        msg = 'Are you sure you want to cancel your booking'
     }
     return (
         <Card style={{ width: "90%", marginLeft: "5%", flex: 1, height: "100%", marginTop: "7%" }}>
@@ -112,7 +101,7 @@ const CardBooking = (props) => {
                 {props.state == "Pending" && <Text variant='bodySmall' style={{ paddingLeft: "7%", paddingTop: "7%" }}>Estimated response time: 3-4 hours</Text>}
             </Card.Content>
             <Card.Actions>
-                <Button style={styles.buttonSubmit} textColor="white" onPress={() => {
+                <Button style={styles.buttonSubmit} textColor="black" onPress={() => {
                     props.throwPopup(msg, [{
                         name:  props.state == "Pending" ? "Cancel Request" : "Cancel Booking",
                         fn: () => props.handleDeleteNotification(props.id, props.state)
@@ -132,10 +121,11 @@ const CardBooking = (props) => {
 const styles = StyleSheet.create({
     buttonSubmit:
     {
-        backgroundColor: "#1F1937",
+        backgroundColor: "#F9C977",
         padding: '1%',
         borderRadius: 10,
         // alignItems: 'center',
+        borderWidth: 0,
         marginTop: '10%',
         width: "60%",
         marginLeft: "60%",
