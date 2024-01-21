@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     flex: 1,
     resizeMode: 'cover', // or 'contain' or 'stretch'
     alignItems: 'center',
-    opacity: 0.85, // Adjust the opacity value
+    opacity: 0.9, // Adjust the opacity value
 
   },
 

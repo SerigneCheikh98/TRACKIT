@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, React } from 'react';
+import { useState, useCallback, useEffect, React, useRef } from 'react';
 import API from '../API';
 
 
@@ -13,50 +13,70 @@ import {
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 
 const staticTopics = [{
-    topicName: 'U turn',
-    critical: true
+  topicName: 'U turn',
+  critical: true
 },
 {
-    topicName: 'Signals and roundabouts',
-    critical: true
+  topicName: 'Signals and roundabouts',
+  critical: true
 },
 {
-    topicName: 'Signals and roundabouts',
-    critical: true
+  topicName: 'Signals and roundabouts',
+  critical: true
 },
 {
-    topicName: 'Signals and roundabouts',
-    critical: false
+  topicName: 'Signals and roundabouts',
+  critical: false
 },
 {
-    topicName: 'Signals and roundabouts',
-    critical: false
+  topicName: 'Signals and roundabouts',
+  critical: false
 },
 {
-    topicName: 'Signals and roundabouts',
-    critical: false
+  topicName: 'Signals and roundabouts',
+  critical: false
 },
 ]
 
 
 
-const Item = ({contenuto}) => (
-    contenuto.critical === true ? (<View style={styles.itemCritical}>
-                                         <BouncyCheckbox  text={contenuto.topicName} textStyle={{textDecorationLine: "none", color:'black'}} textContainerStyle={styles.title} isChecked={true} onPress={(isChecked ) => {}} />
-                                    </View>) 
-                                    : 
-                                    (<View style={styles.item}>
-                                         <BouncyCheckbox  text={contenuto.topicName} textStyle={{textDecorationLine: "none", color:'black'}} textContainerStyle={styles.title} isChecked={false} onPress={(isChecked ) => {}} />
-                                    </View>)
-);
 
-const Topics = () => {
+
+const Topics = (props) => {
   const [weaknesses, setWeaknesses] = useState([]);
-  
-  
+
+  const numSelected = useRef(0); // Use useRef instead of useState for numSelected
   const [loading, setLoading] = useState(true);
 
+  const Item = ({ contenuto }) => (
+    contenuto.top === true ? (<View style={styles.itemCritical}>
+      <BouncyCheckbox text={contenuto.topicName} textStyle={{ textDecorationLine: "none", color: 'black' }} textContainerStyle={styles.title} isChecked={contenuto.critical} onPress={(isChecked) => {
+        isChecked ? numSelected.current += 1 : numSelected.current -= 1;
+        contenuto.critical = !contenuto.critical;
+        if (numSelected.current <= 0) {
+          props.disable(true)
+        } else {
+          props.disable(false);
+
+        }
+      }} />
+    </View>)
+      :
+      (<View style={styles.item}>
+        <BouncyCheckbox text={contenuto.topicName} textStyle={{ textDecorationLine: "none", color: 'black' }} textContainerStyle={styles.title} isChecked={contenuto.critical} onPress={(isChecked) => {
+          isChecked ? numSelected.current += 1 : numSelected.current -= 1;
+          contenuto.critical = !contenuto.critical;
+          if (numSelected.current <= 0) {
+            props.disable(true)
+          }else {
+            props.disable(false);
   
+          }
+
+        }} />
+      </View>)
+  );
+
 
   useEffect(() => {
     API.getEvaluationsByStudentId().then((evals) => {
@@ -80,7 +100,8 @@ const Topics = () => {
 
       averageRatingsByTopic.sort((a, b) => parseFloat(a.AverageRating) - parseFloat(b.AverageRating));
       const lowestRatings = averageRatingsByTopic.slice(0, 3);
-      
+
+      numSelected.current = lowestRatings.length;
       // [{"AverageRating": 2, "TopicId": 4}, {"AverageRating": 3, "TopicId": 3}, {"AverageRating": 3.5, "TopicId": 6}]
       //console.log(lowestRatings);
 
@@ -91,13 +112,13 @@ const Topics = () => {
         lowestRatings.forEach(({ TopicId, AverageRating }) => {
           const match = topics.find(({ Id }) => Id === TopicId);
           if (match && !uniqueTitles.has(match.Title)) {
-            uniqueTitles.add({topicName : match.Title, critical : true});
-            avgTopic.add({title: match.Title, avg: AverageRating});
+            uniqueTitles.add({ topicName: match.Title, critical: true, top : true });
+            avgTopic.add({ title: match.Title, avg: AverageRating });
           }
         });
         topics.forEach((topic) => {
-          if(!uniqueTitles.has(topic.Title)){
-            uniqueTitles.add({topicName : topic.Title , critical : false});
+          if (!uniqueTitles.has(topic.Title)) {
+            uniqueTitles.add({ topicName: topic.Title, critical: false, top : false });
           }
         });
         setWeaknesses([...uniqueTitles]);
@@ -111,15 +132,15 @@ const Topics = () => {
     id: Math.random().toString(12).substring(0),
     contenuto: weaknesses[index],
   });
-  
+
   const getItemCount = _data => weaknesses.length;
 
 
   return (
-    <SafeAreaView style ={styles.container}>
+    <SafeAreaView style={styles.container}>
       <VirtualizedList style={styles.scroll}
         initialNumToRender={5}
-        renderItem={({item}) => <Item contenuto={item.contenuto} />}
+        renderItem={({ item }) => <Item contenuto={item.contenuto} />}
         keyExtractor={item => item.id}
         getItemCount={getItemCount}
         getItem={getItem}
@@ -130,8 +151,8 @@ const Topics = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex:1,
-    
+    flex: 1,
+
   },
   itemCritical: {
     backgroundColor: '#DDDDDD',
@@ -139,7 +160,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginHorizontal: '4%',
     padding: '2%',
-    
+
 
 
   },
@@ -151,8 +172,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 15,
-    
-    
+
+
   },
   scroll: {
   }

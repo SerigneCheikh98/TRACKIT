@@ -7,6 +7,8 @@ import DriverBar from "./DriverBar";
 import DriverDescription from "./DriverDescription";
 import Topics from "./LessonTopics";
 import { useNavigation } from '@react-navigation/native';
+import { useState, useCallback, useEffect, React } from 'react';
+
 
 
 const getItem = (_data, index) => ({
@@ -27,6 +29,20 @@ const Booking = ({ route}) => {
   const { name, lastname, rating, description } = route.params;
   const { width, height } = Dimensions.get('window');
   const navigation = useNavigation();
+  const [disableButton, setDisableButton] = useState(false);
+
+  const [showText, setShowText] = useState(false);
+
+  const handleButtonPress = () => {
+    // Display the text when the button is pressed
+    setShowText(true);
+
+    // Set a timeout to hide the text after 3 seconds
+    setTimeout(() => {
+      setShowText(false);
+    }, 3000);
+  };
+
 
 
   // Calculate a scaling factor based on the screen dimensions and PixelRatio
@@ -44,13 +60,16 @@ const Booking = ({ route}) => {
                 <View style={styles.bigContainer} >
                     <DriverBar name = {name} lastname = {lastname} rating = {rating}/>
                     <DriverDescription name = {name} description = {description}/>
-                    <Topics/>
+                    <Topics disable = {setDisableButton}/>
                     <View style = {styles.buttonContainer}>
-                      <TouchableOpacity style={styles.button} onPress={()=> navigation.navigate('BookingConfirmationPage', {back : 'x'})}>
+                      {showText && <Text style = {styles.dangerText}>Please select at least one topic</Text>}
+
+                      <TouchableOpacity style={styles.button} onPress={()=> disableButton ? handleButtonPress() : navigation.navigate('BookingConfirmationPage')} >
                       <Text style={[styles.textStyle, { fontSize: getResponsiveFontSize(2) }]}>
                         Book driving lesson
                       </Text>
                       </TouchableOpacity>
+
                     </View>
 
                 </View>
@@ -100,6 +119,11 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       marginBottom: '2%'
       
+    },
+    dangerText : {
+      position: 'absolute',
+      color : 'red',
+      top: 2
     },
     title: {
       fontSize: 32,
