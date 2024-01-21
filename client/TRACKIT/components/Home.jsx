@@ -1,6 +1,6 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
-import { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useContext, useRef } from 'react';
 import UsersList from './UsersList';
 import BottomBar from './BottomBar';
 import RequestCard from './RequestCard';
@@ -10,15 +10,20 @@ import Separator from './Separator';
 import Popup from './Popup';
 import TopBar from './TopBar';
 import { Modal, Pressable } from 'react-native';
+import { NotificationContext } from './NotificationContext';
 
 import { ActivityIndicator } from 'react-native';
 import Badge from 'react-native-paper';
 import NotificationPage from './NotificationPage';
+import { useFocusEffect } from '@react-navigation/native';
+
 
 const HomePage = ({ navigation, route }) => {
 
 
   const [logging, setLogging] = useState(false)
+  const [notification, setNotification] = useContext(NotificationContext)
+
 
   const [users, setUsers] = useState([])
   const [inUseFilter, setInUseFilter] = useState(0) // 0 none - 1 distance - 2 rating
@@ -28,26 +33,26 @@ const HomePage = ({ navigation, route }) => {
   const [badgeOn, setBadgeOn] = useState(false);
   const [page, setPage] = useState('home'); // home OR notification
   const [alarmInput, setAlarmInput] = useState([false, false, false, false, false])
-  // let distances
 
-  // function generateDist() {
-  //   console.log('generated')
-  //   let randomNumbers = [];
-  //   for (let i = 0; i < 10; i++) {
-  //     randomNumbers.push(Math.floor(Math.random()*100));
-  //   }
+  let distances = useRef([]);
 
-  //   distances = randomNumbers
-  // }
+  function generateDist() {
+    let randomNumbers = [];
+    for (let i = 0; i < 10; i++) {
+      randomNumbers.push(Math.floor(Math.random() * 100));
+    }
+
+    distances.current = randomNumbers
+  }
 
   function handleSetFilter(choice) {
-    if(inUseFilter == 1 && choice != 1) {
+    if (inUseFilter == 1 && choice != 1) {
       setInUseFilter(2)
     }
-    else if(inUseFilter == 2 && choice != 2) {
+    else if (inUseFilter == 2 && choice != 2) {
       setInUseFilter(1)
     }
-    else if(inUseFilter == 0) {
+    else if (inUseFilter == 0) {
       setInUseFilter(choice)
     }
     else {
@@ -77,13 +82,42 @@ const HomePage = ({ navigation, route }) => {
   const [time, setTime] = useState('12:00')
   const [date, setDate] = useState('17/02/2024');
   const [location, setLocation] = useState("Torino");
-  // const [lastLocation, setLastLocation] = useState("")
+  const [lastLocation, setLastLocation] = useState("")
 
-  const [duration, setDuration] = useState("");
+  const [duration, setDuration] = useState("30");
   const [timeUnit, setTimeUnit] = useState('min');
 
   const [dirty, setDirty] = useState(false)
   const [dirtySearch, setDirtySearch] = useState(false)
+
+  useFocusEffect(
+    React.useCallback(() => {
+      setDirtySearch(false);
+      setDirty(false);
+      setTimeUnit('min');
+      setDuration("30");
+      setLastLocation("");
+      setLocation("Torino");
+      setDate('17/02/2024');
+      setTime('12:00');
+      setPopupFn([{
+        name: '',
+        fn: () => { }
+      }])
+      setPopupText('');
+      setModalVisible(false);
+      setAlarmInput([false, false, false, false, false]);
+      setPage('home');
+      setLogging(false)
+      setNotification(NotificationContext)
+      setUsers([])
+      setInUseFilter(0) // 0 none - 1 distance - 2 rating
+      setAvailable(true)
+      setNoAvailability(false)
+
+      /* console.log('Screen is focused, refresh here'); */
+    }, [])
+  );
 
   const params = {
     time: time,
@@ -96,24 +130,41 @@ const HomePage = ({ navigation, route }) => {
     setDuration: setDuration,
     timeUnit: timeUnit,
     setTimeUnit: setTimeUnit
-  } 
+  }
 
   function handleInsertRequest() {
     API.addRequestRide(params)
-      .then( resp => {
+      .then(resp => {
+        setNotification(true)
         closePopup()
       })
-      .catch( err => console.log(err) )
-  } 
+      .catch(err => {
+        throwPopup(err.message, [{
+          name: 'Close',
+          fn: closePopup
+        }])
+      })
+  }
 
-  useEffect( () => {
-    if(users.length == 0 && available == false) {
+  useEffect(() => {
+    API.getNotification()
+      .then(resp => {
+        if (resp.length > 0 && resp.some(n => n.seen == 0)) {
+          setNotification(true)
+        }
+        else setNotification(false)
+      })
+      .catch(err => console.log(err))
+  }, [])
+
+  useEffect(() => {
+    if (users.length == 0 && available == false) {
       setAvailable(true)
     }
   }, [params.time, params.date, params.location, params.duration, params.timeUnit])
 
-  useEffect( () => {
-    if(dirtySearch == true) {
+  useEffect(() => {
+    if (dirtySearch == true) {
       setUsers([])
       setDirtySearch(false)
     }
@@ -126,28 +177,28 @@ const HomePage = ({ navigation, route }) => {
       "time": params.time,
       "duration": params.duration,
       "timeUnit": params.timeUnit
-    }         
+    }
 
     // form checks
     setNoAvailability(false)
-    let tmp 
+    let tmp
     tmp = alarmInput
-    if(params.location.trim() === '') {
+    if (params.location.trim() === '') {
       tmp[0] = true
     } else tmp[0] = false
-    if(params.date === '') {
+    if (params.date === '') {
       tmp[1] = true
     } else tmp[1] = false
-    if(params.time === '') {
+    if (params.time === '') {
       tmp[2] = true
     } else tmp[2] = false
-    if(params.duration === '') {
+    if (params.duration === '') {
       tmp[3] = true
     } else tmp[3] = false
-    if(params.timeUnit === '') {
+    if (params.timeUnit === '') {
       tmp[4] = true
     } else tmp[4] = false
-    if(alarmInput.some( item => item === true)) {
+    if (alarmInput.some(item => item === true)) {
       setDirty(true)
       return
     }
@@ -155,21 +206,22 @@ const HomePage = ({ navigation, route }) => {
     setDirty(false)
     // ===============
 
-    // if(lastLocation != location) {
-    //   generateDist()
-    // }
+    if (lastLocation !== location || lastLocation === '') {
+      generateDist()
+    }
+
     API.searchRide(paramsObj)
-      .then( resp => {
-        if(resp.length > 0) {
-          resp = resp.map( (item, index) => {
+      .then(resp => {
+        if (resp.length > 0) {
+          resp = resp.map((item, index) => {
             return {
               ...item,
-              // distance: distances[index % 10]
+              distance: distances.current[index % 10]
             }
           })
           setUsers(resp)
           setAvailable(true)
-          // setLastLocation(location)
+          setLastLocation(location)
         }
         else {
           const tmp_params = {
@@ -177,54 +229,63 @@ const HomePage = ({ navigation, route }) => {
             "date": params.date
           }
           API.getDailyRide(tmp_params)
-            .then( resp => {
+            .then(resp => {
               setAvailable(false)
-              if(resp.length > 0) {
-                resp = resp.map( (item, index) => {
+              if (resp.length > 0) {
+                resp = resp.map((item, index) => {
                   return {
                     ...item,
-                    //distance: distances[index % 10]
+                    distance: distances.current[index % 10]
                   }
                 })
                 setUsers(resp)
-                // setLastLocation(location)
+                setLastLocation(location)
               }
               else {
-
-                // setLastLocation(location)
+                throwPopup('No available drivers found for this day', [{
+                  name: 'Close',
+                  fn: closePopup
+                }])
+                setLastLocation(location)
                 setNoAvailability(true)
                 setUsers([])
               }
             })
-            .catch( err => {
-              console.log(err)
+            .catch(err => {
+              throwPopup('Network request failed', [{
+                name: 'Close',
+                fn: closePopup
+              }])
             })
         }
       })
-      .catch( err => {
-        console.log(err)
+      .catch(err => {
+        throwPopup('Network request failed', [{
+          name: 'Close',
+          fn: closePopup
+        }])
       })
   }
 
   return (
     <SafeAreaProvider>
       <TopBar navigation={navigation} />
-      <ScrollView style={{backgroundColor: "#FFFFFF"}}>
+      <ScrollView style={{ backgroundColor: "#FFFFFF" }}>
         {/* <SafeAreaView style={{backgroundColor: "#FFFFFF"}}> */}
-         <View style={{flex: 1}}>
+        <View style={{ flex: 1 }}>
           <Popup modalVisible={modalVisible} setModalVisible={setModalVisible} text={popupText} buttons={popupFn} />
-          {page == 'notification' && <NotificationPage throwPopup={throwPopup} closePopup={closePopup}/>}
+          {page == 'notification' && <NotificationPage throwPopup={throwPopup} closePopup={closePopup} />}
           {page == 'home' &&
-          <View style={styles.container}>
-              <InputForm params={params} applyChange={applyChange} logging={logging} setLogging={setLogging} alarmInput={alarmInput} dirty={dirty} setDirtySearch={setDirtySearch}/>
-              <ActivityIndicator animating={logging}/>
+            <View style={styles.container}>
+              <InputForm params={params} throwPopup={throwPopup} closePopup={closePopup} applyChange={applyChange} logging={logging} setLogging={setLogging} alarmInput={alarmInput} dirty={dirty} setDirtySearch={setDirtySearch} />
+              <ActivityIndicator animating={logging} />
               {
                 available == false &&
-                <View style={{backgroundColor:"#ffffff"}}>
-                
-                  <RequestCard params={params}   handleInsertRequest={handleInsertRequest} throwPopup={throwPopup} closePopup={closePopup} badgeOn={badgeOn} text={'We are sorry, currently no drivers are available at this time :\'('} setBadgeOn={setBadgeOn} />
+                <View style={{ backgroundColor: "#ffffff" }}>
+
+                  <RequestCard params={params} handleInsertRequest={handleInsertRequest} throwPopup={throwPopup} closePopup={closePopup} badgeOn={badgeOn} text={'We are sorry, currently no drivers are available at this time :\'('} setBadgeOn={setBadgeOn} />
                   {
-                    noAvailability == false && 
+                    noAvailability == false &&
                     <Separator text={'OR'} />
                   }
                 </View>
@@ -232,7 +293,7 @@ const HomePage = ({ navigation, route }) => {
               <UsersList users={users} params={params} inUseFilter={inUseFilter} handleSetFilter={handleSetFilter} available={available} throwPopup={throwPopup} closePopup={closePopup} />
             </View>
           }
-          </View>
+        </View>
         {/* </SafeAreaView> */}
       </ScrollView>
     </SafeAreaProvider>
@@ -241,13 +302,13 @@ const HomePage = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
   container:
-    {
-        flex: 1,
-        borderRadius:5,
-        backgroundColor:"#FFFFFF",
-        height:"100%"
-       
-    },
+  {
+    flex: 1,
+    borderRadius: 5,
+    backgroundColor: "#FFFFFF",
+    height: "100%"
+
+  },
 });
 
 export default HomePage

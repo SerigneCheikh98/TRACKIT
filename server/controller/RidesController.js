@@ -62,6 +62,7 @@ function calculateEndingHour(startingTime, slots) {
  * @param {*} res [{ride_obj1}, {ride_obj2}, ...]
  */
 exports.searchRide = function searchRide(req, res) {
+    req.query.duration = 30
     if(!req.query.location) {
         return res.status(400).json({message: 'Location is missing'})
     }
@@ -87,7 +88,6 @@ exports.searchRide = function searchRide(req, res) {
             resp = resp.filter( (ride) => {
                 return afterHour(req.query.time, ride.StartingTime) 
             })
-
             if(dayjs().isSame(req.query.date, 'day')) {
                 resp = resp.filter( (ride) => {
                     return afterHour(dayjs().format('HH:mm'), ride.StartingTime)
@@ -196,7 +196,6 @@ exports.addRequestRide = function addRequestRide(req, res) {
             return res.status(200).json({message: 'Request sent'})
         })
         .catch( err => {
-            console.log(err)
             return res.status(500).json({message: 'DB error'})
         })
 }
