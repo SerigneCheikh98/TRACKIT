@@ -18,6 +18,8 @@ import BookingConfirmation from './components/BookingConfirmationPage';
 import { useState, useEffect } from 'react';
 import * as Font from 'expo-font';
 import { PaperProvider, DefaultTheme } from 'react-native-paper';
+import { NotificationContext } from './components/NotificationContext';
+import API from './API';
 
 
 
@@ -121,9 +123,22 @@ export default function App() {
     },
   };
 
+  const [notification, setNotification] = useState(false)
+
+  useEffect( () => {
+    API.getNotification()
+      .then( resp => {
+        if(resp.length > 0) {
+          setNotification(true)
+        }
+        else setNotification(false)
+      })
+      .catch( err => console.log(err))
+  }, [])
+
   return(
     <PaperProvider theme={theme}>
-
+      <NotificationContext.Provider value={[notification, setNotification]}>
     <NavigationContainer>
       {!isLoggedIn ? <AuthStackScreen setIsLoggedIn={setIsLoggedIn} /> : 
     (<Tab.Navigator
@@ -161,6 +176,7 @@ export default function App() {
       </Tab.Navigator>)
     }
   </NavigationContainer>
+  </NotificationContext.Provider>
 </PaperProvider>
   );
 }
