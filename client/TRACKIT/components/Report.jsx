@@ -212,7 +212,8 @@ const ReportScreen = ({ navigation }) => {
               marginBottom:'0.5%',
               padding: '5%',
               borderRadius: 20,
-              backgroundColor: '#1F1937',
+              backgroundColor: 'rgba(31, 25, 55, 0.70)',
+              
             
             }}>
             <View style={{ padding: 20, alignItems: 'center' }}>
@@ -244,7 +245,7 @@ const ReportScreen = ({ navigation }) => {
         <View style={{ paddingVertical: 1 }}>
           <View>
             {/* <List.Section title={`Top ${weaknesses.length} weaknesses:`} titleStyle={{ fontSize: 20, fontWeight: 'bold', textDecorationLine: 'underline', color: 'black' }}> */}
-              <View style={{backgroundColor:'#1F1937', padding:"5%", borderRadius:20, marginLeft:'3%', marginRight:'3%', marginTop:'3%'}}>
+              <View style={{backgroundColor:'rgba(31, 25, 55, 0.70)', padding:"5%", borderRadius:20, marginLeft:'3%', marginRight:'3%', marginTop:'3%'}}>
             <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white', marginLeft:'5%', marginBottom:'2%',  }}>Top weaknesses:</Text>
               {weaknesses.map((weakness, index) => (
               //   <TopicCard key={index} title={`\u2022 ${weakness}`} titleStyle={styles.title} description="more.." descriptionStyle={styles.description} style={{ marginBottom: -5 }} onPress={() => handleWeaknessTopic(weakness)} />
@@ -254,7 +255,7 @@ const ReportScreen = ({ navigation }) => {
             {/* </List.Section> */}
             </View>
           </View>
-          <View style={{backgroundColor:'#1F1937', padding:"5%", borderRadius:20, marginLeft:'3%', marginRight:'3%', marginTop:'7%'}}>
+          <View style={{backgroundColor:'rgba(31, 25, 55, 0.70)', padding:"5%", borderRadius:20, marginLeft:'3%', marginRight:'3%', marginTop:'7%'}}>
           <Card mode='contained' style={{marginLeft:10, marginRight:10, marginTop:'3%', backgroundColor:'white'}}>
             <Card.Title title="Feedback: Good" titleVariant='titleLarge' left={LeftContent} />
             <Card.Content>
@@ -283,7 +284,8 @@ const ReportScreen = ({ navigation }) => {
           <Modal visible={modalVisible} transparent={true} animationType="slide" onDismiss={() => setModalVisible(false)} contentContainerStyle={styles.containerStyle}>
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
-                <Text style={styles.modalText}>{selectedWeakness}</Text>
+              <Text style={styles.modalText}>Average Grade</Text>
+                <Text style={[styles.modalText, {fontWeight:'bold'}]}>{selectedWeakness}</Text>
                 
                 <PieChart
                 data={loading ? [] : weaknessData}
@@ -312,7 +314,7 @@ const ReportScreen = ({ navigation }) => {
           <Modal visible={DescriptionVisible} transparent={true}  animationType="slide" onDismiss={() => setDescriptionVisible(false)} contentContainerStyle={styles.containerStyle}>
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
-                <Text style={styles.modalText}>{selectedTopic}</Text>
+                <Text style={[styles.modalText, {fontWeight:'bold'}]}>{selectedTopic}</Text>
                 <Text>{selectedDescription}</Text>
                 <Pressable
                   style={[styles.button, styles.buttonClose]}

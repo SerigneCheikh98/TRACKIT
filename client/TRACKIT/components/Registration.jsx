@@ -16,6 +16,12 @@ import { Tile, color } from '@rneui/base';
 import { findLastIndex, pick } from 'lodash'
 import Separator from './Separator'
 import dayjs from 'dayjs'
+
+
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs();//Ignore all log notifications
+
 const genders = [
     {label: "Female", value: '1'},
     {label: "Male", value: '2'},
@@ -54,7 +60,7 @@ const RegisterScreen = ({navigation, route}) =>{
     const [birthDate, setBirthDate] = useState(null)
     const [idImage, setIdImage] = useState(null);
     const [licImage, setLicImage] = useState(null);
-
+    const [description, setDescription] = useState('');
     const [selectedCountry, setSelectedCountry] = useState(null)
     
     
@@ -306,7 +312,7 @@ const RegisterScreen = ({navigation, route}) =>{
 
     <View style={styles.TextContainer}>
  
-<Text variant="titleLarge" style={{ marginBottom:"2%"}} textColor="#1F1937">Personal Information</Text>
+<Text variant="titleLarge" style={{ marginBottom:"2%", fontWeight:'bold'}} textColor="#1F1937">Personal Information</Text>
                  
                   <View style={{width:"100%",  marginLeft:"15%", marginBottom:"3%"}}>
                     <TouchableOpacity style={
@@ -321,7 +327,7 @@ const RegisterScreen = ({navigation, route}) =>{
                     data={genders}
                     placeholderStyle={styles.placeholderStyle}
                     selectedTextStyle={styles.selectedTextStyle}
-                    
+                    activeColor='#F9C977'
 
                     maxHeight={300}
                     labelField="label"
@@ -383,14 +389,15 @@ const RegisterScreen = ({navigation, route}) =>{
                     <Text style={{ color: submitfinal&&licImage==null ? 'red' : '#1F1937' }}> *</Text> 
                     </Text>
                     </TouchableOpacity>
-                     <View style={{ flexDirection: 'row' }}>
-     { !licImage  && <Button icon="camera" mode="contained" onPress={()=>pickImage(true)} textColor="#1F1937" style={[styles.buttonOutlineImport, { marginRight: "0%", fontSize: 8, width: '80%' }]}>
-        Upload photo
-      </Button>}
+                     <View >
+     { !licImage  && <Pressable icon="camera"  onPress={()=>pickImage(true)} textColor="#1F1937" style={[styles.buttonOutlineImport, { fontSize: 8, width: '80%', flexDirection:'row', columnGap:'10%', alignContent:'center', alignItems:'center', justifyContent:'center', paddingTop:'2%',paddingBottom:'2%' }]}>
+        
+        <Icon name='photo'></Icon>
+        <Text>Upload photo</Text>
+      </Pressable>}
       {licImage  &&  
       
-      <View style={{
-        flexDirection: 'row'}}>
+      <View >
         <TouchableOpacity style={{flexBasis: "30%"}} onPress={()=>{}}>
       <Image source={{uri:licImage}}  style={{  width: 140,
         height: 110,
@@ -433,9 +440,10 @@ const RegisterScreen = ({navigation, route}) =>{
                     </Text>
                     </TouchableOpacity>
     <View style={{ flexDirection: 'row' }}>
-     { !idImage  && <Button icon="camera" mode="contained" onPress={()=>pickImage(false)} textColor="#1F1937" style={[styles.buttonOutlineImport, { marginRight: "0%", fontSize: 8, marginBottom:"3",  width: '80%' }]}>
-        Upload photo
-      </Button>}
+     { !idImage  && <Pressable icon="camera" mode="contained" onPress={()=>pickImage(false)} textColor="#1F1937" style={[styles.buttonOutlineImport, { fontSize: 8, width: '80%', flexDirection:'row', columnGap:'10%', alignContent:'center', alignItems:'center', justifyContent:'center', paddingTop:'2%',paddingBottom:'2%' }]}>
+        <Icon name='photo'/>
+        <Text>Upload photo</Text>
+      </Pressable>}
       {idImage  &&  
       
       <View style={{
@@ -475,6 +483,34 @@ const RegisterScreen = ({navigation, route}) =>{
       </View>             }
     </View>
    
+                  <TouchableOpacity style={
+                        styles.titledesign        
+                    }>
+                    <Text  style={{color:'#1F1937', fontSize:12, textAlign:'center', fontWeight:'bold'}}> Description
+                    <Text style={{ color: submitfinal && description.length== 0 ? 'red' : '#1F1937' }}> *</Text> 
+                    </Text>
+                    </TouchableOpacity>
+                    <TextInput
+                    multiline={true}
+                    mode='outlined'
+                    style={
+                      {
+                        backgroundColor: 'white',
+                        width: '80%',
+                        fontSize:12
+
+                      }
+                    }
+                    placeholder={'Tell us more about yourself....'}
+                    textColor='#1F1937'
+                    value={description}
+                    onChangeText={(text)=>{
+                      
+                      setDescription(text)
+                      console.log(description)
+                      
+                    }}
+                    ></TextInput>
                      
                      <TouchableOpacity style={
                         styles.titledesign        
@@ -518,7 +554,7 @@ const RegisterScreen = ({navigation, route}) =>{
         </View>     
 
         </View>          
-        {((gender == null ||   birthDate == null  || idImage == null || licImage == null || phoneNumber.length==0 )&& submitfinal)
+        {((gender == null ||   birthDate == null  || idImage == null || licImage == null || phoneNumber.length ==0 )&& submitfinal)
             && <Text style={{color:'red', marginTop:'7%'}}>Fill in all fields before sending request</Text>}
         <TouchableOpacity    
         onPress={()=>{
@@ -535,6 +571,7 @@ const RegisterScreen = ({navigation, route}) =>{
               
             }
             console.log(step);
+            console.log(description)
         }}
         style={[styles.buttonSubmit, width="100%",  marginRight="20%", marginTop="3%", marginBottom='20%']}
         >
@@ -673,7 +710,7 @@ const styles = StyleSheet.create({
         borderWidth:2,
         borderRadius: 10,
         alignItems: 'center',
-        marginTop: '3%',
+        marginTop: '2%',
     },
     buttonText:{
       color: 'white',
