@@ -51,6 +51,9 @@ const styles = StyleSheet.create({
         color: 'black',
         fontSize: 16, // Adjust the fontSize as needed
         padding: '2%',
+        fontWeight: 'bold',
+        marginTop:'1%'
+
     },
     buttonTextTitle: {
         justifyContent: 'center',
