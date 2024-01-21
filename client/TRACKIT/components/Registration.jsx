@@ -109,17 +109,15 @@ const RegisterScreen = ({navigation, route}) =>{
         
       };
    
-    function handleInputValue(phoneNumber) {
-        setPhoneNumber(phoneNumber);
-    }
-
+   
     function handleSelectedCountry(country) {
         setSelectedCountry(country);
     }
-
-
-
+    
     const [phoneNumber, setPhoneNumber] = useState(null)
+    
+    
+    
 
     return(
       <SafeAreaProvider>
@@ -482,7 +480,7 @@ const RegisterScreen = ({navigation, route}) =>{
                         styles.titledesign        
                     }>
                     <Text  style={{color:'#1F1937', fontSize:12, textAlign:'center', fontWeight:'bold'}}>Phone number
-                    <Text style={{ color: submitfinal&&phoneNumber==null ? 'red' : '#1F1937' }}> *</Text> 
+                    <Text style={{ color: submitfinal && phoneNumber.length==0 ? 'red' : '#1F1937' }}> *</Text> 
                     </Text>
                     </TouchableOpacity>
                     <View style={{
@@ -520,7 +518,7 @@ const RegisterScreen = ({navigation, route}) =>{
         </View>     
 
         </View>          
-        {((gender == null ||   birthDate == null  || idImage == null || licImage == null || phoneNumber == null )&& submitfinal)
+        {((gender == null ||   birthDate == null  || idImage == null || licImage == null || phoneNumber.length==0 )&& submitfinal)
             && <Text style={{color:'red', marginTop:'7%'}}>Fill in all fields before sending request</Text>}
         <TouchableOpacity    
         onPress={()=>{
@@ -529,6 +527,12 @@ const RegisterScreen = ({navigation, route}) =>{
           console.log(step);
             if((gender  && birthDate  && idImage && licImage  && phoneNumber )){
             setStep('3');
+            }
+            else {
+              console.log(phoneNumber);
+              setRequestSent(false);
+              console.log(submitfinal);
+              
             }
             console.log(step);
         }}
