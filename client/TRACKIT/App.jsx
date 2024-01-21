@@ -14,6 +14,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import NotificationPage from './components/NotificationPage';
 import ProfilePage from './components/Profile';
 import Booking from './components/BookingPage';
+import BookingConfirmation from './components/BookingConfirmationPage';
 import { useState, useEffect } from 'react';
 import * as Font from 'expo-font';
 import { PaperProvider, DefaultTheme } from 'react-native-paper';
@@ -49,6 +50,7 @@ function HomeStackScreen() {
       {/* <HomeStack.Screen name="LoginPage" component={Login} /> */}
       <HomeStack.Screen name="HomePage" component={HomePage} />
       <HomeStack.Screen name="BookingPage" component={Booking} />
+      <HomeStack.Screen name="BookingConfirmationPage" component={BookingConfirmation} />
       {/* <HomeStack.Screen name="RegistrationPage" component={RegisterScreen} /> */}
       <HomeStack.Screen name="NotificationPage" component={NotificationPage} />
     </HomeStack.Navigator>
