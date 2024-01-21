@@ -40,7 +40,7 @@ const Booking = ({ route}) => {
     // Set a timeout to hide the text after 3 seconds
     setTimeout(() => {
       setShowText(false);
-    }, 3000);
+    }, 5000);
   };
 
 
