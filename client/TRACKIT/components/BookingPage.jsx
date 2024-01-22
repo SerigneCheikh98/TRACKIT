@@ -8,6 +8,8 @@ import DriverDescription from "./DriverDescription";
 import Topics from "./LessonTopics";
 import { useNavigation } from '@react-navigation/native';
 import { useState, useCallback, useEffect, React } from 'react';
+import API from '../API';
+
 
 
 
@@ -26,14 +28,14 @@ const getItem = (_data, index) => ({
 
 const Booking = ({ route}) => {
 
-  const { name, lastname, rating, description } = route.params;
+  const { name, lastname, rating, description, rideId, from, to, selectedButtons } = route.params;
   const { width, height } = Dimensions.get('window');
   const navigation = useNavigation();
   const [disableButton, setDisableButton] = useState(false);
 
   const [showText, setShowText] = useState(false);
 
-  const handleButtonPress = () => {
+  const handleButtonPressWrong = () => {
     // Display the text when the button is pressed
     setShowText(true);
 
@@ -41,6 +43,17 @@ const Booking = ({ route}) => {
     setTimeout(() => {
       setShowText(false);
     }, 5000);
+  };
+
+  const handleButtonPressRight = () => {
+    console.log(rideId)
+    API.bookRide(rideId)
+    .then(resp => {
+      navigation.navigate('BookingConfirmationPage')
+    })
+    .catch(err => {
+      console.log(err)
+    })
   };
 
 
@@ -64,7 +77,7 @@ const Booking = ({ route}) => {
                     <View style = {styles.buttonContainer}>
                       {showText && <Text style = {styles.dangerText}>Please select at least one topic</Text>}
 
-                      <TouchableOpacity style={styles.button} onPress={()=> disableButton ? handleButtonPress() : navigation.navigate('BookingConfirmationPage')} >
+                      <TouchableOpacity style={styles.button} onPress={()=> disableButton ? handleButtonPressWrong() : handleButtonPressRight()} >
                       <Text style={[styles.textStyle, { fontSize: getResponsiveFontSize(2) }]}>
                         Book driving lesson
                       </Text>

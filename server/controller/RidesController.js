@@ -104,6 +104,7 @@ exports.searchRide = function searchRide(req, res) {
                     date: item.Date,
                     from: item.StartingTime,
                     description : item.Description,
+                    rideId : item.RideId,
                     to: calculateEndingHour(item.StartingTime, item.Slot),
                     
                 }
@@ -112,6 +113,19 @@ exports.searchRide = function searchRide(req, res) {
         })
         .catch( err => {
             res.status(500).json({message: 'DB error'})
+        })
+}
+
+exports.bookRide = function bookRide(req, res) {
+    if(!req.body.rideId) {
+        return res.status(400).json({message: 'RideId is missing'})
+    }
+    ridesQuery.bookRide(req.body.rideId)
+        .then( resp => {
+            return res.status(200).json({message: 'Booking completed'})
+        })
+        .catch( err => {
+            return res.status(500).json({message: 'DB error'})
         })
 }
 
