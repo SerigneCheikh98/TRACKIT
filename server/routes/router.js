@@ -22,6 +22,9 @@ router.put('/rides')
 // request by the current student
 router.post('/rides', ridesController.addRequestRide)
 
+// 
+router.put('/bookRide', ridesController.bookRide)
+
 // get all topics
 router.get('/topics', reportController.getAllTopics)
 

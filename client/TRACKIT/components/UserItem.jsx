@@ -27,6 +27,8 @@ const UserItem = (props) => {
   const [visible, setVisible] = useState(false)
   const [start, setStart] = useState(-1)
   const [end, setEnd] = useState(-1)
+  const [selectedButtons, setSelectedButtons] = useState([]);
+
 
   const onDismiss = useCallback(() => {
     setVisible(false)
@@ -55,7 +57,7 @@ const UserItem = (props) => {
         props.throwPopup(msg, [
           {
             name: 'Book anyways',
-            fn: () => navigation.navigate("BookingPage", { name: props.user.name, lastname: props.user.lastname, rating: props.user.rating, description: props.user.description })
+            fn: () => navigation.navigate("BookingPage", { name: props.user.name, lastname: props.user.lastname, rating: props.user.rating, description: props.user.description, rideId : props.user.rideId, from: props.user.from, to: props.user.to, selectedButtons: selectedButtons })
           }
           ,{
             name: 'Close',
@@ -64,6 +66,7 @@ const UserItem = (props) => {
         ])
       }
       else {
+
         props.toggleDropdown(props.index)
       }
     }}>
@@ -86,8 +89,8 @@ const UserItem = (props) => {
       </View>
       {props.showDrop == props.index && (
         <View style={{ flexDirection: 'column', alignItems: 'center', borderWidth: 0.5, borderColor: 'grey', borderRadius: 10, borderTopWidth: 0}}>
-          <Slots from={props.user.from} to={props.user.to} start={start} end={end} />
-          <Button mode="outlined" style={[{ flex: 1, width: '90%', borderRadius: 10, marginBottom: '2%' }]} onPress={() => navigation.navigate("BookingPage", {name : props.user.name, lastname : props.user.lastname, rating : props.user.rating, description : props.user.description}) }>
+          <Slots from={props.user.from} to={props.user.to} start={start} end={end} selectedButtons = {selectedButtons} setSelectedButtons = {setSelectedButtons}/>
+          <Button mode="outlined" style={[{ flex: 1, width: '90%', borderRadius: 10, marginBottom: '2%' }]} onPress={() => navigation.navigate("BookingPage", {name : props.user.name, lastname : props.user.lastname, rating : props.user.rating, description : props.user.description, rideId : props.user.rideId, from: props.user.from, to: props.user.to, selectedButtons: selectedButtons}) }>
             Confirm
           </Button>
         </View>
@@ -120,7 +123,7 @@ const Rating = (props) => {
 
 
 
-const Slots = ({ from, to }) => {
+const Slots = ({ from, to, selectedButtons, setSelectedButtons }) => {
   const min_from = from.split(':').map(val => parseInt(val))
   const min_to = to.split(':').map(val => parseInt(val))
   const label = []
@@ -149,7 +152,6 @@ const Slots = ({ from, to }) => {
   }
   comp = comp.filter(a => a != 'undefined')
 
-  const [selectedButtons, setSelectedButtons] = useState([]);
   const [flag, setFlag] = useState(false)
 
   const handleButtonClick = (index) => {
@@ -158,12 +160,17 @@ const Slots = ({ from, to }) => {
     }
     else if(selectedButtons.length == 0) {
       setSelectedButtons([index])
+      console.log(index)
     }
     else {
       const start = selectedButtons.pop()
       const sel = []
-      for(let i = start; i <= index; i++)
+      for(let i = start; i <= index; i++){
         sel.push(i)
+      }
+
+      console.log(index)
+
     
       setSelectedButtons(sel)
     }

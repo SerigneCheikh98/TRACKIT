@@ -10,7 +10,7 @@ const db = require('../db')
 */
 
 exports.searchRide = function searchRide(location, date, time, slots) {
-    const sql = 'SELECT DriverId, StartingTime, Slot, Date, Name, Surname, R.Location, Rating, Description FROM Rides R, Drivers WHERE Status = 0 AND Slot >= ? AND DriverId = Id AND Date = ?'
+    const sql = 'SELECT DriverId, StartingTime, Slot, Date, Name, Surname, R.Location, Rating, Description, RideId FROM Rides R, Drivers WHERE Status = 0 AND Slot >= ? AND DriverId = Id AND Date = ?'
     return new Promise((resolve, reject) => {
         db.all(sql, [slots, date], (err, rows) => {
             if (err) {
@@ -22,6 +22,20 @@ exports.searchRide = function searchRide(location, date, time, slots) {
             else {
                 resolve(rows)
             }
+        })
+    })
+}
+
+exports.bookRide = function bookRide(rideId){
+    const sql = 'UPDATE Rides SET Status = 1 WHERE RideId = ? '
+    return new Promise((resolve, reject) => {
+        db.run(sql, [rideId], function (err) {
+            if (err) {
+                reject(new Error(err.message))
+                console.log('prova')
+                return
+            }
+            resolve(this.changes);
         })
     })
 }
