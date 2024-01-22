@@ -1,4 +1,4 @@
-const your_ip_address = '192.168.1.51'
+const your_ip_address = '192.168.1.184'
 const locationKEY = '6596e0ad9314e091225752fijd9e70a'
 const basepath = `http://${your_ip_address}:3000/api`
 
@@ -120,6 +120,25 @@ async function addRequestRide(params) {
   })
 
 }
+
+async function bookRide(rideId) {
+  return getJson(fetch(`${basepath}/bookRide`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: 'include',
+    body: JSON.stringify({
+      rideId : rideId
+    })
+  })).then(json => {
+    return json
+  }).catch(err => {
+    console.log(rideId +'-----')
+    throw err
+  })
+}
+
 // ========================================== NOTIFICATION ==========================================
 
 
@@ -249,5 +268,5 @@ const getEvaluationsByStudentId = () => {
   })
 }
 
-const API = { getCity, searchRide, getDailyRide, addRequestRide, getNotification, setNotificationSeen, deleteNotification, login, logout, stillLoggedIn, getAllTopics, getEvaluationsByStudentId }
+const API = { getCity, searchRide, getDailyRide, addRequestRide, getNotification, setNotificationSeen, deleteNotification, login, logout, stillLoggedIn, getAllTopics, getEvaluationsByStudentId, bookRide }
 export default API;
