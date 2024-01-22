@@ -7,7 +7,7 @@ const RequestCard = (props) => {
     const msg = `Are you sure you want to request a ride in ${props.params.location} on ${props.params.date} at ${props.params.time} for ${props.params.duration} ${props.params.timeUnit} `
     return (
        
-        <Card   style={{ paddingHorizontal: '2%', marginLeft:"2%", marginRight: "2%", marginBottom:"2%",}}>
+        <Card   style={{ paddingHorizontal: '2%', marginLeft:"3%", marginRight: "3%", marginBottom:"2%", marginTop:'3%'}}>
             <Card.Content>
                 <Text variant="bodyLarge">{props.text}</Text>
             </Card.Content>

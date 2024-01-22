@@ -242,10 +242,7 @@ const HomePage = ({ navigation, route }) => {
                 setLastLocation(location)
               }
               else {
-                throwPopup('No available drivers found for this day', [{
-                  name: 'Close',
-                  fn: closePopup
-                }])
+                
                 setLastLocation(location)
                 setNoAvailability(true)
                 setUsers([])
@@ -287,7 +284,7 @@ const HomePage = ({ navigation, route }) => {
                 available == false &&
                 <View style={{ backgroundColor: "#ffffff" }}>
 
-                  <RequestCard params={params} handleInsertRequest={handleInsertRequest} throwPopup={throwPopup} closePopup={closePopup} badgeOn={badgeOn} text={'We are sorry, currently no drivers are available at this time :\'('} setBadgeOn={setBadgeOn} />
+                  <RequestCard params={params} handleInsertRequest={handleInsertRequest} throwPopup={throwPopup} closePopup={closePopup} badgeOn={badgeOn} text={'We are sorry! No drivers are available at this time'} setBadgeOn={setBadgeOn} />
                   {
                     noAvailability == false &&
                     <Separator text={'OR'} />

@@ -29,6 +29,8 @@ const genders = [
 
 
 
+
+
 const RegisterScreen = ({navigation, route}) =>{
     const {source} =route.params || {};
     const [step, setStep] = useState(source ?? "1");
@@ -61,6 +63,7 @@ const RegisterScreen = ({navigation, route}) =>{
     const [idImage, setIdImage] = useState(null);
     const [licImage, setLicImage] = useState(null);
     const [description, setDescription] = useState('');
+
     const [selectedCountry, setSelectedCountry] = useState(null)
     
     
@@ -130,7 +133,7 @@ const RegisterScreen = ({navigation, route}) =>{
       setBirthDate(null)
     }
 
-    const msg = 'Are you sure to continue? You will lose your data'
+    const msg = 'Are you sure you want to go back ? You will lose your data'
     const [modalVisible, setModalVisible] = useState(false)
     const [popupText, setPopupText] = useState('')
     const [popupFn, setPopupFn] = useState([{
@@ -151,7 +154,7 @@ const RegisterScreen = ({navigation, route}) =>{
     function handleReturn() {
       if((step == 1 && (uname.trim() !== '' || lastName.trim() !== '' || mail.trim() !== '' || password.trim() !== '' || conpassword.trim() !== '')) || (step == 2 && (gender != null || birthDate != null || idImage != null || licImage != null))){
         throwPopup(msg, [{
-          name: 'Continue',
+          name: 'back',
           fn: () => {
             if(step == 1){
               setSubmit(false);
@@ -373,7 +376,7 @@ const RegisterScreen = ({navigation, route}) =>{
                     data={genders}
                     placeholderStyle={styles.placeholderStyle}
                     selectedTextStyle={styles.selectedTextStyle}
-                    activeColor='#F9C977'
+                    
 
                     maxHeight={300}
                     labelField="label"
@@ -436,15 +439,16 @@ const RegisterScreen = ({navigation, route}) =>{
                     <Text style={{ color: submitfinal&&licImage==null ? 'red' : '#1F1937' }}> *</Text> 
                     </Text>
                     </TouchableOpacity>
-                     <View >
-     { !licImage  && <Pressable icon="camera"  onPress={()=>pickImage(true)} textColor="#1F1937" style={[styles.buttonOutlineImport, { fontSize: 8, width: '80%', flexDirection:'row', columnGap:'10%', alignContent:'center', alignItems:'center', justifyContent:'center', paddingTop:'2%',paddingBottom:'2%' }]}>
+                     <View style={{ flexDirection: 'row' }}>
+                     { !licImage  && <Pressable icon="camera"  onPress={()=>pickImage(true)} textColor="#1F1937" style={[styles.buttonOutlineImport, { fontSize: 8, width: '80%', flexDirection:'row', alignContent:'center', alignItems:'center', justifyContent:'center', paddingTop:'2%',paddingBottom:'2%' }]}>
         
         <Icon name='photo'></Icon>
         <Text>Upload photo</Text>
       </Pressable>}
       {licImage  &&  
       
-      <View >
+      <View style={{
+        flexDirection: 'row'}}>
         <TouchableOpacity style={{flexBasis: "30%"}} onPress={()=>{}}>
       <Image source={{uri:licImage}}  style={{  width: 140,
         height: 110,
@@ -487,7 +491,7 @@ const RegisterScreen = ({navigation, route}) =>{
                     </Text>
                     </TouchableOpacity>
     <View style={{ flexDirection: 'row' }}>
-     { !idImage  && <Pressable icon="camera" mode="contained" onPress={()=>pickImage(false)} textColor="#1F1937" style={[styles.buttonOutlineImport, { fontSize: 8, width: '80%', flexDirection:'row', columnGap:'10%', alignContent:'center', alignItems:'center', justifyContent:'center', paddingTop:'2%',paddingBottom:'2%' }]}>
+     { !idImage  && <Pressable icon="camera" mode="contained" onPress={()=>pickImage(false)} textColor="#1F1937" style={[styles.buttonOutlineImport, { fontSize: 8, width: '80%', flexDirection:'row', alignContent:'center', alignItems:'center', justifyContent:'center', paddingTop:'2%',paddingBottom:'2%' }]}>
         <Icon name='photo'/>
         <Text>Upload photo</Text>
       </Pressable>}
@@ -529,8 +533,7 @@ const RegisterScreen = ({navigation, route}) =>{
   </View>
       </View>             }
     </View>
-   
-                  <TouchableOpacity style={
+    <TouchableOpacity style={
                         styles.titledesign        
                     }>
                     <Text  style={{color:'#1F1937', fontSize:12, textAlign:'center', fontWeight:'bold'}}> Description
@@ -558,6 +561,7 @@ const RegisterScreen = ({navigation, route}) =>{
                       
                     }}
                     ></TextInput>
+   
                      
                      <TouchableOpacity style={
                         styles.titledesign        
@@ -601,7 +605,7 @@ const RegisterScreen = ({navigation, route}) =>{
         </View>     
 
         </View>          
-        {((gender == null ||   birthDate == null  || idImage == null || licImage == null || phoneNumber.length ==0 )&& submitfinal)
+        {((gender == null ||   birthDate == null  || idImage == null || licImage == null || phoneNumber.length==0 )&& submitfinal)
             && <Text style={{color:'red', marginTop:'7%'}}>Fill in all fields before sending request</Text>}
         <TouchableOpacity    
         onPress={()=>{
@@ -618,7 +622,6 @@ const RegisterScreen = ({navigation, route}) =>{
               
             }
             console.log(step);
-            console.log(description)
         }}
         style={[styles.buttonSubmit, width="100%",  marginRight="20%", marginTop="3%", marginBottom='20%']}
         >
@@ -757,7 +760,7 @@ const styles = StyleSheet.create({
         borderWidth:2,
         borderRadius: 10,
         alignItems: 'center',
-        marginTop: '2%',
+        marginTop: '3%',
     },
     buttonText:{
       color: 'white',

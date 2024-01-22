@@ -86,7 +86,7 @@ function ProfileStackScreen({ setIsLoggedIn }) {
 const AuthStack = createNativeStackNavigator();
 function AuthStackScreen({ setIsLoggedIn }) {
   return (
-    <AuthStack.Navigator screenOptions={{ headerShown: false }}>
+    <AuthStack.Navigator screenOptions={{ headerShown: false, gestureEnabled: false }}>
       <AuthStack.Screen name="LoginPage">
         {(props) => <Login {...props} setIsLoggedIn={setIsLoggedIn} />}
       </AuthStack.Screen>

@@ -1,25 +1,29 @@
 import { View, StyleSheet } from "react-native";
-import { Button, Icon, Text } from 'react-native-paper';
+import { Button,  Text, Icon } from 'react-native-paper';
 import { Pressable } from "react-native";
+
 const Filters = (props) => {
   return (
     <>
-        <Text style={{paddingRight:'20%', marginLeft:'6%', fontWeight:'bold' }}>Sort by </Text>
+   
+        <Text style={{paddingRight:'20%', marginLeft:'6%', fontWeight:'bold', marginTop:"4%" }}>Sort by </Text>
       <View style={styles.container}>
         <Pressable mode="outlined"  style={[styles.buttons, {
           backgroundColor:props.inUseFilter === 1 ? '#1F1937' : 'white',
           borderColor:'#1F1937',
-          borderWidth:2
+          borderWidth:2,
+          justifyContent:'center'
           }]} onPress={() => props.handleSetFilter(1)}>
-          <Icon name='map-marker-distance' color="white" size={20} style={{paddingLeft:'30%'}}></Icon>
+          <Icon source='map-marker-distance' color={props.inUseFilter === 1 ? 'white' : '#1F1937'} size={20} style={{paddingLeft:'30%'}}></Icon>
           <Text style={{fontSize:18, color:props.inUseFilter === 1 ? 'white' : '#1F1937'}}>Distance</Text>
         </Pressable>
         <Pressable   mode="outlined" style={[styles.buttons, {
           backgroundColor:props.inUseFilter === 2 ? '#1F1937' : 'white',
           borderColor:'#1F1937',
-          borderWidth:2
+          borderWidth:2,
+          justifyContent:'center'
           }]} onPress={() => props.handleSetFilter(2)}>
-          <Icon name='star' color={props.inUseFilter === 2 ? 'white' : '#1F1937'} size={20}></Icon>
+          <Icon source='star' color={props.inUseFilter === 2 ? 'white' : '#1F1937'} size={20}></Icon>
           <Text style={{fontSize:18, color:props.inUseFilter === 2 ? 'white' : '#1F1937'}}>Rating</Text>
         </Pressable>
       </View>

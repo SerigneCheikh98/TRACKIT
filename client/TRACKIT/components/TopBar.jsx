@@ -18,7 +18,7 @@ const TopBar = (props) => {
     <View style={styles.topbar}>
       <Icon name= {'arrow-back-ios'} type="material-icons" color={props.back ? 'white' : '#1F1937'} size={30} style={styles.arrow_left} onPress={props.back ? goBack : () => 0}/>
 
-      <Text style={styles.title}>TrackIT</Text>
+      <Text style={styles.title}>TRACKIT</Text>
       <TouchableOpacity onPress={() => {
         setNotification(false)
         navigation.navigate('NotificationPage')
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
 
   title: {
     fontFamily: 'roboto',
-    fontSize: 40,
+    fontSize: 32,
     color: 'white'
   },
 
