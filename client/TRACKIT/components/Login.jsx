@@ -13,6 +13,7 @@ const Login = ({setIsLoggedIn}) =>{
     const [onFocus, setOnFocus] = useState(false);
     const [passIcon, setPassIcon] = useState("eye-off");
     const [hidePass, setHidePass] = useState(true);
+    const [errVisible, setErrorVisible] = useState(false);
 
     
     return (
@@ -35,8 +36,8 @@ const Login = ({setIsLoggedIn}) =>{
         value={email}
         onChangeText={(text) => setEmail(text) }
         mode='outlined'
-        outlineColor='#1F1937'
-        activeOutlineColor='#1F1937'
+        outlineColor={errVisible?'red':'#1F1937'}
+        activeOutlineColor={errVisible?'red':'#1F1937'}
         style={styles.input}
         onFocus={()=>{setOnFocus(false)}}
         />
@@ -45,6 +46,8 @@ const Login = ({setIsLoggedIn}) =>{
         value={password}
         onChangeText={(text) => setPassword(text) }
         mode='outlined'
+        outlineColor={errVisible?'red':'#1F1937'}
+       
         onFocus={()=>{setOnFocus(false)
             setOnFocus(true)}}
         right={
@@ -68,14 +71,18 @@ const Login = ({setIsLoggedIn}) =>{
             />
         
           }
-        activeOutlineColor='#1F1937'
+        activeOutlineColor={errVisible?'red':'#1F1937'}
         style={styles.input}
-        
+      
         secureTextEntry={hidePass}
         />
         </View> 
 
         <View style={styles.buttonContainer}>
+        {errVisible && 
+        <View style={{justifyContent:'center', marginTop:'3%'}}>
+        <Text color='red' style={{color:'red'}}>Email or Password are incorrect</Text>
+        </View>}
         <TouchableOpacity
         onPress={()=>{
 
@@ -83,10 +90,12 @@ const Login = ({setIsLoggedIn}) =>{
             const credentials = {username, password}
             API.login(credentials)
                 .then( () => {
+                    setErrorVisible(false);
                     setIsLoggedIn(true)
                 })
-                .catch( err => {
+                .catch( (err) => {
                     console.log(err)
+                    setErrorVisible(true);
                 })
             // if(email.toLocaleLowerCase()=="mariorossi@hotmail.com" && password=="123123") 
             // {
