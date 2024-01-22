@@ -84,40 +84,40 @@ const HomePage = ({ navigation, route }) => {
   const [location, setLocation] = useState("Torino");
   const [lastLocation, setLastLocation] = useState("")
 
-  const [duration, setDuration] = useState("30");
+  const [duration, setDuration] = useState("");
   const [timeUnit, setTimeUnit] = useState('min');
 
   const [dirty, setDirty] = useState(false)
   const [dirtySearch, setDirtySearch] = useState(false)
 
-  useFocusEffect(
-    React.useCallback(() => {
-      setDirtySearch(false);
-      setDirty(false);
-      setTimeUnit('min');
-      setDuration("30");
-      setLastLocation("");
-      setLocation("Torino");
-      setDate('17/02/2024');
-      setTime('12:00');
-      setPopupFn([{
-        name: '',
-        fn: () => { }
-      }])
-      setPopupText('');
-      setModalVisible(false);
-      setAlarmInput([false, false, false, false, false]);
-      setPage('home');
-      setLogging(false)
-      setNotification(NotificationContext)
-      setUsers([])
-      setInUseFilter(0) // 0 none - 1 distance - 2 rating
-      setAvailable(true)
-      setNoAvailability(false)
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     setDirtySearch(false);
+  //     setDirty(false);
+  //     setTimeUnit('min');
+  //     setDuration("30");
+  //     setLastLocation("");
+  //     setLocation("Torino");
+  //     setDate('17/02/2024');
+  //     setTime('12:00');
+  //     setPopupFn([{
+  //       name: '',
+  //       fn: () => { }
+  //     }])
+  //     setPopupText('');
+  //     setModalVisible(false);
+  //     setAlarmInput([false, false, false, false, false]);
+  //     setPage('home');
+  //     setLogging(false)
+  //     setNotification(NotificationContext)
+  //     setUsers([])
+  //     setInUseFilter(0) // 0 none - 1 distance - 2 rating
+  //     setAvailable(true)
+  //     setNoAvailability(false)
 
-      /* console.log('Screen is focused, refresh here'); */
-    }, [])
-  );
+  //     /* console.log('Screen is focused, refresh here'); */
+  //   }, [])
+  // );
 
   const params = {
     time: time,
@@ -278,7 +278,11 @@ const HomePage = ({ navigation, route }) => {
           {page == 'home' &&
             <View style={styles.container}>
               <InputForm params={params} throwPopup={throwPopup} closePopup={closePopup} applyChange={applyChange} logging={logging} setLogging={setLogging} alarmInput={alarmInput} dirty={dirty} setDirtySearch={setDirtySearch} />
-              <ActivityIndicator animating={logging} />
+             { logging && <View style={{ flex:1 ,justifyContent:'center', alignContent:'center', alignItems:'center'}}>
+             <Text style={{fontWeight:'bold', marginTop:'2%', marginBottom:'1%'}}>Locating you</Text>
+              <Text style={{ marginBottom:'1%'}}>This might take few seconds</Text>
+              <ActivityIndicator size='large' animating={logging} />
+              </View>}
               {
                 available == false &&
                 <View style={{ backgroundColor: "#ffffff" }}>

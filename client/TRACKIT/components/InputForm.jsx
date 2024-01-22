@@ -224,7 +224,7 @@ const InputForm = (props) => {
         {/* SUBMIT */}
         <View style={styles.textInputContainer}>
           <View style={{ flex: 2 }}></View>
-          <Button style={styles.submitButton} buttonColor='#1F1937' mode="contained" onPress={props.applyChange}>
+          <Button style={styles.submitButton} disabled={props.logging} buttonColor='#1F1937' mode="contained" onPress={props.applyChange}>
             Apply changes
           </Button>
         </View>
