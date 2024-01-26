@@ -373,7 +373,7 @@ const RegisterScreen = ({navigation, route}) =>{
  
 <Text variant="titleLarge" style={{ marginBottom:"2%", fontWeight:'bold'}} textColor="#1F1937">Personal Information</Text>
                  
-                  <View style={{width:"100%",  marginLeft:"15%", marginBottom:"3%"}}>
+                  <View style={{width:"100%",  marginLeft:"15%", marginBottom:"3%",}}>
                     <TouchableOpacity style={
                         styles.titledesign        
                     }>

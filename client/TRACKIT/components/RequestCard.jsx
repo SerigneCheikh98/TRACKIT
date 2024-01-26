@@ -1,18 +1,21 @@
 import * as React from 'react';
 import { Button, Card, Text } from 'react-native-paper';
 import { View, StyleSheet } from 'react-native';
+import { color } from '@rneui/base';
 
 const RequestCard = (props) => {
 
     const msg = `Are you sure you want to request a ride in ${props.params.location} on ${props.params.date} at ${props.params.time} for ${props.params.duration} ${props.params.timeUnit} `
     return (
        
-        <Card   style={{ paddingHorizontal: '2%', marginLeft:"3%", marginRight: "3%", marginBottom:"2%", marginTop:'3%'}}>
+        <Card 
+        
+        style={{ paddingHorizontal: '2%', marginLeft:"3%", marginRight: "3%", marginBottom:"2%", marginTop:'3%',backgroundColor:'rgba(31, 25, 55, 0.35)' }}>
             <Card.Content>
-                <Text variant="bodyLarge">{props.text}</Text>
+                <Text style={{color:'white'}} variant="bodyLarge">{props.text}</Text>
             </Card.Content>
             <View style={styles.container}>
-                <Button style={styles.submitButton} buttonColor='#F9C977' mode="contained" onPress={() => {
+                <Button style={[styles.submitButton, ]}  textColor='#1F1937' buttonColor='#F9C977' mode="contained" onPress={() => {
                     props.setBadgeOn(true)
                     props.throwPopup(msg, [
                     {

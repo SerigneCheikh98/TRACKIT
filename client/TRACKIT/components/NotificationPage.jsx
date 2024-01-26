@@ -106,9 +106,9 @@ const CardBooking = (props) => {
         msg = 'Are you sure you want to cancel your booking'
     }
     return (
-        <Card style={{ width: "90%", marginLeft: "5%", flex: 1, height: "100%", marginTop: "7%" }}>
+        <Card style={{ width: "90%", marginLeft: "5%", flex: 1, height: "100%", marginTop: "7%",}}>
             <Card.Title
-
+                
                 title={props.state == "Pending" ? 'Pending Request' : "Upcoming Booking"}
                 subtitle={props.driverName != null ? `Driver: ${props.driverName}` : "Trying to match you to a driver..."}
 
@@ -123,7 +123,7 @@ const CardBooking = (props) => {
                 </Text>
 
 
-                {props.state == "Pending" && <Text variant='bodySmall' style={{ paddingLeft: "7%", paddingTop: "7%" }}>Estimated response time: 3-4 hours</Text>}
+                {props.state == "Pending" && <Text variant='bodySmall' style={{ paddingLeft: "7%", paddingTop: "7%",  }}>Estimated response time: 3-4 hours</Text>}
             </Card.Content>
             <Card.Actions>
                 <Button style={styles.buttonSubmit} textColor="black" onPress={() => {

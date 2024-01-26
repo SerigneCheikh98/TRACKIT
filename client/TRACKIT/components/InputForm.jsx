@@ -107,7 +107,7 @@ const InputForm = (props) => {
             }}
           />
           <View style={{ flex: 0.25, justifyContent: 'center', alignItems: 'center' }}>
-            <IconButton style={styles.submitButton} size={30} iconColor="white" backgroundColor="#F9C977" icon='crosshairs-gps' buttonColor='black' mode="contained" onPress={() => { handleGetLocation();
+            <IconButton style={styles.submitButton} size={30} iconColor="white" backgroundColor="rgba(31, 25, 55, 0.5)" icon='crosshairs-gps' buttonColor='black' mode="contained" onPress={() => { handleGetLocation();
             props.setLogging(true);
             
             }} />
