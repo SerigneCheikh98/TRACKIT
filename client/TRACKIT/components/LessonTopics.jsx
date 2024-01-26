@@ -96,7 +96,6 @@ const Topics = (props) => {
 
 
 
-      console.log(averageRatingsByTopic)
 
       numSelected.current = lowestRatings.length;
       // [{"AverageRating": 2, "TopicId": 4}, {"AverageRating": 3, "TopicId": 3}, {"AverageRating": 3.5, "TopicId": 6}]
@@ -206,7 +205,7 @@ const topicBox = (contenuto, setModalVisible, handleTopic) => {
             {"new!"}
           </Text>
         ) : contenuto.top === true ? (
-          <Text style={{ fontSize: 15, paddingTop: '3%', paddingBottom: '5%', color: 'red', position: 'absolute', left: 150, top: 7 }}>
+          <Text style={{ fontSize: 15, paddingTop: '3%', paddingBottom: '5%', color: 'red', position: 'absolute', left: 145, top: 7 }}>
             {"weakness!"}
           </Text>
         ) : (
