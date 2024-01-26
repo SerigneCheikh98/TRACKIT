@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
 
     iconCircle : {
         ...debug,
-        backgroundColor: 'rgba(0, 0, 255, 0.06)', 
+        backgroundColor: 'rgba(249,201,119, 0.7)', 
         borderRadius: 50,
         
         justifyContent: 'center',
