@@ -15,31 +15,7 @@ import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { ControlFilled } from '@ant-design/icons';
 import Separator from './Separator';
 
-const staticTopics = [{
-  topicName: 'U turn',
-  critical: true
-},
-{
-  topicName: 'Signals and roundabouts',
-  critical: true
-},
-{
-  topicName: 'Signals and roundabouts',
-  critical: true
-},
-{
-  topicName: 'Signals and roundabouts',
-  critical: false
-},
-{
-  topicName: 'Signals and roundabouts',
-  critical: false
-},
-{
-  topicName: 'Signals and roundabouts',
-  critical: false
-},
-]
+
 
 
 
@@ -56,7 +32,7 @@ const Topics = (props) => {
   const [selectedDescription, setSelectedDescription] = useState(null);
 
   const handleTopic = (topic) => {
-    setSelectedTopic(topic.topicName);
+    setSelectedTopic(topic.topicName );
     setSelectedDescription(topic.description);
     setModalVisible(true);
   };
@@ -95,6 +71,7 @@ const Topics = (props) => {
   useEffect(() => {
     API.getEvaluationsByStudentId().then((evals) => {
       // Group data by TopicId
+      const uniqueTitles = new Set();
       const groupedByTopic = evals.reduce((acc, item) => {
         const key = item.TopicId;
         if (!acc[key]) {
@@ -115,24 +92,41 @@ const Topics = (props) => {
       averageRatingsByTopic.sort((a, b) => parseFloat(a.AverageRating) - parseFloat(b.AverageRating));
       const lowestRatings = averageRatingsByTopic.slice(0, 3);
 
+      const oldRatings = averageRatingsByTopic.slice(3);
+
+      
+
+      console.log(averageRatingsByTopic)
+
       numSelected.current = lowestRatings.length;
       // [{"AverageRating": 2, "TopicId": 4}, {"AverageRating": 3, "TopicId": 3}, {"AverageRating": 3.5, "TopicId": 6}]
       //console.log(lowestRatings);
 
       API.getAllTopics().then((topics) => {
-        const uniqueTitles = new Set();
         const avgTopic = new Set();
+
+        
 
         lowestRatings.forEach(({ TopicId, AverageRating }) => {
           const match = topics.find(({ Id }) => Id === TopicId);
           if (match && !uniqueTitles.has(match.Title)) {
-            uniqueTitles.add({ topicName: match.Title, critical: true, top : true, description: match.Description });
+            uniqueTitles.add({ topicName: match.Title, critical: true, top : true, description: match.Description, new: false });
+            topics = topics.filter((x) => !x.Title.includes(match.Title));
             avgTopic.add({ title: match.Title, avg: AverageRating, description: match.Description });
+          }
+        });
+
+        oldRatings.forEach(({TopicId}) => {
+          const match = topics.find(({ Id}) => Id === TopicId);
+          if (match && !uniqueTitles.has(match.Title)) {
+            topics = topics.filter((x) => !x.Title.includes(match.Title));
+
+            uniqueTitles.add({ topicName: match.Title, critical: false, top : false, description: match.Description, new: false });
           }
         });
         topics.forEach((topic) => {
           if (!uniqueTitles.has(topic.Title)) {
-            uniqueTitles.add({ topicName: topic.Title, description: topic.Description, critical: false, top : false });
+            uniqueTitles.add({ topicName: topic.Title, description: topic.Description, critical: false, top : false, new: true });
           }
         });
         setWeaknesses([...uniqueTitles]);
@@ -206,7 +200,12 @@ const topicBox = (contenuto, setModalVisible, handleTopic)=>{
        
       }
       }>
-      <Text style={{fontSize:15,  paddingTop: '3%', paddingBottom:'5%'}}>{contenuto.topicName}</Text>
+      <Text style={{fontSize:15,  paddingTop: '3%', paddingBottom:'5%'}}>{contenuto.topicName + (contenuto.new )}</Text>
+      {contenuto.new == true ?       
+      <Text style={{fontSize:15,  paddingTop: '3%', paddingBottom:'5%', color: 'red', position: 'absolute', left: 180, top: 7}}>{"new!"}</Text>
+      :
+      <></>
+}
       <IconButton
       onPress={()=>{handleTopic(contenuto)}}
       style={{
