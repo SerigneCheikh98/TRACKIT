@@ -32,14 +32,14 @@ const Topics = (props) => {
   const [selectedDescription, setSelectedDescription] = useState(null);
 
   const handleTopic = (topic) => {
-    setSelectedTopic(topic.topicName );
+    setSelectedTopic(topic.topicName);
     setSelectedDescription(topic.description);
     setModalVisible(true);
   };
 
   const Item = ({ contenuto }) => (
     contenuto.top === true ? (<View style={styles.itemCritical}>
-      <BouncyCheckbox style={styles.container} text={topicBox(contenuto, setModalVisible, handleTopic)}  textStyle={{ textDecorationLine: "none", color: 'black' }} textContainerStyle={styles.title} isChecked={contenuto.critical} onPress={(isChecked) => {
+      <BouncyCheckbox style={styles.container} text={topicBox(contenuto, setModalVisible, handleTopic)} textStyle={{ textDecorationLine: "none", color: 'black' }} textContainerStyle={styles.title} isChecked={contenuto.critical} onPress={(isChecked) => {
         //text={contenuto.topicName}
         isChecked ? numSelected.current += 1 : numSelected.current -= 1;
         contenuto.critical = !contenuto.critical;
@@ -58,9 +58,9 @@ const Topics = (props) => {
           contenuto.critical = !contenuto.critical;
           if (numSelected.current <= 0) {
             props.disable(true)
-          }else {
+          } else {
             props.disable(false);
-  
+
           }
 
         }} />
@@ -94,7 +94,7 @@ const Topics = (props) => {
 
       const oldRatings = averageRatingsByTopic.slice(3);
 
-      
+
 
       console.log(averageRatingsByTopic)
 
@@ -105,28 +105,28 @@ const Topics = (props) => {
       API.getAllTopics().then((topics) => {
         const avgTopic = new Set();
 
-        
+
 
         lowestRatings.forEach(({ TopicId, AverageRating }) => {
           const match = topics.find(({ Id }) => Id === TopicId);
           if (match && !uniqueTitles.has(match.Title)) {
-            uniqueTitles.add({ topicName: match.Title, critical: true, top : true, description: match.Description, new: false });
+            uniqueTitles.add({ topicName: match.Title, critical: true, top: true, description: match.Description, new: false });
             topics = topics.filter((x) => !x.Title.includes(match.Title));
             avgTopic.add({ title: match.Title, avg: AverageRating, description: match.Description });
           }
         });
 
-        oldRatings.forEach(({TopicId}) => {
-          const match = topics.find(({ Id}) => Id === TopicId);
+        oldRatings.forEach(({ TopicId }) => {
+          const match = topics.find(({ Id }) => Id === TopicId);
           if (match && !uniqueTitles.has(match.Title)) {
             topics = topics.filter((x) => !x.Title.includes(match.Title));
 
-            uniqueTitles.add({ topicName: match.Title, critical: false, top : false, description: match.Description, new: false });
+            uniqueTitles.add({ topicName: match.Title, critical: false, top: false, description: match.Description, new: false });
           }
         });
         topics.forEach((topic) => {
           if (!uniqueTitles.has(topic.Title)) {
-            uniqueTitles.add({ topicName: topic.Title, description: topic.Description, critical: false, top : false, new: true });
+            uniqueTitles.add({ topicName: topic.Title, description: topic.Description, critical: false, top: false, new: true });
           }
         });
         setWeaknesses([...uniqueTitles]);
@@ -146,21 +146,21 @@ const Topics = (props) => {
 
   return (
     <SafeAreaView style={styles.container}>
-       <Overlay containerStyle={{backgroundColor: 'rgba(128, 128, 128, 0.75)'}} visible={ modalVisible} childrenWrapperStyle={{ padding: 0}} onClose={()=>{setModalVisible(false)}} closeOnTouchOutside>
-          <Modal visible={modalVisible} transparent={true}  animationType="slide" onDismiss={() => setModalVisible(false)} contentContainerStyle={styles.containerStyle}>
-            <View style={styles.centeredView}>
-              <View style={styles.modalView}>
-                <Text style={styles.modalText}>{selectedTopic}</Text>
-                <Text>{selectedDescription}</Text>
-                <Pressable
-                  style={[styles.button, styles.buttonClose]}
-                  onPress={() => setModalVisible(!modalVisible)}>
-                  <Text style={styles.textStyle}>Hide</Text>
-                </Pressable>
-              </View>
+      <Overlay containerStyle={{ backgroundColor: 'rgba(128, 128, 128, 0.75)' }} visible={modalVisible} childrenWrapperStyle={{ padding: 0 }} onClose={() => { setModalVisible(false) }} closeOnTouchOutside>
+        <Modal visible={modalVisible} transparent={true} animationType="slide" onDismiss={() => setModalVisible(false)} contentContainerStyle={styles.containerStyle}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>{selectedTopic}</Text>
+              <Text>{selectedDescription}</Text>
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setModalVisible(!modalVisible)}>
+                <Text style={styles.textStyle}>Hide</Text>
+              </Pressable>
             </View>
-          </Modal>
-          </Overlay>
+          </View>
+        </Modal>
+      </Overlay>
       <VirtualizedList style={styles.scroll}
         initialNumToRender={5}
         renderItem={({ item }) => <Item contenuto={item.contenuto} />}
@@ -173,55 +173,62 @@ const Topics = (props) => {
 };
 
 
-const topicBox = (contenuto, setModalVisible, handleTopic)=>{
-  return(
-    <View style = {
+const topicBox = (contenuto, setModalVisible, handleTopic) => {
+  return (
+    <View style={
       {
-       
-       flex: 1
-        
+
+        flex: 1
+
 
       }
-      
+
     }>
       <View
-      style={
-        {
-          flex: 1,
-          flexDirection: 'row',
-          
-          flexWrap: 'nowrap',
-          flexBasis:'auto',
-          // flexShrink: '100%',
-        
-        borderStartColor:'#1F1937',
-        width: 260,
-        borderRadius: 5,
-       
-      }
-      }>
-      <Text style={{fontSize:15,  paddingTop: '3%', paddingBottom:'5%'}}>{contenuto.topicName + (contenuto.new )}</Text>
-      {contenuto.new == true ?       
-      <Text style={{fontSize:15,  paddingTop: '3%', paddingBottom:'5%', color: 'red', position: 'absolute', left: 180, top: 7}}>{"new!"}</Text>
-      :
-      <></>
-}
-      <IconButton
-      onPress={()=>{handleTopic(contenuto)}}
-      style={{
-         marginRight: '1%',
-         position:'absolute',
-         marginLeft: '87%'
+        style={
+          {
+            flex: 1,
+            flexDirection: 'row',
 
-    }}
-    icon="information-variant"
-    size={15}
-    backgroundColor='#1F1937'
-    iconColor='white'
-    ></IconButton> 
+            flexWrap: 'nowrap',
+            flexBasis: 'auto',
+            // flexShrink: '100%',
 
-      
-    {/* <Card
+            borderStartColor: '#1F1937',
+            width: 260,
+            borderRadius: 5,
+
+          }
+        }>
+        <Text style={{ fontSize: 15, paddingTop: '3%', paddingBottom: '5%' }}>{contenuto.topicName}</Text>
+        {contenuto.new === true ? (
+          <Text style={{ fontSize: 15, paddingTop: '3%', paddingBottom: '5%', color: '#F9C977', position: 'absolute', left: 180, top: 7 }}>
+            {"new!"}
+          </Text>
+        ) : contenuto.top === true ? (
+          <Text style={{ fontSize: 15, paddingTop: '3%', paddingBottom: '5%', color: 'red', position: 'absolute', left: 150, top: 7 }}>
+            {"weakness!"}
+          </Text>
+        ) : (
+          <></>
+        )}
+
+        <IconButton
+          onPress={() => { handleTopic(contenuto) }}
+          style={{
+            marginRight: '1%',
+            position: 'absolute',
+            marginLeft: '87%'
+
+          }}
+          icon="information-variant"
+          size={15}
+          backgroundColor='#1F1937'
+          iconColor='white'
+        ></IconButton>
+
+
+        {/* <Card
   style={{
    
     marginTop:'1%',
@@ -247,24 +254,24 @@ const topicBox = (contenuto, setModalVisible, handleTopic)=>{
     ></IconButton> 
     </Card.Actions>
   </Card> */}
-  </View>
-  <Divider/>
-  </View>
+      </View>
+      <Divider />
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-   flex:1,
-   width: '100%',
-   
+    flex: 1,
+    width: '100%',
+
   },
   itemCritical: {
     backgroundColor: '#DDDDDD',
-    flex:1,
+    flex: 1,
     justifyContent: 'center',
     marginHorizontal: '4%',
-    
+
     padding: '2%',
 
 
@@ -274,7 +281,7 @@ const styles = StyleSheet.create({
     height: 60,
     justifyContent: 'center',
     marginHorizontal: '4%',
-    
+
     padding: '2%'
   },
   title: {
@@ -284,35 +291,35 @@ const styles = StyleSheet.create({
   },
   scroll: {
   },
-  topicBox:{
+  topicBox: {
     flex: 1,
     height: '100%',
-    flexDirection: 'row', 
+    flexDirection: 'row',
     flexWrap: 'wrap',
-    backgroundColor:'white',
+    backgroundColor: 'white',
     alignItems: 'flex-start',
-    borderRadius:5,
-    marginRight:'1%'
+    borderRadius: 5,
+    marginRight: '1%'
   },
-   icon: {
-   width: '50%'
-   },
-   topicName:{
+  icon: {
     width: '50%'
-   },
-   button:
-   {
-     backgroundColor: "#1F1937",
-     width: '100%',
-     padding: '4%',
-     borderRadius: 10,
-     alignItems: 'center',
-     marginTop: '5%',
-     marginBottom: '2%',
-     width: 210,
- 
-   },
-   centeredView: {
+  },
+  topicName: {
+    width: '50%'
+  },
+  button:
+  {
+    backgroundColor: "#1F1937",
+    width: '100%',
+    padding: '4%',
+    borderRadius: 10,
+    alignItems: 'center',
+    marginTop: '5%',
+    marginBottom: '2%',
+    width: 210,
+
+  },
+  centeredView: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -339,6 +346,6 @@ const styles = StyleSheet.create({
     fontSize: 20
   },
 
-  });
+});
 
 export default Topics;
