@@ -16,6 +16,9 @@ import { Tile, color } from '@rneui/base';
 import { findLastIndex, pick } from 'lodash'
 import Separator from './Separator'
 import dayjs from 'dayjs'
+import { Modal } from 'react-native'
+import Overlay from 'react-native-modal-overlay';
+
 
 
 import { LogBox } from 'react-native';
@@ -68,6 +71,9 @@ const RegisterScreen = ({navigation, route}) =>{
     
     
 
+    //image modal
+    const [modalImageVisible, setModalImageVisible] = useState(false);
+    const [idPressed, setIdPressed] = useState(false);
 
     const [checked, setChecked] = useState(false);
     
@@ -152,9 +158,10 @@ const RegisterScreen = ({navigation, route}) =>{
     }
 
     function handleReturn() {
-      if((step == 1 && (uname.trim() !== '' || lastName.trim() !== '' || mail.trim() !== '' || password.trim() !== '' || conpassword.trim() !== '')) || (step == 2 && (gender != null || birthDate != null || idImage != null || licImage != null))){
+       console.log(phoneNumber)
+      if((step == 1 && (uname.trim() !== '' || lastName.trim() !== '' || mail.trim() !== '' || password.trim() !== '' || conpassword.trim() !== '')) || (step == 2 && (gender != null || birthDate != null || idImage != null || licImage != null || (phoneNumber.length != 0)))){
         throwPopup(msg, [{
-          name: 'back',
+          name: 'Back',
           fn: () => {
             if(step == 1){
               setSubmit(false);
@@ -167,7 +174,7 @@ const RegisterScreen = ({navigation, route}) =>{
             closePopup()
           }
         }, {
-          name: 'Close',
+          name: 'Cancel',
           fn: closePopup
         }])
       }
@@ -193,7 +200,8 @@ const RegisterScreen = ({navigation, route}) =>{
           
             <ScrollView  >
             <KeyboardAvoidingView
-            behavior='position'>
+            behavior='padding'
+            >
                 <SafeAreaView>
            
                 <Popup modalVisible={modalVisible} setModalVisible={setModalVisible} text={popupText} buttons={popupFn} />
@@ -347,7 +355,9 @@ const RegisterScreen = ({navigation, route}) =>{
                   
         <Text variant="labelSmall" style={{ color: 'grey', textDecorationLine: 'underline', justifyContent: 'center',
         alignItems: 'center', flex:1 }}
-        onPress={()=>{ navigation.navigate('LoginPage')/* navigate to Registration */     }}
+        onPress={()=>{ 
+          handleReturn();
+          /* navigate to Registration */     }}
         >Login</Text>
 
       
@@ -449,7 +459,9 @@ const RegisterScreen = ({navigation, route}) =>{
       
       <View style={{
         flexDirection: 'row'}}>
-        <TouchableOpacity style={{flexBasis: "30%"}} onPress={()=>{}}>
+        <TouchableOpacity style={{flexBasis: "30%"}} onPress={()=>{
+          setIdPressed(false);
+          setModalImageVisible(true)}}>
       <Image source={{uri:licImage}}  style={{  width: 140,
         height: 110,
         borderWidth: 1.5, 
@@ -461,14 +473,14 @@ const RegisterScreen = ({navigation, route}) =>{
       
   <View style={{flexDirection: 'column', height: "50%",  width: "100%", marginLeft:"5%"}}>
   <Button
-    icon="close"
+    icon="trash-can"
     mode="contained"
     onPress={() => setLicImage(null)}
     textColor="#1F1937"
    
     style={[styles.buttonOutlineImport, {marginLeft: "7%", marginTop: 10, fontSize: 2, marginBottom: 10, width:"30%",   flexBasis: "50%", alignItems:'center' }]}
   >
-    Cancel
+    Delete
   </Button>
 
   <Button
@@ -495,12 +507,44 @@ const RegisterScreen = ({navigation, route}) =>{
         <Icon name='photo'/>
         <Text>Upload photo</Text>
       </Pressable>}
+      
+      
+      <Overlay containerStyle={{backgroundColor: 'rgba(128, 128, 128, 0.5)'}} visible={modalImageVisible} childrenWrapperStyle={{ padding: 0}} onClose={()=>{setModalImageVisible(false) }} closeOnTouchOutside>
+          <Modal visible={modalImageVisible} transparent={true} animationType="slide" onDismiss={() => setModalImageVisible(false)} contentContainerStyle={styles.containerStyle}>
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                
+              <Image source={{uri:idPressed?idImage:licImage}}
+              style={{  
+                width: 240,
+                height: 310,
+                borderWidth: 1.5, 
+                borderColor: '#1F1937',
+                marginBottom:1,
+                marginTop:1,
+                 }}
+              />
+                <Pressable
+                  style={[styles.button, styles.buttonClose]}
+                  onPress={() => setModalImageVisible(!modalImageVisible)}>
+                  <Text style={styles.textStyle}>Hide</Text>
+                </Pressable>
+              </View>
+            </View>
+          </Modal>
+          </Overlay>
+      
+      
       {idImage  &&  
       
       <View style={{
         flexDirection: 'row'}}>
-        <TouchableOpacity style={{flexBasis: "30%"}} onPress={()=>{}}>
-      <Image source={{uri:idImage}}  style={{  width: 140,
+        <TouchableOpacity style={{flexBasis: "30%"}} onPress={()=>{ setIdPressed(true);
+          setModalImageVisible(true)}}>
+      <Image source={{uri:idImage}}
+      
+      
+        style={{  width: 140,
         height: 110,
         borderWidth: 1.5, 
         borderColor: '#1F1937',
@@ -511,15 +555,14 @@ const RegisterScreen = ({navigation, route}) =>{
       
   <View style={{flexDirection: 'column', height: "50%",  width: "100%", marginLeft:"5%"}}>
   <Button
-    icon="close"
+    icon="trash-can"
     mode="contained"
     onPress={() => setIdImage(null)}
     textColor="#1F1937"
    
     style={[styles.buttonOutlineImport, {marginLeft: "7%", marginTop: 10, fontSize: 2, marginBottom: 10, width:"30%",   flexBasis: "50%", alignItems:'center' }]}
   >
-    Cancel
-  </Button>
+Delete  </Button>
 
   <Button
     icon="sync"
@@ -605,7 +648,7 @@ const RegisterScreen = ({navigation, route}) =>{
         </View>     
 
         </View>          
-        {((gender == null ||   birthDate == null  || idImage == null || licImage == null || phoneNumber.length==0 )&& submitfinal)
+        {((gender == null ||   birthDate == null  || idImage == null || licImage == null || phoneNumber.length ==0 )&& submitfinal)
             && <Text style={{color:'red', marginTop:'7%'}}>Fill in all fields before sending request</Text>}
         <TouchableOpacity    
         onPress={()=>{
@@ -774,6 +817,9 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         fontSize: 16,
     },
+    buttonClose: {
+      backgroundColor: '#F9C977',
+    },
     dropdown: {
         height: 50,
         borderColor: 'gray',
@@ -835,7 +881,37 @@ const styles = StyleSheet.create({
                         justifyContent:'flex-start',
                         marginTop:"7%", 
                         marginBottom:"2%"
-      }
+      },
+      modalText: {
+        marginBottom: 15,
+        textAlign: 'center',
+        fontSize: 20
+      },
+      containerStyle: {
+        backgroundColor: 'white',
+        padding: 20
+      },
+      centeredView: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 22,
+      },
+      modalView: {
+        margin: 20,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        padding: 35,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 0,
+        },
+        shadowOpacity:1,
+        shadowRadius: 4,
+        elevation: 5,
+      },
     
 
 })
