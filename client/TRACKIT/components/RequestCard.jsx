@@ -10,12 +10,12 @@ const RequestCard = (props) => {
        
         <Card 
         
-        style={{ paddingHorizontal: '2%', marginLeft:"3%", marginRight: "3%", marginBottom:"2%", marginTop:'3%',backgroundColor:'rgba(31, 25, 55, 0.35)' }}>
+        style={{ paddingHorizontal: '2%', marginLeft:"3%", marginRight: "3%", marginBottom:"2%", marginTop:'3%',backgroundColor:'rgba(31, 25, 55, 0.40)', borderRadius:15 }}>
             <Card.Content>
                 <Text style={{color:'white'}} variant="bodyLarge">{props.text}</Text>
             </Card.Content>
             <View style={styles.container}>
-                <Button style={[styles.submitButton, ]}  textColor='#1F1937' buttonColor='#F9C977' mode="contained" onPress={() => {
+                <Button style={[styles.submitButton, ]}  textColor='white' buttonColor='#F9C977' mode="contained" onPress={() => {
                     props.setBadgeOn(true)
                     props.throwPopup(msg, [
                     {
@@ -26,7 +26,7 @@ const RequestCard = (props) => {
                         name: 'Close',
                         fn: props.closePopup
                     }])}}>
-                    Request a practice for this time
+                    Request a practice for this duration
                 </Button>
             </View>
         </Card>

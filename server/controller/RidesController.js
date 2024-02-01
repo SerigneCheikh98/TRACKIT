@@ -62,7 +62,6 @@ function calculateEndingHour(startingTime, slots) {
  * @param {*} res [{ride_obj1}, {ride_obj2}, ...]
  */
 exports.searchRide = function searchRide(req, res) {
-    req.query.duration = 30
     if(!req.query.location) {
         return res.status(400).json({message: 'Location is missing'})
     }
@@ -81,8 +80,10 @@ exports.searchRide = function searchRide(req, res) {
 
     if(req.query.timeUnit === 'hours')
         req.query.duration *= 60
-
+    console.log(req.query.timeUnit)
+    console.log(req.query.duration)
     const slots = Math.round(req.query.duration/30) 
+    console.log(slots)
     ridesQuery.searchRide(req.query.location, req.query.date, req.query.time, slots)
         .then( resp => {
             resp = resp.filter( (ride) => {

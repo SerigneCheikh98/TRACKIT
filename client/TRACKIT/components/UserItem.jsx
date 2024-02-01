@@ -27,9 +27,11 @@ const UserItem = (props) => {
   const [visible, setVisible] = useState(false)
   const [start, setStart] = useState(-1)
   const [end, setEnd] = useState(-1)
-  const [selectedButtons, setSelectedButtons] = useState([]);
+  
+  const [numSlots, setNumSlots] = useState(null);
 
-
+  selectedButtons = props.selectedButtons
+  setSelectedButtons = props.setSelectedButtons
   const onDismiss = useCallback(() => {
     setVisible(false)
   }, [setVisible])
@@ -53,11 +55,16 @@ const UserItem = (props) => {
 
   return (
     <Pressable onPress={() => {
+      setSelectedButtons([])
       if (danger) {
         props.throwPopup(msg, [
           {
-            name: 'Book anyways',
-            fn: () => navigation.navigate("BookingPage", { name: props.user.name, lastname: props.user.lastname, rating: props.user.rating, description: props.user.description, rideId : props.user.rideId, from: props.user.from, to: props.user.to, selectedButtons: selectedButtons })
+            name: 'Book anyway',
+            fn: () => {
+              
+          navigation.navigate("BookingPage", { name: props.user.name, lastname: props.user.lastname, rating: props.user.rating, description: props.user.description, rideId : props.user.rideId, from: props.user.from, to: props.user.to, selectedButtons: selectedButtons })
+          props.closePopup()
+          }
           }
           ,{
             name: 'Close',
@@ -81,17 +88,21 @@ const UserItem = (props) => {
         <View style={{ flex: 2, justifyContent: 'center' }}>
           <Text>{props.user.distance + ' Kms away'}</Text>
           {
-            (props.available === false) && (
-              <Text style={{ color: danger == true ? "#D50000" : 'black' }}> {props.user.from + ' - ' + props.user.to} </Text>
-            )
+            
+          <Text style={{color: danger == true ? "#D50000" : 'black', marginRight:11 }}>{props.user.from + ' - ' + props.user.to} </Text>
+            
           }
         </View>
       </View>
       {props.showDrop == props.index && (
-        <View style={{ flexDirection: 'column', alignItems: 'center', borderWidth: 0.5, borderColor: 'grey', borderRadius: 10, borderTopWidth: 0}}>
-          <Text style={{ fontSize: 16 }}>{selectedButtons.length == 0 ? "Pick starting slot": selectedButtons.length==1 ?"Pick ending slot or Confirm" : "Confirm"}</Text>
-          <Slots from={props.user.from} to={props.user.to} start={start} end={end} selectedButtons = {selectedButtons} setSelectedButtons = {setSelectedButtons}/>
-          <Button mode="outlined" style={[{ flex: 1, width: '90%', borderRadius: 10, marginBottom: '2%' }]} onPress={() => navigation.navigate("BookingPage", {name : props.user.name, lastname : props.user.lastname, rating : props.user.rating, description : props.user.description, rideId : props.user.rideId, from: props.user.from, to: props.user.to, selectedButtons: selectedButtons}) }>
+        <View style={{ flexDirection: 'column', alignItems: 'center', borderWidth: 0.7, borderColor: '#1F1937', borderRadius: 10, marginTop:-3.5, marginBottom:'1%'}}>
+          <Text style={{ fontSize: 16, marginTop:'3%' }}>{selectedButtons.length == 0 && numSlots==1 ?"Choose slot" : selectedButtons.length == 0 && numSlots!=1 ? "Pick starting slot": selectedButtons.length==1 && numSlots!=1 ?"Pick ending slot or Confirm" : "Confirm Selection"}</Text>
+          <Slots from={props.user.from} to={props.user.to} start={start} end={end} selectedButtons = {selectedButtons} setSelectedButtons = {setSelectedButtons} numSlots={numSlots} setNumSlots={setNumSlots}/>
+          <Button mode="outlined" textColor="white" style={[{ flex: 1, width: '90%', borderRadius: 10, marginBottom: '2%', backgroundColor:'#1F1937' }]} onPress={() => 
+            
+            {
+              props.toggleDropdown(-1);
+              navigation.navigate("BookingPage", {name : props.user.name, lastname : props.user.lastname, rating : props.user.rating, description : props.user.description, rideId : props.user.rideId, from: props.user.from, to: props.user.to, selectedButtons: selectedButtons}) }}>
             Confirm
           </Button>
         </View>
@@ -124,7 +135,7 @@ const Rating = (props) => {
 
 
 
-const Slots = ({ from, to, selectedButtons, setSelectedButtons }) => {
+const Slots = ({ from, to, selectedButtons, setSelectedButtons,numSlots, setNumSlots }) => {
   const min_from = from.split(':').map(val => parseInt(val))
   const min_to = to.split(':').map(val => parseInt(val))
   const label = []
@@ -179,8 +190,11 @@ const Slots = ({ from, to, selectedButtons, setSelectedButtons }) => {
     return selectedButtons.includes(index) ? { backgroundColor: '#F9C977' } : {};
   };
 
+  setNumSlots(comp.length);
+
   return (
     <>
+{console.log(comp.length)}
       {comp.map((item, index) => {
         const label = item.split('~')
         return (

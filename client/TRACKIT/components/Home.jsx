@@ -26,7 +26,7 @@ const HomePage = ({ navigation, route }) => {
 
 
   const [users, setUsers] = useState([])
-  const [inUseFilter, setInUseFilter] = useState(0) // 0 none - 1 distance - 2 rating
+  const [inUseFilter, setInUseFilter] = useState(1) // 0 none - 1 distance - 2 rating
   const [available, setAvailable] = useState(true)
   const [noAvailability, setNoAvailability] = useState(false)
 
@@ -212,6 +212,7 @@ const HomePage = ({ navigation, route }) => {
 
     API.searchRide(paramsObj)
       .then(resp => {
+        console.log(resp)
         if (resp.length > 0) {
           resp = resp.map((item, index) => {
             return {
@@ -284,7 +285,7 @@ const HomePage = ({ navigation, route }) => {
                 available == false &&
                 <View style={{ backgroundColor: "#ffffff" }}>
 
-                  <RequestCard params={params} handleInsertRequest={handleInsertRequest} throwPopup={throwPopup} closePopup={closePopup} badgeOn={badgeOn} text={'We are sorry! No drivers are available at this time'} setBadgeOn={setBadgeOn} />
+                  <RequestCard params={params} handleInsertRequest={handleInsertRequest} throwPopup={throwPopup} closePopup={closePopup} badgeOn={badgeOn} text={'We are sorry! No drivers are available for the specified duration'} setBadgeOn={setBadgeOn} />
                   {
                     noAvailability == false &&
                     <Separator text={'OR'} />

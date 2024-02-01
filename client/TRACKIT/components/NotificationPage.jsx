@@ -61,7 +61,9 @@ const NotificationPage = ({ navigation, route }) => {
             .catch(err => console.log(err))
     }, [dirty])
     return (
-        <SafeAreaProvider>
+        <SafeAreaProvider style={{
+            backgroundColor:'white'
+        }}>
             <TopBar back = {'x'} />
                 <ScrollView>
                     <Popup modalVisible={modalVisible} setModalVisible={setModalVisible} text={popupText} buttons={popupFn} />
@@ -126,7 +128,7 @@ const CardBooking = (props) => {
                 {props.state == "Pending" && <Text variant='bodySmall' style={{ paddingLeft: "7%", paddingTop: "7%",  }}>Estimated response time: 3-4 hours</Text>}
             </Card.Content>
             <Card.Actions>
-                <Button style={styles.buttonSubmit} textColor="black" onPress={() => {
+                <Button style={styles.buttonSubmit} textColor="white" onPress={() => {
                     props.throwPopup(msg, [{
                         name:  props.state == "Pending" ? "Cancel Request" : "Cancel Booking",
                         fn: () => props.handleDeleteNotification(props.id, props.state)
@@ -146,7 +148,7 @@ const CardBooking = (props) => {
 const styles = StyleSheet.create({
     buttonSubmit:
     {
-        backgroundColor: "#F9C977",
+        backgroundColor: "#1F1937",
         padding: '1%',
         borderRadius: 10,
         // alignItems: 'center',

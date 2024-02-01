@@ -12,6 +12,7 @@ const UsersList = (props) => {
         else setShowDrop(index);
     };
     const [showDrop, setShowDrop] = useState(-1)
+    const [selectedButtons, setSelectedButtons] = useState([]);
 
     return (
         <>
@@ -24,7 +25,7 @@ const UsersList = (props) => {
                     {/* <ScrollView> */}
                     {
                         props.users.sort(props.inUseFilter != 0 ? sortingFn : () => {}).map(item => {
-                            return <UserItem params={props.params} showDrop={showDrop} toggleDropdown={toggleDropdown} key={item.userId} index={item.userId} style={styles.list} user={item} available={props.available} duration={props.duration} timeUnit={props.timeUnit} throwPopup={props.throwPopup} closePopup={props.closePopup}/>
+                            return <UserItem params={props.params} showDrop={showDrop} toggleDropdown={toggleDropdown} key={item.userId} index={item.userId} style={styles.list} user={item} available={props.available} duration={props.duration} timeUnit={props.timeUnit} throwPopup={props.throwPopup} closePopup={props.closePopup} setSelectedButtons={setSelectedButtons} selectedButtons={selectedButtons}/>
                         })
                     }
                     {/* </ScrollView> */}

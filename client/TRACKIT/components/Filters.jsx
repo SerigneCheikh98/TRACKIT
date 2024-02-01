@@ -6,7 +6,7 @@ const Filters = (props) => {
   return (
     <>
    
-        <Text style={{paddingRight:'20%', marginLeft:'6%', fontWeight:'bold', marginTop:"4%" }}>Sort by </Text>
+        <Text style={{paddingRight:'20%', marginLeft:'7%', fontWeight:'bold', marginTop:"4%" }}>Sort by </Text>
       <View style={styles.container}>
         <Pressable mode="outlined"  style={[styles.buttons, {
           backgroundColor:props.inUseFilter === 1 ? '#1F1937' : 'white',
