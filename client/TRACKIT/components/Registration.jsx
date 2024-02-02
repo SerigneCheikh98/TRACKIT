@@ -20,6 +20,8 @@ import { Modal } from 'react-native'
 import Overlay from 'react-native-modal-overlay';
 
 
+import API from '../API';
+
 
 import { LogBox } from 'react-native';
 LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
@@ -35,6 +37,27 @@ const genders = [
 
 
 const RegisterScreen = ({navigation, route}) =>{
+
+
+
+
+  function handleDriverRequest() {
+    API.addRequest(params)
+      .then(resp => {
+        setNotification(true)
+        closePopup()
+      })
+      .catch(err => {
+        throwPopup(err.message, [{
+          name: 'Close',
+          fn: closePopup
+        }])
+      })
+  }
+
+
+
+
     const {source} =route.params || {};
     const [step, setStep] = useState(source ?? "1");
     const [hidePassp, setHidePassp] = useState(true);
@@ -685,6 +708,7 @@ Delete  </Button>
             
               setStep('3');
             scrollToTop();
+            handleDriverRequest();
             }
             else {
               console.log(phoneNumber);

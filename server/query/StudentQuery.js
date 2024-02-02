@@ -12,7 +12,7 @@ exports.getUser = (email, password) => {
           resolve(false);
         }
         else {
-          const user = { id: row.Id, name: row.Name, surname: row.Surname, email: row.Email , role: 'student' };
+          const user = { id: row.Id, name: row.Name, surname: row.Surname, email: row.Email , role: 'student', driverRequesState: row.Requested_driver };
   
           crypto.scrypt(password, row.Salt, 32, function (err, hashedPassword) {
             if (err) reject(err);

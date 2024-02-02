@@ -1,6 +1,7 @@
 const notificationController = require('../controller/NotificationController');
 const ridesController = require('../controller/RidesController')
 const reportController = require('../controller/ReportController')
+const requestDriverController = require('../controller/RequestDriverController') 
 
 const express = require('express');
 
@@ -43,5 +44,7 @@ router.put('/notification/:id', notificationController.setNotificationSeen)
 // delete a notification for a student
 router.delete('/notification/:id', notificationController.deleteNotification)
 
+//set the request to driver of a student to 1
+router.set('/requestdriver/:id', requestDriverController.setReqStatus )
 
-module.exports = router;
+module.export = router;
