@@ -84,7 +84,7 @@ const HomePage = ({ navigation, route }) => {
   const [location, setLocation] = useState("Torino");
   const [lastLocation, setLastLocation] = useState("")
 
-  const [duration, setDuration] = useState("");
+  const [duration, setDuration] = useState("duration");
   const [timeUnit, setTimeUnit] = useState('min');
 
   const [dirty, setDirty] = useState(false)
@@ -95,7 +95,7 @@ const HomePage = ({ navigation, route }) => {
       setDirtySearch(false);
       setDirty(false);
       setTimeUnit('min');
-      setDuration("30");
+      setDuration("duration");
       setLastLocation("");
       setLocation("Torino");
       setDate('17/02/2024');

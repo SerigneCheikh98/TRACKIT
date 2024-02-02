@@ -15,12 +15,15 @@ function getDurationMin(from, to) {
   return diffInMinutes
 }
 
+
 function parseDuration(value, type) {
   if (type === 'min')
     return value
   else return value * 60
 }
 const UserItem = (props) => {
+  console.log(props.params)
+
   const navigation = useNavigation();
 
   // const [showDrop, setShowDrop] = useState(false)
@@ -62,7 +65,7 @@ const UserItem = (props) => {
             name: 'Book anyway',
             fn: () => {
               
-          navigation.navigate("BookingPage", { name: props.user.name, lastname: props.user.lastname, rating: props.user.rating, description: props.user.description, rideId : props.user.rideId, from: props.user.from, to: props.user.to, selectedButtons: selectedButtons })
+          navigation.navigate("BookingPage", { name: props.user.name, lastname: props.user.lastname, rating: props.user.rating, description: props.user.description, rideId : props.user.rideId, from: props.user.from, to: props.user.to, selectedButtons: selectedButtons, params : props.params })
           props.closePopup()
           }
           }
@@ -102,7 +105,7 @@ const UserItem = (props) => {
             
             {
               props.toggleDropdown(-1);
-              navigation.navigate("BookingPage", {name : props.user.name, lastname : props.user.lastname, rating : props.user.rating, description : props.user.description, rideId : props.user.rideId, from: props.user.from, to: props.user.to, selectedButtons: selectedButtons}) }}>
+              navigation.navigate("BookingPage", {name : props.user.name, lastname : props.user.lastname, rating : props.user.rating, description : props.user.description, rideId : props.user.rideId, from: props.user.from, to: props.user.to, selectedButtons: selectedButtons, params : props.params}) }}>
             Confirm
           </Button>
         </View>

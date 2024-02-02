@@ -18,6 +18,17 @@ const BookingConfirmation = ({ navigation, route }) => {
     <View>
       <TopBar />
       <View style={styles.bigContainer} >
+        
+          {/* Your other components/content go here */}
+          <View style={styles.textContainer}>
+            <Text style={styles.textStyle}>Your request has been sent to the driver</Text>
+          </View>
+
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity onPress={() => { navigation.navigate('HomePage') }} style={styles.button} >
+              <Text style={styles.buttonText}>Home</Text>
+            </TouchableOpacity>
+          </View>
 
       </View>
     </View>
