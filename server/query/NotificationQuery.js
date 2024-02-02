@@ -13,6 +13,21 @@ exports.deleteNotification = function deleteNotification(student_id, id) {
     })
 }
 
+// delete the request to driver notification
+
+exports.deleteNotificationDriver = function deleteNotification(student_id) {
+    const sql = `DELETE FROM Notifications WHERE idUser = ? AND type = 'driver'`
+    return new Promise((resolve, reject) => {
+        db.run(sql, [student_id], function (err) {
+            if (err) {
+                reject(new Error(err.message))
+                return
+            }
+            resolve(this.changes);
+        })
+    })
+}
+
 exports.setNotificationSeen = function setNotificationSeen(student_id, notification_id) {
     const sql = `UPDATE Notifications SET seen = 1 WHERE id = ? and idUser = ?`
     return new Promise((resolve, reject) => {

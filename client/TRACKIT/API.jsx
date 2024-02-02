@@ -1,4 +1,4 @@
-const your_ip_address = '172.20.10.18'
+const your_ip_address = '172.20.10.3'
 const locationKEY = '6596e0ad9314e091225752fijd9e70a'
 const basepath = `http://${your_ip_address}:3000/api`
 
@@ -268,5 +268,28 @@ const getEvaluationsByStudentId = () => {
   })
 }
 
-const API = { getCity, searchRide, getDailyRide, addRequestRide, getNotification, setNotificationSeen, deleteNotification, login, logout, stillLoggedIn, getAllTopics, getEvaluationsByStudentId, bookRide }
+
+// ========================================== Request to Driver ==========================================
+
+async function addRequest() {
+  return getJson(fetch(`${basepath}/requestdriver`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: 'include',
+    
+  })).then(json => {
+    return json
+  }).catch(err => {
+    console.log( '------HIII-----')
+    throw err
+  })
+}
+
+
+
+
+
+const API = { getCity, searchRide, getDailyRide, addRequestRide, getNotification, setNotificationSeen, deleteNotification, login, logout, stillLoggedIn, getAllTopics, getEvaluationsByStudentId, bookRide, addRequest }
 export default API;

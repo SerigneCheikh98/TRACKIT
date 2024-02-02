@@ -45,6 +45,9 @@ router.put('/notification/:id', notificationController.setNotificationSeen)
 router.delete('/notification/:id', notificationController.deleteNotification)
 
 //set the request to driver of a student to 1
-router.set('/requestdriver/:id', requestDriverController.setReqStatus )
+router.put('/requestdriver', requestDriverController.addRequest )
 
-module.export = router;
+// delete the request to driver
+router.delete('/requestdriver', requestDriverController.addRequest )
+
+module.exports = router;

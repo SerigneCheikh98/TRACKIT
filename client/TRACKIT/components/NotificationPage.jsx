@@ -69,17 +69,6 @@ const NotificationPage = ({ navigation, route }) => {
                     <Popup modalVisible={modalVisible} setModalVisible={setModalVisible} text={popupText} buttons={popupFn} />
                     <View style={{paddingVertical: '2%'}}>
                         {
-                            bookingsSeen.map((booking, index) => (
-                                <CardBooking handleDeleteNotification={handleDeleteNotification} key={index} id={booking.bookingId} date={booking.Date} driverName={booking.driverName} time={booking.time} duration={booking.duration} state={booking.state} throwPopup={throwPopup} closePopup={closePopup} />
-                                ))
-                            }
-                    </View>
-                    {
-                        bookingsNotSeen.length != 0 &&
-                        <Separator text={'New'} />
-                    }
-                    <View style={{paddingVertical: '2%'}}>
-                        {
                             bookingsNotSeen.map((booking, index) => {
                                 let val = <></>
                                 API.setNotificationSeen(booking.id)
@@ -92,6 +81,20 @@ const NotificationPage = ({ navigation, route }) => {
                             })
                         }
                     </View>
+                    
+                    
+                        {
+                            bookingsNotSeen.length != 0 &&
+                            <Separator text={'Old '} />
+                        }
+                    <View style={{paddingVertical: '2%'}}>
+                        {
+                            bookingsSeen.map((booking, index) => (
+                                <CardBooking handleDeleteNotification={handleDeleteNotification} key={index} id={booking.bookingId} date={booking.Date} driverName={booking.driverName} time={booking.time} duration={booking.duration} state={booking.state} throwPopup={throwPopup} closePopup={closePopup} />
+                                ))
+                            }
+                    </View>
+                  
                 </ScrollView>
         </SafeAreaProvider>
     )

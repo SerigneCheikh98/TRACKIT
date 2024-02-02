@@ -18,8 +18,8 @@ import Separator from './Separator'
 import dayjs from 'dayjs'
 import { Modal } from 'react-native'
 import Overlay from 'react-native-modal-overlay';
-
-
+import { NotificationContext } from './NotificationContext';
+import { useContext } from 'react'
 import API from '../API';
 
 
@@ -42,7 +42,7 @@ const RegisterScreen = ({navigation, route}) =>{
 
 
   function handleDriverRequest() {
-    API.addRequest(params)
+    API.addRequest()
       .then(resp => {
         setNotification(true)
         closePopup()
@@ -119,7 +119,7 @@ const RegisterScreen = ({navigation, route}) =>{
       return !mail.includes('@');
     };
 
-   
+    const [notification, setNotification] = useContext(NotificationContext)
 
     const pickImage = async (licenseImage) => {
         // No permissions request is necessary for launching the image library
