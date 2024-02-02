@@ -26,7 +26,7 @@ const HomePage = ({ navigation, route }) => {
 
 
   const [users, setUsers] = useState([])
-  const [inUseFilter, setInUseFilter] = useState(1) // 0 none - 1 distance - 2 rating
+  const [inUseFilter, setInUseFilter] = useState(0) // 0 time - 1 distance - 2 rating
   const [available, setAvailable] = useState(true)
   const [noAvailability, setNoAvailability] = useState(false)
 
@@ -46,18 +46,9 @@ const HomePage = ({ navigation, route }) => {
   }
 
   function handleSetFilter(choice) {
-    if (inUseFilter == 1 && choice != 1) {
-      setInUseFilter(2)
-    }
-    else if (inUseFilter == 2 && choice != 2) {
-      setInUseFilter(1)
-    }
-    else if (inUseFilter == 0) {
-      setInUseFilter(choice)
-    }
-    else {
-      setInUseFilter(0)
-    }
+   setInUseFilter(choice)
+   console.log(choice)
+    
   }
 
   const [modalVisible, setModalVisible] = useState(false);
@@ -285,7 +276,7 @@ const HomePage = ({ navigation, route }) => {
                 available == false &&
                 <View style={{ backgroundColor: "#ffffff" }}>
 
-                  <RequestCard params={params} handleInsertRequest={handleInsertRequest} throwPopup={throwPopup} closePopup={closePopup} badgeOn={badgeOn} text={'We are sorry! No drivers are available for the specified duration'} setBadgeOn={setBadgeOn} />
+                  <RequestCard params={params} handleInsertRequest={handleInsertRequest} throwPopup={throwPopup} closePopup={closePopup} badgeOn={badgeOn} text={'We are sorry! No drivers are available for the specified time and duration'} setBadgeOn={setBadgeOn} />
                   {
                     noAvailability == false &&
                     <Separator text={'OR'} />

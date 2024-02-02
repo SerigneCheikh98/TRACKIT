@@ -4,7 +4,25 @@ import UserItem from "./UserItem";
 import { View, StyleSheet, ScrollView } from "react-native";
 
 const UsersList = (props) => {
-    const sortingFn = (props.inUseFilter == 1 ? (a, b) => a.distance-b.distance : (a, b) => b.rating - a.rating)
+
+    
+
+    const sortingFn = (a,b)=>
+    {
+        if(props.inUseFilter == 1)
+        { 
+           return a.distance-b.distance
+        }
+        else if(props.inUseFilter == 2) 
+        { return b.rating - a.rating 
+         }
+         else { 
+        return parseInt(a.from.split(':')[0]) - parseInt(b.from.split(':')[0])
+        }
+    }
+    
+
+
 
     const toggleDropdown = (index) => {
         if(showDrop == index)
@@ -24,7 +42,8 @@ const UsersList = (props) => {
                 <View style={styles.list}>
                     {/* <ScrollView> */}
                     {
-                        props.users.sort(props.inUseFilter != 0 ? sortingFn : () => {}).map(item => {
+                        props.users.sort(sortingFn).map(item => {
+                         
                             return <UserItem params={props.params} showDrop={showDrop} toggleDropdown={toggleDropdown} key={item.userId} index={item.userId} style={styles.list} user={item} available={props.available} duration={props.duration} timeUnit={props.timeUnit} throwPopup={props.throwPopup} closePopup={props.closePopup} setSelectedButtons={setSelectedButtons} selectedButtons={selectedButtons}/>
                         })
                     }

@@ -7,8 +7,8 @@ const notificationQuery = require('../query/NotificationQuery')
 
 
 function afterHour(timeChosen, timeReceived) {
-    const time1 = timeChosen.split(':')
-    const time2 = timeReceived.split(':')
+    const time1 = timeChosen.split(':').map(a => parseInt(a))
+    const time2 = timeReceived.split(':').map(a => parseInt(a))
 
     if(time2[0] > time1[0])
         return true
@@ -62,6 +62,7 @@ function calculateEndingHour(startingTime, slots) {
  * @param {*} res [{ride_obj1}, {ride_obj2}, ...]
  */
 exports.searchRide = function searchRide(req, res) {
+    console.log(req.query)
     if(!req.query.location) {
         return res.status(400).json({message: 'Location is missing'})
     }
@@ -89,6 +90,7 @@ exports.searchRide = function searchRide(req, res) {
             resp = resp.filter( (ride) => {
                 return afterHour(req.query.time, ride.StartingTime) 
             })
+            console.log(resp)
             if(dayjs().isSame(req.query.date, 'day')) {
                 resp = resp.filter( (ride) => {
                     return afterHour(dayjs().format('HH:mm'), ride.StartingTime)

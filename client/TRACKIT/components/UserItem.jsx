@@ -89,7 +89,7 @@ const UserItem = (props) => {
           <Text>{props.user.distance + ' Kms away'}</Text>
           {
             
-          <Text style={{color: danger == true ? "#D50000" : 'black', marginRight:11 }}>{props.user.from + ' - ' + props.user.to} </Text>
+          <Text style={{color: danger == true ? "#D50000" : 'black', marginRight:11, fontSize:13 }}>{props.user.from + ' - ' + props.user.to} </Text>
             
           }
         </View>
