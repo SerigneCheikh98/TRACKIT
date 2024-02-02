@@ -90,34 +90,26 @@ const HomePage = ({ navigation, route }) => {
   const [dirty, setDirty] = useState(false)
   const [dirtySearch, setDirtySearch] = useState(false)
 
-  // useFocusEffect(
-  //   React.useCallback(() => {
-  //     setDirtySearch(false);
-  //     setDirty(false);
-  //     setTimeUnit('min');
-  //     setDuration("30");
-  //     setLastLocation("");
-  //     setLocation("Torino");
-  //     setDate('17/02/2024');
-  //     setTime('12:00');
-  //     setPopupFn([{
-  //       name: '',
-  //       fn: () => { }
-  //     }])
-  //     setPopupText('');
-  //     setModalVisible(false);
-  //     setAlarmInput([false, false, false, false, false]);
-  //     setPage('home');
-  //     setLogging(false)
-  //     setNotification(NotificationContext)
-  //     setUsers([])
-  //     setInUseFilter(0) // 0 none - 1 distance - 2 rating
-  //     setAvailable(true)
-  //     setNoAvailability(false)
+  useFocusEffect(
+    React.useCallback(() => {
+      setDirtySearch(false);
+      setDirty(false);
+      setTimeUnit('min');
+      setDuration("30");
+      setLastLocation("");
+      setLocation("Torino");
+      setDate('17/02/2024');
+      setTime('12:00');
+      setModalVisible(false);
+      setAlarmInput([false, false, false, false, false]);
+      setUsers([])
+      setInUseFilter(0) // 0 none - 1 distance - 2 rating
+      setAvailable(true)
+      setNoAvailability(false)
 
-  //     /* console.log('Screen is focused, refresh here'); */
-  //   }, [])
-  // );
+      /* console.log('Screen is focused, refresh here'); */
+    }, [])
+  );
 
   const params = {
     time: time,
