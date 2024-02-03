@@ -72,15 +72,15 @@ exports.getNotification = function getNotification(req, res) {
                     rows = rows.map( item => {
                         let s = ''
                         const hours = Math.floor(item.Slot / 2)
-                        const alf = item.Slot - hours
+                        const alf = item.Slot - hours*2
                         if(hours == 0) {
-                            s = `30 minutes`
+                            s = `30 m`
                         }
                         else if(alf == 1) {
-                            s = `${hours} hour(s) and 30 minutes`
+                            s = `${hours} h 30 m`
                         }
                         else {
-                            s = `${hours} hour(s)`
+                            s = `${hours} h`
                         }
     
                         return {

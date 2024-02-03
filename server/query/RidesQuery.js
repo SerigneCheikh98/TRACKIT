@@ -107,7 +107,7 @@ exports.deleteRequestRide = function deleteRequestRide(student_id, ride_id) {
 }
 
 exports.deleteBooking = function deleteRequestRide(student_id, ride_id) {
-    const sql = `UPDATE Rides SET StudentId = NULL WHERE StudentId = ? AND RideId = ? AND DriverId IS NOT NULL`
+    const sql = `UPDATE Rides SET StudentId = NULL AND Status = 0 WHERE StudentId = ? AND RideId = ? AND DriverId IS NOT NULL`
     return new Promise((resolve, reject) => {
         db.run(sql, [student_id, ride_id], function (err) {
             if (err) {

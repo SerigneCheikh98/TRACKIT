@@ -7,8 +7,10 @@ import DriverBar from "./DriverBar";
 import DriverDescription from "./DriverDescription";
 import Topics from "./LessonTopics";
 import { useNavigation } from '@react-navigation/native';
-import { useState, useCallback, useEffect, React } from 'react';
+import { useState, useCallback, useEffect, React, useContext } from 'react';
 import API from '../API';
+import { NotificationContext } from './NotificationContext';
+
 
 
 
@@ -32,6 +34,8 @@ const Booking = ({ route}) => {
   const { width, height } = Dimensions.get('window');
   const navigation = useNavigation();
   const [disableButton, setDisableButton] = useState(false);
+  const [notification, setNotification] = useContext(NotificationContext)
+
 
   const [showText, setShowText] = useState(false);
 
@@ -48,6 +52,7 @@ const Booking = ({ route}) => {
   const handleButtonPressRight = () => {
     API.bookRide(rideId, from.split(' - ')[0].trim(), selectedButtons.length)
     .then(resp => {
+      setNotification(true)
       navigation.navigate('BookingConfirmationPage', {name : name, lastname: lastname, rating: rating, from : from, to: to, date : date, location : location, time : time})
     })
     .catch(err => {
