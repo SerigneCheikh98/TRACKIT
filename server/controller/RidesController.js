@@ -5,17 +5,24 @@ const notificationQuery = require('../query/NotificationQuery')
 
 
 
-
+/**
+ * timeChosen is before timeReceived ==> first time chosen
+ * 12:00 and 20:00 return true
+ * 12:00 and 08:00 return false
+ */
 function afterHour(timeChosen, timeReceived) {
-    const time1 = timeChosen.split(':')
-    const time2 = timeReceived.split(':')
+    const time1 = timeChosen.split(':').map(item => parseInt(item))
+    const time2 = timeReceived.split(':').map(item => parseInt(item))
 
-    if(time2[0] > time1[0])
-        return true
-    else if(time2[0] === time1[0] && time2[1] >= time1[1])
-        return true
-    else 
-        return false
+    // if(time2[0] > time1[0])
+    //     return true
+    // else if(time2[0] === time1[0] && time2[1] >= time1[1])
+    //     return true
+    // else 
+    //     return 
+    if( ( (time1[0]*60+time1[1]) - (time2[0]*60+time2[1]) ) <= 0)
+        return true 
+    return false
 }
 
 function calculateEndingHour(startingTime, slots) {
@@ -33,6 +40,16 @@ function calculateEndingHour(startingTime, slots) {
 
     const s = `${start[0] < 10 ? '0'+start[0] : start[0]}:${start[1] < 10 ? '0'+start[1] : start[1]}`
     return s
+}
+
+function getSlotDistance(time1, time2) {
+    const from = time1.split(':').map(i => parseInt(i))
+    const to = time2.split(':').map(i => parseInt(i))
+
+    const min_to = to[0]*60+to[1]
+    const min_from = from[0]*60+from[1]
+
+    return Math.round((min_from-min_to)/30)
 }
 /**
  * Search for a still pending ride for the current user
@@ -62,7 +79,6 @@ function calculateEndingHour(startingTime, slots) {
  * @param {*} res [{ride_obj1}, {ride_obj2}, ...]
  */
 exports.searchRide = function searchRide(req, res) {
-    req.query.duration = 30
     if(!req.query.location) {
         return res.status(400).json({message: 'Location is missing'})
     }
@@ -116,17 +132,51 @@ exports.searchRide = function searchRide(req, res) {
         })
 }
 
-exports.bookRide = function bookRide(req, res) {
-    if(!req.body.rideId) {
+/**
+ * Book a ride with a driver and takes its availability, the remaining time is going to be
+ * split in other rides
+ * 
+ * @param {*} req {
+ *  rideId: INTEGER,
+ *  time: STRING,
+ *  slots: INTEGER
+ * }
+ * @param {*} res 
+ * @returns 
+ */
+exports.bookRide = async function bookRide(req, res) {
+    if(!req.body.rideId || req.body.rideId < 0) {
         return res.status(400).json({message: 'RideId is missing'})
     }
-    ridesQuery.bookRide(req.body.rideId)
-        .then( resp => {
-            return res.status(200).json({message: 'Booking completed'})
+    if(!req.body.time || req.body.time.split(':').length != 2) {
+        return res.status(400).json({message: 'Time is missing or not valid'})
+    }
+    if(!req.body.slots || req.body.slots < 1) {
+        return res.status(400).json({message: 'Slot is missing or not valid'})
+    }
+    const ride = await ridesQuery.selectRide(req.body.rideId)
+    const endingHour = calculateEndingHour(ride.StartingTime, ride.Slot)
+    if(afterHour(req.body.time, ride.StartingTime) || afterHour(endingHour, calculateEndingHour(req.body.time, req.body.slots)))
+        return res.status(400).json({message: 'Time for the slot is not compatible'})
+
+    if(ride.StartingTime !== req.body.time || endingHour === calculateEndingHour(req.body.time, req.body.slots)) {
+        const firstSlot = getSlotDistance(req.body.time, ride.StartingTime)
+        await ridesQuery.addRide(ride.DriverId, ride.Location, ride.Date, ride.StartingTime, firstSlot)
+    }
+    
+    if(ride.StartingTime === req.body.time || endingHour != calculateEndingHour(req.body.time, req.body.slots)) {
+        const secondSlot = getSlotDistance(calculateEndingHour(ride.StartingTime, ride.Slot), calculateEndingHour(req.body.time, req.body.slots))
+        await ridesQuery.addRide(ride.DriverId, ride.Location, ride.Date, calculateEndingHour(req.body.time, req.body.slots), secondSlot)
+    }
+
+    ridesQuery.bookRide(req.body.rideId, req.user.id, req.body.time, req.body.slots)
+        .then( (resp) => {
+                return res.status(200).json({message: 'Booking complete'})
         })
         .catch( err => {
             return res.status(500).json({message: 'DB error'})
         })
+ 
 }
 
 exports.getDailyRide = function getDailyRide(req, res) {

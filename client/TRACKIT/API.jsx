@@ -1,4 +1,4 @@
-const your_ip_address = '172.20.10.2'
+const your_ip_address = '192.168.46.69'
 const locationKEY = '6596e0ad9314e091225752fijd9e70a'
 const basepath = `http://${your_ip_address}:3000/api`
 
@@ -121,20 +121,22 @@ async function addRequestRide(params) {
 
 }
 
-async function bookRide(rideId) {
-  return getJson(fetch(`${basepath}/bookRide`, {
+async function bookRide(rideId, time, slots) {
+  console.log(rideId, time, slots)
+  return getJson(fetch(`${basepath}/rides`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },
     credentials: 'include',
     body: JSON.stringify({
-      rideId : rideId
+      rideId : rideId,
+      time: time,
+      slots: slots
     })
   })).then(json => {
     return json
   }).catch(err => {
-    console.log(rideId +'-----')
     throw err
   })
 }

@@ -28,6 +28,7 @@ const UserItem = (props) => {
   const [start, setStart] = useState(-1)
   const [end, setEnd] = useState(-1)
   const [selectedButtons, setSelectedButtons] = useState([]);
+  const [timeSlots, setTimeSlots] = useState([])
 
 
   const onDismiss = useCallback(() => {
@@ -57,7 +58,7 @@ const UserItem = (props) => {
         props.throwPopup(msg, [
           {
             name: 'Book anyways',
-            fn: () => navigation.navigate("BookingPage", { name: props.user.name, lastname: props.user.lastname, rating: props.user.rating, description: props.user.description, rideId : props.user.rideId, from: props.user.from, to: props.user.to, selectedButtons: selectedButtons })
+            fn: () => navigation.navigate("BookingPage", { name: props.user.name, lastname: props.user.lastname, rating: props.user.rating, description: props.user.description, rideId : props.user.rideId, from: timeSlots, selectedButtons: selectedButtons })
           }
           ,{
             name: 'Close',
@@ -90,8 +91,8 @@ const UserItem = (props) => {
       {props.showDrop == props.index && (
         <View style={{ flexDirection: 'column', alignItems: 'center', borderWidth: 0.5, borderColor: 'grey', borderRadius: 10, borderTopWidth: 0}}>
           <Text style={{ fontSize: 16 }}>{selectedButtons.length == 0 ? "Pick starting slot": selectedButtons.length==1 ?"Pick ending slot or Confirm" : "Confirm"}</Text>
-          <Slots from={props.user.from} to={props.user.to} start={start} end={end} selectedButtons = {selectedButtons} setSelectedButtons = {setSelectedButtons}/>
-          <Button mode="outlined" style={[{ flex: 1, width: '90%', borderRadius: 10, marginBottom: '2%' }]} onPress={() => navigation.navigate("BookingPage", {name : props.user.name, lastname : props.user.lastname, rating : props.user.rating, description : props.user.description, rideId : props.user.rideId, from: props.user.from, to: props.user.to, selectedButtons: selectedButtons}) }>
+          <Slots setTimeSlots={setTimeSlots} from={props.user.from} to={props.user.to} start={start} end={end} selectedButtons = {selectedButtons} setSelectedButtons = {setSelectedButtons}/>
+          <Button mode="outlined" style={[{ flex: 1, width: '90%', borderRadius: 10, marginBottom: '2%' }]} onPress={() => navigation.navigate("BookingPage", {name : props.user.name, lastname : props.user.lastname, rating : props.user.rating, description : props.user.description, rideId : props.user.rideId, from: timeSlots, selectedButtons: selectedButtons}) }>
             Confirm
           </Button>
         </View>
@@ -124,7 +125,7 @@ const Rating = (props) => {
 
 
 
-const Slots = ({ from, to, selectedButtons, setSelectedButtons }) => {
+const Slots = ({ setTimeSlots, from, to, selectedButtons, setSelectedButtons }) => {
   const min_from = from.split(':').map(val => parseInt(val))
   const min_to = to.split(':').map(val => parseInt(val))
   const label = []
@@ -158,9 +159,11 @@ const Slots = ({ from, to, selectedButtons, setSelectedButtons }) => {
   const handleButtonClick = (index) => {
     if(selectedButtons.length > 1) {
       setSelectedButtons([])
+      setTimeSlots('')
     }
     else if(selectedButtons.length == 0) {
       setSelectedButtons([index])
+      handleSetTimeSlots(index)
     }
     else {
       const start = selectedButtons.pop()
@@ -175,6 +178,10 @@ const Slots = ({ from, to, selectedButtons, setSelectedButtons }) => {
     }
   };
 
+  function handleSetTimeSlots(index) {
+    const tmp = comp.map(item => item.split('~')).flat()
+    setTimeSlots(tmp[index])
+  }
   const getButtonStyle = (index) => {
     return selectedButtons.includes(index) ? { backgroundColor: '#F9C977' } : {};
   };
