@@ -20,7 +20,7 @@ function afterHour(timeChosen, timeReceived) {
     //     return true
     // else 
     //     return 
-    if( ( (time1[0]*60+time1[1]) - (time2[0]*60+time2[1]) ) <= 0)
+    if( ( (time1[0]*60+time1[1]) - (time2[0]*60+time2[1]) ) < 0)
         return true 
     return false
 }
