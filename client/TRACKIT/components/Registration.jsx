@@ -108,9 +108,16 @@ const RegisterScreen = ({navigation, route}) =>{
     };
   
     const onConfirmSingle = 
-      () => {
+      (date) => {
         setOpen(false);
-        setBirthDate(dayjs(birthDate).format('DD/MM/YYYY').toString());
+        setBirthDate(dayjs(date['date']).format('DD/MM/YYYY').toString());
+        
+        console.log(date)
+        const dateChosen = dayjs(date['date']).format('DD/MM/YYYY').toString();
+        console.log(dayjs(date['date']).format('DD/MM/YYYY').toString());
+        setBirthDate(dateChosen);
+        console.log('hi ' + birthDate);
+
       
       };
     
@@ -224,6 +231,8 @@ const RegisterScreen = ({navigation, route}) =>{
     const scrollToBottom  = () =>{
       scrollViewRef.current.scrollToEnd({ animated: true });  
     } 
+
+
 
     return(
       <SafeAreaProvider>
@@ -470,8 +479,11 @@ const RegisterScreen = ({navigation, route}) =>{
                   visible={open}
                   onDismiss={onDismissSingle}
                   date={birthDate}
+
                   validRange={{endDate: new Date()}}
-                  onConfirm={onConfirmSingle}
+                  onConfirm={onConfirmSingle
+                  
+                  }
                 />
                 </View>
                 </Pressable>
