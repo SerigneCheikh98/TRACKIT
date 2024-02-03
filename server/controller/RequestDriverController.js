@@ -6,7 +6,7 @@ const notificationQuery = require('../query/NotificationQuery')
 exports.addRequest = function addRequest(req, res) {
     dao.setReqStatus(req.user.id)
         .then( resp => {
-            notificationQuery.addNotification(req.user.id, resp, 'new notification', 'Pending')
+            //notificationQuery.addNotification(req.user.id, resp, 'new notification', 'Pending')
             return res.status(200).json({message: 'Request sent'})
         })
         .catch( err => {
@@ -18,7 +18,7 @@ exports.addRequest = function addRequest(req, res) {
 exports.deleteRequest = function deleteRequest(req, res) {
     dao.deleteReq(req.user.id)
         .then( resp => {
-            notificationQuery.deleteNotification(req.user.id, resp)
+            //notificationQuery.deleteNotification(req.user.id, resp)
             return res.status(200).json({message: 'Request sent'})
         })
         .catch( err => {
