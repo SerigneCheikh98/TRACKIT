@@ -93,14 +93,14 @@ const ProfilePage = ({ route, setIsLoggedIn }) => {
                     <Icon name= {'chevron-right'} type="font-awesome" color={'#1F1937'} size={20} style={styles.arrow_right}/>
                 </View> */}
 
-                <View style={styles.item}>
+                <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('NotificationPage')}>
                     <CircleIcon dimensione={0.14} tipo={'calendar-edit'} fonte={"material-community"}/>
                     <View style={styles.textContainerItem}>
                         <Text style={styles.iconTitle}>My Rides </Text>
-                        <Text style={[styles.iconTitle, styles.iconDescription]}>Manage your bookings</Text>
+                        <Text style={[styles.iconTitle, styles.iconDescription]}>Delete any of your bookings</Text>
                     </View>
                     <Icon name= {'chevron-right'} type="font-awesome" color={'#1F1937'} size={20} style={styles.arrow_right}/>
-                </View>
+                </TouchableOpacity>
 
                 <TouchableOpacity style={styles.item} onPress={()=>{
                     
