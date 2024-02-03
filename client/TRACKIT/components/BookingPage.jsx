@@ -28,8 +28,8 @@ const getItem = (_data, index) => ({
 
 const Booking = ({ route}) => {
 
-  const { name, lastname, rating, description, rideId, from, to, selectedButtons,params } = route.params;
-  console.log(params)
+  const { name, lastname, rating, description, rideId, from, to, selectedButtons,date, location, time, timeUnit } = route.params;
+  console.log(date, location, time, timeUnit)
   const { width, height } = Dimensions.get('window');
   const navigation = useNavigation();
   const [disableButton, setDisableButton] = useState(false);
@@ -50,7 +50,7 @@ const Booking = ({ route}) => {
     console.log(rideId)
     API.bookRide(rideId)
     .then(resp => {
-      navigation.navigate('BookingConfirmationPage')
+      navigation.navigate('BookingConfirmationPage', {name : name, lastname: lastname, rating: rating, from : from, to: to, date : date, location : location, time : time})
     })
     .catch(err => {
       console.log(err)
