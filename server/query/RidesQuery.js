@@ -26,16 +26,34 @@ exports.searchRide = function searchRide(location, date, time, slots) {
     })
 }
 
-exports.bookRide = function bookRide(rideId){
-    const sql = 'UPDATE Rides SET Status = 1 WHERE RideId = ? '
+exports.bookRide = function bookRide(rideId, studentId, startingTime, slot){
+    const sql = 'UPDATE Rides SET Status = 1, StudentId = ?, StartingTime = ?, Slot = ? WHERE RideId = ? '
     return new Promise((resolve, reject) => {
-        db.run(sql, [rideId], function (err) {
+        db.run(sql, [studentId, startingTime, slot, rideId], function (err) {
             if (err) {
                 reject(new Error(err.message))
-                console.log('prova')
                 return
             }
             resolve(this.changes);
+        })
+    })
+}
+
+exports.addRide = function addRide(driverId, location, date, time, slots) {
+    console.log(driverId, location, date, time, slots)
+    const sql = `INSERT INTO Rides(DriverId, Status, StartingTime, Slot, Date, Location)
+                    VALUES (?, 0, ?, ?, ?, ?)`
+    return new Promise((resolve, reject) => {
+        db.run(sql, [driverId, time, slots, date, location], function(err) {
+            if(err) {
+                reject(new Error(err.message))
+                return
+            }
+            if(this.changes === 0) {
+                reject(new Error('No rows updated'));
+                return;
+            }
+            resolve(this.lastID);
         })
     })
 }

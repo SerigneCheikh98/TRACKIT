@@ -29,6 +29,9 @@ const UserItem = (props) => {
   const [visible, setVisible] = useState(false)
   const [start, setStart] = useState(-1)
   const [end, setEnd] = useState(-1)
+  const [selectedButtons, setSelectedButtons] = useState([]);
+  const [timeSlots, setTimeSlots] = useState([])
+
   
   const [numSlots, setNumSlots] = useState(null);
 
@@ -64,7 +67,7 @@ const UserItem = (props) => {
             name: 'Book anyway',
             fn: () => {
               
-          navigation.navigate("BookingPage", { name: props.user.name, lastname: props.user.lastname, rating: props.user.rating, description: props.user.description, rideId : props.user.rideId, from: props.user.from, to: props.user.to, selectedButtons: selectedButtons, 
+          navigation.navigate("BookingPage", { name: props.user.name, lastname: props.user.lastname, rating: props.user.rating, description: props.user.description, rideId : props.user.rideId, from: timeSlots, selectedButtons: selectedButtons, 
           date: props.params.date, location : props.params.location,time : props.params.time, timeUnit: props.params.timeUnit  })
           props.closePopup()
           }
@@ -107,7 +110,7 @@ const UserItem = (props) => {
               props.toggleDropdown(-1);
               if(selectedButtons.length != 0)
              { 
-              navigation.navigate("BookingPage", {name : props.user.name, lastname : props.user.lastname, rating : props.user.rating, description : props.user.description, rideId : props.user.rideId, from: props.user.from, to: props.user.to, selectedButtons: selectedButtons, 
+              navigation.navigate("BookingPage", {name : props.user.name, lastname : props.user.lastname, rating : props.user.rating, description : props.user.description, rideId : props.user.rideId, from: timeSlots, selectedButtons: selectedButtons, 
               date: props.params.date, location : props.params.location,time : props.params.time, timeUnit: props.params.timeUnit}) 
             }}}>
             Confirm
@@ -142,7 +145,7 @@ const Rating = (props) => {
 
 
 
-const Slots = ({ from, to, selectedButtons, setSelectedButtons,numSlots, setNumSlots }) => {
+const Slots = ({ setTimeSlots, from, to, selectedButtons, setSelectedButtons,numSlots, setNumSlots }) => {
   const min_from = from.split(':').map(val => parseInt(val))
   const min_to = to.split(':').map(val => parseInt(val))
   const label = []
@@ -176,9 +179,11 @@ const Slots = ({ from, to, selectedButtons, setSelectedButtons,numSlots, setNumS
   const handleButtonClick = (index) => {
     if(selectedButtons.length > 1) {
       setSelectedButtons([])
+      setTimeSlots('')
     }
     else if(selectedButtons.length == 0) {
       setSelectedButtons([index])
+      handleSetTimeSlots(index)
     }
     else {
       const start = selectedButtons.pop()
@@ -193,6 +198,10 @@ const Slots = ({ from, to, selectedButtons, setSelectedButtons,numSlots, setNumS
     }
   };
 
+  function handleSetTimeSlots(index) {
+    const tmp = comp.map(item => item.split('~')).flat()
+    setTimeSlots(tmp[index])
+  }
   const getButtonStyle = (index) => {
     return selectedButtons.includes(index) ? { backgroundColor: '#F9C977' } : {};
   };

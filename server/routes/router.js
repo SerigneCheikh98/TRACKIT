@@ -18,13 +18,10 @@ router.get('/rides', ridesController.searchRide);
 router.get('/rides/daily', ridesController.getDailyRide);
 
 // book a practice for the current student
-router.put('/rides')
+router.put('/rides', ridesController.bookRide)
 
 // request by the current student
 router.post('/rides', ridesController.addRequestRide)
-
-// 
-router.put('/bookRide', ridesController.bookRide)
 
 // get all topics
 router.get('/topics', reportController.getAllTopics)
