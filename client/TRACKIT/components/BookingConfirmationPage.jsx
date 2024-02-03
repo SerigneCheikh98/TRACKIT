@@ -15,7 +15,26 @@ import { color } from "@rneui/base";
 const BookingConfirmation = ({ navigation, route }) => {
 
   const email = "mariorossi@hotmail.com"
-  const { name, lastname, rating, from, to, date, location, time } = route.params;
+  const { name, lastname, rating, from, to, date, location, time, duration } = route.params;
+
+  function calculateEndingHour(startingTime, slots) {
+    const noHours = Math.floor(slots / 2);
+    const noAfHour = slots - (noHours * 2);
+
+    const start = startingTime.split(':').map(item => parseInt(item))
+    start[0] = start[0] + noHours
+    start[1] = start[1] + noAfHour*30
+
+    if(start[1] == 60) {
+        start[1] = 0
+        start[0] += 1
+    }
+
+    const s = `${start[0] < 10 ? '0'+start[0] : start[0]}:${start[1] < 10 ? '0'+start[1] : start[1]}`
+    return s
+}
+
+  const endingHour = calculateEndingHour(from, duration);
 
   const CircleView = ({ dimensione, name, type }) => {
     const { width, height } = Dimensions.get('window');
@@ -26,7 +45,7 @@ const BookingConfirmation = ({ navigation, route }) => {
 
     </View>;
   };
-  
+
   const generateRandomNumber = (numDigits) => {
     const min = Math.pow(10, numDigits - 1);
     const max = Math.pow(10, numDigits) - 1;
@@ -46,7 +65,7 @@ const BookingConfirmation = ({ navigation, route }) => {
       <View style={styles.bigContainer} >
         <View style={styles.confimationBookingContainer}>
           <View style={styles.textContainer}>
-            <Text style={[styles.textStyle, { color: 'green', fontSize: 20 }]} >Confirmed</Text>
+            <Text style={[styles.textStyle, { color: '#F9C977', fontSize: 20 }]} >Confirmed</Text>
             <Text style={[{ fontFamily: 'roboto-semiBold', fontSize: 30 }]}>Your lesson booking</Text>
             <Text style={[styles.textStyle, { fontSize: 16 }]} >You're all set! We sent your confirmation email to <Text style={{ fontFamily: 'roboto-semiBold' }}>{email}</Text></Text>
           </View>
@@ -81,25 +100,28 @@ const BookingConfirmation = ({ navigation, route }) => {
               <Icon name={'location-outline'} type={'ionicon'} color={'#1F1937'} size={30} />
               <Text>{location}</Text>
             </View>
+          </View>
+
+
+          <View style={styles.locationInterno}>
             <View style={styles.locationSopra}>
               <Icon name={'calendar'} type={'font-awesome'} color={'#1F1937'} size={30} />
               <Text>{date}</Text>
             </View>
             <View style={styles.locationSopra}>
               <Icon name={'clock-outline'} type={'material-community'} color={'#1F1937'} size={30} />
-              <Text>{from + "-" + to}</Text>
+              <Text>{from + "-" + endingHour }</Text>
             </View>
           </View>
-
         </View>
         <View style={styles.bottomContainer}>
-          
+
         </View>
         <View style={styles.buttonContainer}>
-            <TouchableOpacity onPress={() => { navigation.navigate('HomePage') }} style={styles.button} >
-              <Text style={styles.buttonText}>Home</Text>
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity onPress={() => { navigation.navigate('HomePage') }} style={styles.button} >
+            <Text style={styles.buttonText}>Home</Text>
+          </TouchableOpacity>
+        </View>
 
       </View>
     </View>
@@ -110,11 +132,11 @@ const Rating = (props) => {
   const stars = [];
   let i;
   for (i = 0; i < props.num; i++) {
-    stars.push(<Icon key={i} name='star' type="material" color='#febb00' size={25}
+    stars.push(<Icon key={i} name='star' type="material" color='#1F1937' size={25}
     />);
   }
   while (i < 5) {
-    stars.push(<Icon key={i} name='star-border' color='#febb00' type="material" size={25} style={{ margin: '0 2px' }} // Adjust the margin as needed
+    stars.push(<Icon key={i} name='star-border' color='#1F1937' type="material" size={25} style={{ margin: '0 2px' }} // Adjust the margin as needed
     />);
     i++
   }
@@ -164,7 +186,7 @@ const styles = StyleSheet.create({
 
   locationContainer: {
     ...debug,
-    height: '10%',
+    height: '20%',
     width: '100%',
     backgroundColor: 'white',
     alignItems: 'center',
@@ -175,7 +197,8 @@ const styles = StyleSheet.create({
     ...debug,
     height: '35%',
     width: '90%',
-    backgroundColor: '#e7fceb',
+    //backgroundColor: '#e7fceb',
+    backgroundColor: '#F9C977',
     alignSelf: 'center',
     borderRadius: 10,
     flexDirection: 'row',
@@ -230,7 +253,7 @@ const styles = StyleSheet.create({
   locationInterno: {
     ...debug,
     flexDirection: 'row',
-    height: '100%',
+    height: '50%',
     width: '90%',
     alignItems: 'center',
     justifyContent: 'space-between'
@@ -284,9 +307,9 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
 
-  bottomContainer:{
+  bottomContainer: {
     ...debug,
-    height:'100%',
+    height: '100%',
     width: '100%',
     backgroundColor: 'white'
   }

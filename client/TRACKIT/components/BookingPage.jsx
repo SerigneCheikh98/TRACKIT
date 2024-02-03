@@ -53,7 +53,7 @@ const Booking = ({ route}) => {
     API.bookRide(rideId, from.split(' - ')[0].trim(), selectedButtons.length)
     .then(resp => {
       setNotification(true)
-      navigation.navigate('BookingConfirmationPage', {name : name, lastname: lastname, rating: rating, from : from, to: to, date : date, location : location, time : time})
+      navigation.navigate('BookingConfirmationPage', {name : name, lastname: lastname, rating: rating, from : from.split(' - ')[0].trim(), to: to, date : date, location : location, time : time, duration: selectedButtons.length})
     })
     .catch(err => {
       console.log(err)

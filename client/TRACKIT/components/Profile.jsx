@@ -84,11 +84,20 @@ const ProfilePage = ({ route, setIsLoggedIn }) => {
                     <Icon name= {'chevron-right'} type="font-awesome" color={'#1F1937'} size={20} style={styles.arrow_right}/>
                 </TouchableOpacity>
                 
-                <View style={styles.item}>
+                {/* <View style={styles.item}>
                     <CircleIcon dimensione={0.14} tipo={'shield-alt'} fonte={"font-awesome-5"}/>
                     <View style={styles.textContainerItem}>
                         <Text style={styles.iconTitle}>Security </Text>
                         <Text style={[styles.iconTitle, styles.iconDescription]}>Manage your account security for safety</Text>
+                    </View>
+                    <Icon name= {'chevron-right'} type="font-awesome" color={'#1F1937'} size={20} style={styles.arrow_right}/>
+                </View> */}
+
+                <View style={styles.item}>
+                    <CircleIcon dimensione={0.14} tipo={'calendar-edit'} fonte={"material-community"}/>
+                    <View style={styles.textContainerItem}>
+                        <Text style={styles.iconTitle}>My Rides </Text>
+                        <Text style={[styles.iconTitle, styles.iconDescription]}>Manage your bookings</Text>
                     </View>
                     <Icon name= {'chevron-right'} type="font-awesome" color={'#1F1937'} size={20} style={styles.arrow_right}/>
                 </View>
@@ -240,7 +249,7 @@ const styles = StyleSheet.create({
 
     iconDescription : {
         ...debug,
-        fontSize: 10,
+        fontSize: 12,
         color: 'rgba(0, 0, 0, 0.3)',
         fontFamily: 'roboto',
     },
