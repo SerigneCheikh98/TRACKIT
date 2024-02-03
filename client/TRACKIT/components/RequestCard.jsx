@@ -26,7 +26,7 @@ const RequestCard = (props) => {
                         name: 'Close',
                         fn: props.closePopup
                     }])}}>
-                    Request a practice for this duration
+                    Request a practice 
                 </Button>
             </View>
         </Card>

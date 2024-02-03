@@ -198,7 +198,7 @@ const ReportScreen = ({ navigation }) => {
   return (
     <SafeAreaProvider>
       <TopBar navigation={navigation} />
-      <ScrollView>
+      <ScrollView style={{backgroundColor:'white'}}>
         <View
           style={{
             paddingVertical: 10,

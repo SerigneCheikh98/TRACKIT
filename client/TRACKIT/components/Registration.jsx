@@ -239,7 +239,7 @@ const RegisterScreen = ({navigation, route}) =>{
             style={{flex:1}}
             >
             <ScrollView ref={scrollViewRef} 
-            style={{flex:1}}
+            style={{flex:1, backgroundColor:'white'}}
              >
                 <SafeAreaView>
            
@@ -679,7 +679,10 @@ Delete  </Button>
                         paddingLeft: 13,
                         height:"100%",
                         marginBottom: "7%",
-                        marginTop:"10%"
+                        marginTop:"10%",
+                        borderColor:'#1F1937',
+                        color:'#1F1937',
+                       
 
                   }
                     }

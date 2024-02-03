@@ -100,24 +100,26 @@ const InputForm = (props) => {
         paddingVertical:'10%',
         
         marginHorizontal:'2%',
-        borderRadius:20
+        borderRadius:20,
+        alignContent:'center',
+        alignItems:'center'
         
       }}
       >
-        {pressSearch == false && <Text
+        <Text
         style={
   
           {
             fontWeight:'bold',
-            marginLeft:'5%',
-            marginBottom:'3%',
+           
+            marginBottom:'5%',
           
-            fontSize:20,
+            fontSize:18,
             color:'white'
   
           }
         }
-        >Book your next practice now </Text>}
+        >Book your next practice now </Text>
       <View style={styles.container}>
 
         {/* LOCATION */}
@@ -134,8 +136,8 @@ const InputForm = (props) => {
               props.params.setLocation(location)
             }}
           />
-          <View style={{ flex: 0.25, justifyContent: 'center', alignItems: 'center' }}>
-            <IconButton style={styles.submitButton} size={30} iconColor="white" backgroundColor="rgba(31, 25, 55, 0.7)" icon='crosshairs-gps'  mode="contained" onPress={() => { 
+          <View style={{ flex: 0.25, justifyContent: 'center', alignItems: 'center', alignContent:'center',  }}>
+            <IconButton style={[styles.submitButton, ]} size={30} iconColor="white" backgroundColor="rgba(31, 25, 55, 0.7)" icon='crosshairs-gps'  mode="contained" onPress={() => { 
              props.setDirtySearch(true)
               handleGetLocation();
             props.setLogging(true);
