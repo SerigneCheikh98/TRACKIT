@@ -765,11 +765,11 @@ Delete  </Button>
             setStep('2');
             setSubmit(false);
             }
-            navigation.navigate('Home');
+            navigation.navigate('ProfilePage');       
         }}
         style={styles.buttonHome}
         >
-        <Text style={[styles.buttonText,  marginBottom=0]}>Go Back Home</Text>
+        <Text style={[styles.buttonText,  marginBottom=0]}>Go Back</Text>
 
         </TouchableOpacity>
         }
