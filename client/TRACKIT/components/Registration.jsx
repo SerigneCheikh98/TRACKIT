@@ -232,13 +232,31 @@ const RegisterScreen = ({navigation, route}) =>{
       scrollViewRef.current.scrollToEnd({ animated: true });  
     } 
 
+    const [showUpgradeSent, setShowUpgradeSent] = useState(false);
+
+    useEffect(() => {
+
+      API.getStudent().then((student) => {
+          console.log(student)
+          if( student.driverRequesState === 1){
+              // show the card
+              setShowUpgradeSent(true);
+          }
+          else{
+              setShowUpgradeSent(false);
+          }
+      }).catch(err => console.log(err));
+      
+  }, [showUpgradeSent])
+
+
 
 
     return(
       <SafeAreaProvider>
             <Appbar.Header style={{mode: 'center-aligned', backgroundColor:"#1F1937"}}>
-           {  (step == 1 || step== 2 || source) && <Appbar.BackAction color='white'  onPress={() => handleReturn()}/>}
-            <Appbar.Content  title={step != 3 ?"Registration": "Request Status"} titleStyle={{color: "white"}}/>
+           {  ((step == 1 || step== 2 || source) && !showUpgradeSent) && <Appbar.BackAction color='white'  onPress={() => handleReturn()}/>}
+            <Appbar.Content  title={!showUpgradeSent ?"Registration": "Request Status"} titleStyle={{color: "white"}}/>
             {(step == 3 && source!=2) &&  <Appbar.Action icon="power" color='white' accessibilityLabel='Log out' onPress={()=>{navigation.navigate("LoginPage")}}></Appbar.Action>}
             
             </Appbar.Header>
@@ -253,7 +271,7 @@ const RegisterScreen = ({navigation, route}) =>{
                 <SafeAreaView>
            
                 <Popup modalVisible={modalVisible} setModalVisible={setModalVisible} text={popupText} buttons={popupFn} />
-            {(step == 1) && (requestSent == false) &&
+            {(step == 1 && !showUpgradeSent) && (requestSent == false) &&
                     <View style={styles.TextContainer}>
                      <TextInput  
                     label='Name'
@@ -413,7 +431,7 @@ const RegisterScreen = ({navigation, route}) =>{
         </View>
             
 }
-{(step == "2")  &&
+{(step == "2" && !showUpgradeSent)  &&
     
  
 
@@ -749,7 +767,7 @@ Delete  </Button>
 
 
    }
-   {(step == "3") &&
+   {(step == "3" || showUpgradeSent) &&
    
    <View style={{height:"100%", flex:1, alignContent:'center',}}>
    <Card style={{width: "90%", marginLeft:"5%", flex:1, height:"100%"}}>
