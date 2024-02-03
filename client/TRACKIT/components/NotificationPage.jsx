@@ -48,6 +48,7 @@ const NotificationPage = ({ navigation, route }) => {
     function handleDeleteUpgrade() {
         API.deleteRequest()
             .then(() => {
+                setDirty(true)
                 setShowUpgradeCard(false)
                 closePopup()
             })
