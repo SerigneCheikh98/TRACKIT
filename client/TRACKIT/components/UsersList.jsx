@@ -42,9 +42,9 @@ const UsersList = (props) => {
                 <View style={styles.list}>
                     {/* <ScrollView> */}
                     {
-                        props.users.sort(sortingFn).map(item => {
+                        props.users.sort(sortingFn).map((item, index) => {
                          
-                            return <UserItem params={props.params} showDrop={showDrop} toggleDropdown={toggleDropdown} key={item.userId} index={item.userId} style={styles.list} user={item} available={props.available} duration={props.duration} timeUnit={props.timeUnit} throwPopup={props.throwPopup} closePopup={props.closePopup} setSelectedButtons={setSelectedButtons} selectedButtons={selectedButtons}/>
+                            return <UserItem params={props.params} showDrop={showDrop} toggleDropdown={toggleDropdown} key={index} index={index} style={styles.list} user={item} available={props.available} duration={props.duration} timeUnit={props.timeUnit} throwPopup={props.throwPopup} closePopup={props.closePopup} setSelectedButtons={setSelectedButtons} selectedButtons={selectedButtons}/>
                         })
                     }
                     {/* </ScrollView> */}
