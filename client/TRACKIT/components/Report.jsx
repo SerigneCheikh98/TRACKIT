@@ -1,6 +1,6 @@
 import { ScrollView, StyleSheet, Text, View, TouchableOpacity, Modal, Pressable  } from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
-import { Icon, Card, List, Avatar, Portal, PaperProvider, IconButton } from 'react-native-paper';
+import { Icon, Card, List, Avatar, Portal, PaperProvider, IconButton, Divider } from 'react-native-paper';
 import { useState, useCallback, useEffect } from 'react';
 import { PieChart } from "react-native-gifted-charts";
 import TopBar from './TopBar';
@@ -9,6 +9,23 @@ import { Button } from 'react-native-paper';
 import Overlay from 'react-native-modal-overlay';
 
 const ReportScreen = ({ navigation }) => {
+
+
+
+  //hard code
+  //weaknesses are for the chosen user : Hill Start, Parking and Emergency break
+  const myWeaknesses = {
+    "Hill start": ['LC', 'Ensure you use the handbrake effectively to prevent the vehicle from rolling backward. Release it gradually as you engage the clutch and accelerate smoothly.'],
+    "Parking": ['AL', 'Continue to check your mirrors and blind spots before and during the parking process. This is crucial for assessing the surroundings and avoiding collisions with other vehicles or obstacles.'],
+    "Emergency break": ['SL', 'Ensure that you brace yourself properly before applying the emergency brake. This means gripping the steering wheel firmly and positioning your foot on the floor to maintain stability during the sudden stop.']
+};
+
+
+
+
+
+
+
   const [allTopics, setAllTopics] = useState([]);
   const [evaluations, setEvaluations] = useState([]);
   const [weaknesses, setWeaknesses] = useState([]);
@@ -290,17 +307,46 @@ const ReportScreen = ({ navigation }) => {
                 <PieChart
                 data={loading ? [] : weaknessData}
                 showGradient
-                //radius={120}
+              radius={80}
                 centerLabelComponent={() => {
                   return (
                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                      <Text style={{ fontSize: 22, fontWeight: 'bold' }}>
+                      <Text style={{ fontSize: 18, fontWeight: 'bold' }}>
                       {loading ? "-" : weaknessData[0].value}%
                       </Text>
                     </View>
                   );
                 }}
               />
+             <Text style={{
+              alignItems:'flex-start',
+              color:'#1F1937',
+              marginTop:'5%',
+              fontWeight:'500'
+             }}>Feedback:</Text>
+             { 
+             selectedWeakness &&
+             <View
+             style={{
+            flexDirection:'row',
+             backgroundColor:'white',
+             marginTop:'4%',
+             width:'100%',
+             columnGap:'5%',
+             borderWidth:'1%',
+             paddingVertical:'1.5%',
+             borderRadius:15,
+             borderColor:'#1F1937'
+             
+             }}>
+             
+              
+             
+             <Divider/>
+              <Avatar.Text label={myWeaknesses[selectedWeakness][0]} size={30} backgroundColor="#1F1937"/>
+             
+             <Text variant="bodyMedium">{myWeaknesses[selectedWeakness][1]}</Text>
+             </View>}
                 <Pressable
                   style={[styles.button, styles.buttonClose]}
                   onPress={() => setModalVisible(!modalVisible)}>
@@ -460,10 +506,10 @@ const styles = StyleSheet.create({
     marginTop: 22,
   },
   modalView: {
-    margin: 20,
+    margin: '7%',
     backgroundColor: 'white',
     borderRadius: 20,
-    padding: 35,
+    padding: '3%',
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
