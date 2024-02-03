@@ -149,6 +149,7 @@ const HomePage = ({ navigation, route }) => {
   useEffect(() => {
     if (dirtySearch == true) {
       setUsers([])
+      setAvailable(true)
       setDirtySearch(false)
     }
   }, [dirtySearch])
