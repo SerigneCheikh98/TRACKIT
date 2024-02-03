@@ -247,7 +247,7 @@ exports.addRequestRide = function addRequestRide(req, res) {
     if(!req.body.time || req.body.time.split(':').length != 2) {
         return res.status(400).json({message: 'Time is missing or not valid'})
     }
-    if(!req.body.duration || req.body.duration <= 0) {j
+    if(!req.body.duration.value || req.body.duration.value <= 0) {j
         return res.status(400).json({message: 'Duration is missing or not valid'})
     }
     if(!req.body.timeUnit || !(req.body.timeUnit == 'min' || req.body.timeUnit == 'hours')) {
@@ -255,9 +255,9 @@ exports.addRequestRide = function addRequestRide(req, res) {
     }
 
     if(req.body.timeUnit === 'hours')
-    req.body.duration *= 60
+    req.body.duration.value *= 60
 
-    const slots = req.body.duration/30
+    const slots = req.body.duration.value/30
     ridesQuery.addRequestRide(req.user.id, req.body.location, req.body.date, req.body.time, slots)
         .then( resp => {
             notificationQuery.addNotification(req.user.id, resp, 'new notification', 'Pending')
