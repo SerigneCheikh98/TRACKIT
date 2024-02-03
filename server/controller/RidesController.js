@@ -174,7 +174,7 @@ exports.bookRide = async function bookRide(req, res) {
 
     ridesQuery.bookRide(req.body.rideId, req.user.id, req.body.time, req.body.slots)
         .then( (resp) => {
-            notificationQuery.addNotification(req.user.id, resp, 'new notification', 'Approved')
+            notificationQuery.addNotification(req.user.id, req.body.rideId, 'new notification', 'Approved')
             return res.status(200).json({message: 'Booking complete'})
         })
         .catch( err => {

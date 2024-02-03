@@ -87,18 +87,15 @@ const HomePage = ({ navigation, route }) => {
       setDirty(false);
       setTimeUnit('min');
       setDuration("duration");
-      setLastLocation("");
-      setLocation("Torino");
-      setDate('17/02/2024');
-      setTime('12:00');
+      setLocation("");
+      setDate('');
+      setTime('');
       setModalVisible(false);
       setAlarmInput([false, false, false, false, false]);
       setUsers([])
       setInUseFilter(0) // 0 none - 1 distance - 2 rating
       setAvailable(true)
       setNoAvailability(false)
-
-      /* console.log('Screen is focused, refresh here'); */
     }, [])
   );
 
@@ -176,7 +173,7 @@ const HomePage = ({ navigation, route }) => {
     if (params.time === '') {
       tmp[2] = true
     } else tmp[2] = false
-    if (params.duration === '') {
+    if (params.duration === '' || params.duration == undefined) {
       tmp[3] = true
     } else tmp[3] = false
     if (params.timeUnit === '') {
