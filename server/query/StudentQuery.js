@@ -26,3 +26,17 @@ exports.getUser = (email, password) => {
     });
   };
   
+exports.getStudentById = (studentId) => {
+  return new Promise((resolve, reject) => {
+    const sql = 'SELECT * FROM Students WHERE Id = ?';
+    db.get(sql, [studentId], (err, row) => {
+      if (err) {
+        reject(err);
+      }
+      else {
+        const user = { id: row.Id, name: row.Name, surname: row.Surname, location: row.location, email: row.Email, driverRequesState: row.Requested_driver };
+        resolve(user);
+      }
+    });
+  });
+};

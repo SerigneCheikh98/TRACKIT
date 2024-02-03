@@ -24,6 +24,7 @@ const NotificationPage = ({ navigation, route }) => {
         fn: () => { }
     }])
     const [dirty, setDirty] = useState(false)
+    const [showUpgradeCard, setShowUpgradeCard] = useState(false);
 
     function throwPopup(text, buttons) {
         setModalVisible(true)
@@ -43,6 +44,16 @@ const NotificationPage = ({ navigation, route }) => {
             })
             .catch(err => console.log(err))
     }
+
+    function handleDeleteUpgrade() {
+        API.deleteRequest()
+            .then(() => {
+                setShowUpgradeCard(false)
+                closePopup()
+            })
+            .catch(err => console.log(err))
+    }
+
     const [bookingsSeen, setBookingsSeen] = useState([]);
     const [bookingsNotSeen, setBookingsNotSeen] = useState([]);
 
@@ -59,7 +70,20 @@ const NotificationPage = ({ navigation, route }) => {
                 setDirty(false)
             })
             .catch(err => console.log(err))
-    }, [dirty])
+
+        API.getStudent().then((student) => {
+            console.log(student)
+            if( student.driverRequesState === 1){
+                // show the card
+                setShowUpgradeCard(true);
+            }
+            else{
+                setShowUpgradeCard(false);
+            }
+        }).catch(err => console.log(err));
+        
+    }, [dirty, showUpgradeCard])
+
     return (
         <SafeAreaProvider style={{
             backgroundColor:'white'
@@ -67,6 +91,10 @@ const NotificationPage = ({ navigation, route }) => {
             <TopBar back = {'x'} />
                 <ScrollView>
                     <Popup modalVisible={modalVisible} setModalVisible={setModalVisible} text={popupText} buttons={popupFn} />
+                    {showUpgradeCard && <View style={{paddingVertical: '2%'}}>
+                        <UpgradeCard handleDeleteUpgrade={handleDeleteUpgrade} throwPopup={throwPopup} closePopup={closePopup} />
+                    </View>}
+                    {showUpgradeCard && <Separator text={'Rides'} />}
                     <View style={{paddingVertical: '2%'}}>
                         {
                             bookingsNotSeen.map((booking, index) => {
@@ -143,6 +171,38 @@ const CardBooking = (props) => {
             }}>{
                         props.state == "Pending" ?
                             "Cancel Request" : "Cancel Booking"}</Button>
+            </Card.Actions>
+        </Card>
+    )
+}
+
+const UpgradeCard = (props) => {
+    let msg = 'Are you sure you want to cancel the request?';
+    
+    return (
+        <Card style={{ width: "90%", marginLeft: "5%", flex: 1, height: "100%" }}>
+            <Card.Title
+                title="Pending Upgrade Request"
+                subtitle=""
+                left={(props) => <Avatar.Icon {...props} style={{ backgroundColor: '#1F1937' }} icon="reflect-vertical" />}
+            />
+            <Card.Content>
+                <Text variant="bodyMedium">Your request is still being processed by our team.</Text>
+                <Text variant='bodySmall'>Estimated response time: 3-4 working days</Text>
+            </Card.Content>
+            <Card.Actions>
+                <Button style={styles.buttonSubmit} textColor="white" onPress={() => {
+                    props.throwPopup(msg, [{
+                        name: "Cancel Upgrade",
+                        fn: () => props.handleDeleteUpgrade()
+                    },
+                    {
+                        name: 'Close',
+                        fn: props.closePopup
+                    }])
+                }}>
+                    Cancel Upgrade
+                </Button>
             </Card.Actions>
         </Card>
     )
