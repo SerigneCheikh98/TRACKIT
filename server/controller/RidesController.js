@@ -97,13 +97,16 @@ exports.searchRide = function searchRide(req, res) {
 
     if(req.query.timeUnit === 'hours')
         req.query.duration *= 60
-
+    console.log(req.query.timeUnit)
+    console.log(req.query.duration)
     const slots = Math.round(req.query.duration/30) 
+    console.log(slots)
     ridesQuery.searchRide(req.query.location, req.query.date, req.query.time, slots)
         .then( resp => {
             resp = resp.filter( (ride) => {
                 return afterHour(req.query.time, ride.StartingTime) 
             })
+            console.log(resp)
             if(dayjs().isSame(req.query.date, 'day')) {
                 resp = resp.filter( (ride) => {
                     return afterHour(dayjs().format('HH:mm'), ride.StartingTime)

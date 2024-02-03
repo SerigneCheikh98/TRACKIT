@@ -270,5 +270,28 @@ const getEvaluationsByStudentId = () => {
   })
 }
 
-const API = { getCity, searchRide, getDailyRide, addRequestRide, getNotification, setNotificationSeen, deleteNotification, login, logout, stillLoggedIn, getAllTopics, getEvaluationsByStudentId, bookRide }
+
+// ========================================== Request to Driver ==========================================
+
+async function addRequest() {
+  return getJson(fetch(`${basepath}/requestdriver`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: 'include',
+    
+  })).then(json => {
+    return json
+  }).catch(err => {
+    console.log( '------HIII-----')
+    throw err
+  })
+}
+
+
+
+
+
+const API = { getCity, searchRide, getDailyRide, addRequestRide, getNotification, setNotificationSeen, deleteNotification, login, logout, stillLoggedIn, getAllTopics, getEvaluationsByStudentId, bookRide, addRequest }
 export default API;

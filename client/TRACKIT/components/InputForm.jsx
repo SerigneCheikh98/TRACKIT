@@ -1,5 +1,5 @@
 import { View, StyleSheet, SafeAreaView } from "react-native";
-import { Button, TextInput, Text, IconButton } from 'react-native-paper';
+import { Button, TextInput, Text, IconButton, Icon } from 'react-native-paper';
 import { useState, useCallback } from "react";
 import { DatePickerModal, TimePickerModal } from 'react-native-paper-dates';
 import { Pressable } from "react-native";
@@ -88,8 +88,38 @@ const InputForm = (props) => {
     },
     [setOpen, props.params.setDate]
   );
+
+    const [pressSearch, setPressSearch] = useState(false)
+
   return (
     <>
+      <View
+      style={{
+        backgroundColor:'rgba(31, 25, 55, 0.7)',
+        paddingHorizontal:'3%',
+        paddingVertical:'10%',
+        
+        marginHorizontal:'2%',
+        borderRadius:20,
+        alignContent:'center',
+        alignItems:'center'
+        
+      }}
+      >
+        <Text
+        style={
+  
+          {
+            fontWeight:'bold',
+           
+            marginBottom:'5%',
+          
+            fontSize:18,
+            color:'white'
+  
+          }
+        }
+        >Book your next practice now </Text>
       <View style={styles.container}>
 
         {/* LOCATION */}
@@ -106,8 +136,10 @@ const InputForm = (props) => {
               props.params.setLocation(location)
             }}
           />
-          <View style={{ flex: 0.25, justifyContent: 'center', alignItems: 'center' }}>
-            <IconButton style={styles.submitButton} size={30} iconColor="white" backgroundColor="rgba(31, 25, 55, 0.5)" icon='crosshairs-gps' buttonColor='black' mode="contained" onPress={() => { handleGetLocation();
+          <View style={{ flex: 0.25, justifyContent: 'center', alignItems: 'center', alignContent:'center',  }}>
+            <IconButton style={[styles.submitButton, ]} size={30} iconColor="white" backgroundColor="rgba(31, 25, 55, 0.7)" icon='crosshairs-gps'  mode="contained" onPress={() => { 
+             props.setDirtySearch(true)
+              handleGetLocation();
             props.setLogging(true);
             
             }} />
@@ -118,7 +150,7 @@ const InputForm = (props) => {
         <View style={{ ...styles.textInputContainer, alignItems: 'center' }}>
           {/* DATE */}
           <View style={{ flex: 2, paddingRight: '2%', backgroundColor: 'white' }}>
-
+        
             <Pressable onPress={() => {props.params.setDate(undefined);setOpen(true)}}>
               <View pointerEvents="none">
                 <TextInput
@@ -224,11 +256,26 @@ const InputForm = (props) => {
         {/* SUBMIT */}
         <View style={styles.textInputContainer}>
           <View style={{ flex: 2 }}></View>
-          <Button style={styles.submitButton} disabled={props.logging} buttonColor='#1F1937' mode="contained" onPress={props.applyChange}>
-            Apply changes
-          </Button>
+          <Pressable  style={[styles.submitButton, {backgroundColor:'#1F1937',paddingHorizontal:'5%',
+    paddingVertical:'3%',}]} disabled={props.logging} buttonColor='#1F1937' mode="contained" onPress={()=>{
+      props.applyChange();
+      setPressSearch(true)
+    }}>
+            
+            <Icon source='magnify' color="white" size={20} style={{
+            marginRight:'3%'}}/>
+            <Text
+             
+          
+            style={{
+              color:'white',
+              fontWeight:'bold',
+              fontSize:16
+            }}
+            >Search</Text>
+          </Pressable>
         </View>
-
+        </View>
       </View>
     </>
   )
@@ -239,20 +286,27 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     paddingHorizontal: '5%',
-    borderColor: '#1F1937',
-    borderWidth: 4,
+    
+    
     marginLeft:'3%',
     marginRight:'3%',
     marginBottom:'0.5%',
-    borderRadius: 20,
-    paddingVertical: 20
+    borderRadius: 30,
+    paddingVertical: 20,
+    backgroundColor: 'white',
+    shadowOpacity:0
   },
   textInputContainer: {
     flexDirection: 'row',
     paddingBottom: '4%',   
   },
   submitButton: {
-    borderRadius: 10
+    borderRadius: 10,
+    
+    
+    size:'100%',
+    flexDirection:'row',
+    columnGap:'4%'
   },
   dropdown: {
     borderWidth: 1,

@@ -48,7 +48,7 @@ const Booking = ({ route}) => {
   const handleButtonPressRight = () => {
     API.bookRide(rideId, from.split(' - ')[0].trim(), selectedButtons.length)
     .then(resp => {
-      navigation.navigate('BookingConfirmationPage')
+      navigation.navigate('BookingConfirmationPage', {name : name, lastname: lastname, rating: rating, from : from, to: to, date : date, location : location, time : time})
     })
     .catch(err => {
       console.log(err)

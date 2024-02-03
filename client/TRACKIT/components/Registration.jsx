@@ -4,7 +4,7 @@ import {Icon} from '@rneui/themed'
 import Checkbox from 'expo-checkbox'
 import { KeyboardAvoidingView, TouchableOpacity, View, StyleSheet} from 'react-native'
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Dropdown } from 'react-native-element-dropdown';
 import * as ImagePicker from 'expo-image-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -18,7 +18,9 @@ import Separator from './Separator'
 import dayjs from 'dayjs'
 import { Modal } from 'react-native'
 import Overlay from 'react-native-modal-overlay';
-
+import { NotificationContext } from './NotificationContext';
+import { useContext } from 'react'
+import API from '../API';
 
 
 import { LogBox } from 'react-native';
@@ -35,6 +37,27 @@ const genders = [
 
 
 const RegisterScreen = ({navigation, route}) =>{
+
+
+
+
+  function handleDriverRequest() {
+    API.addRequest()
+      .then(resp => {
+        setNotification(true)
+        closePopup()
+      })
+      .catch(err => {
+        throwPopup(err.message, [{
+          name: 'Close',
+          fn: closePopup
+        }])
+      })
+  }
+
+
+
+
     const {source} =route.params || {};
     const [step, setStep] = useState(source ?? "1");
     const [hidePassp, setHidePassp] = useState(true);
@@ -96,7 +119,7 @@ const RegisterScreen = ({navigation, route}) =>{
       return !mail.includes('@');
     };
 
-   
+    const [notification, setNotification] = useContext(NotificationContext)
 
     const pickImage = async (licenseImage) => {
         // No permissions request is necessary for launching the image library
@@ -160,6 +183,8 @@ const RegisterScreen = ({navigation, route}) =>{
     function handleReturn() {
        console.log(phoneNumber)
       if((step == 1 && (uname.trim() !== '' || lastName.trim() !== '' || mail.trim() !== '' || password.trim() !== '' || conpassword.trim() !== '')) || (step == 2 && (gender != null || birthDate != null || idImage != null || licImage != null || (phoneNumber.length != 0)))){
+        
+
         throwPopup(msg, [{
           name: 'Back',
           fn: () => {
@@ -189,19 +214,33 @@ const RegisterScreen = ({navigation, route}) =>{
       }
       
     }
+
+
+    const scrollViewRef = useRef();
+    const scrollToTop = () => {
+      scrollViewRef.current.scrollTo({ y: 0, animated: true });
+    };
+
+    const scrollToBottom  = () =>{
+      scrollViewRef.current.scrollToEnd({ animated: true });  
+    } 
+
     return(
       <SafeAreaProvider>
             <Appbar.Header style={{mode: 'center-aligned', backgroundColor:"#1F1937"}}>
-           {  (step == 1 || step== 2 || source) && <Appbar.BackAction color='white' onPress={() => handleReturn()}/>}
+           {  (step == 1 || step== 2 || source) && <Appbar.BackAction color='white'  onPress={() => handleReturn()}/>}
             <Appbar.Content  title={step != 3 ?"Registration": "Request Status"} titleStyle={{color: "white"}}/>
             {(step == 3 && source!=2) &&  <Appbar.Action icon="power" color='white' accessibilityLabel='Log out' onPress={()=>{navigation.navigate("LoginPage")}}></Appbar.Action>}
             
             </Appbar.Header>
           
-            <ScrollView  >
             <KeyboardAvoidingView
             behavior='padding'
+            style={{flex:1}}
             >
+            <ScrollView ref={scrollViewRef} 
+            style={{flex:1, backgroundColor:'white'}}
+             >
                 <SafeAreaView>
            
                 <Popup modalVisible={modalVisible} setModalVisible={setModalVisible} text={popupText} buttons={popupFn} />
@@ -590,15 +629,24 @@ Delete  </Button>
                       {
                         backgroundColor: 'white',
                         width: '80%',
-                        fontSize:12
+                        fontSize:12,
+                        flex:1,
+                        paddingRight:13,
+                        paddingLeft: 13,
+                        height:"100%",
+                       
+                       
 
                       }
                     }
                     placeholder={'Tell us more about yourself....'}
                     textColor='#1F1937'
                     value={description}
+                   onPressIn={()=>{
+                    scrollToBottom()
+                   }}
                     onChangeText={(text)=>{
-                      
+                     
                       setDescription(text)
                       console.log(description)
                       
@@ -627,11 +675,15 @@ Delete  </Button>
                         paddingLeft: 13,
                         height:"100%",
                         marginBottom: "7%",
-                        marginTop:"10%"
+                        marginTop:"10%",
+                        borderColor:'#1F1937',
+                        color:'#1F1937',
+                       
 
                   }
                     }
                     value={phoneNumber}
+                    
                     onChangePhoneNumber={(number)=>{setPhoneNumber(number)}}
                     selectedCountry={selectedCountry}
                     onChangeSelectedCountry={handleSelectedCountry}
@@ -656,7 +708,10 @@ Delete  </Button>
           setSubmitfinal(true);
           console.log(step);
             if((gender  && birthDate  && idImage && licImage  && phoneNumber )){
-            setStep('3');
+            
+              setStep('3');
+            scrollToTop();
+            handleDriverRequest();
             }
             else {
               console.log(phoneNumber);
@@ -678,7 +733,9 @@ Delete  </Button>
 
 
    }
-   {(step == "3") && <View style={{height:"100%", flex:1, alignContent:'center',}}>
+   {(step == "3") &&
+   
+   <View style={{height:"100%", flex:1, alignContent:'center',}}>
    <Card style={{width: "90%", marginLeft:"5%", flex:1, height:"100%"}}>
    <Card.Title
     title="Pending request"
@@ -717,8 +774,8 @@ Delete  </Button>
     
     </View>}
           </SafeAreaView>
-            </KeyboardAvoidingView>
             </ScrollView>
+            </KeyboardAvoidingView>
           
           </SafeAreaProvider>
     )
@@ -749,7 +806,7 @@ const styles = StyleSheet.create({
     TextContainer:{
         justifyContent: 'center',
         alignItems: 'center',
-        flex: 1,
+        
         
         
         

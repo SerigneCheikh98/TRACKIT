@@ -194,8 +194,9 @@ const topicBox = (contenuto, setModalVisible, handleTopic) => {
             // flexShrink: '100%',
 
             borderStartColor: '#1F1937',
-            width: 260,
+            width: 280,
             borderRadius: 5,
+            
 
           }
         }>
@@ -217,7 +218,7 @@ const topicBox = (contenuto, setModalVisible, handleTopic) => {
           style={{
             marginRight: '1%',
             position: 'absolute',
-            marginLeft: '87%'
+            marginLeft: '88%'
 
           }}
           icon="information-variant"

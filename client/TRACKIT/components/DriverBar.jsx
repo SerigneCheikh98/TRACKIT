@@ -9,7 +9,7 @@ const DriverBar = (props) => {
                 <View style={styles.container} >
 
                     <View style={styles.icon}>
-                        <Avatar.Text size={80} style={styles.avatar} color={'white'} label={"LC"}/>
+                        <Avatar.Text size={80} style={styles.avatar} color={'white'} label={props.name[0] +props.lastname[0]}/>
                     </View>
                     <View style={{flex: 3}}>
                         <Text style={{fontSize: 30}}>{props.name + " " + props.lastname}</Text>
