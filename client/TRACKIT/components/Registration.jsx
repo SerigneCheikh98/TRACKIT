@@ -765,6 +765,7 @@ Delete  </Button>
             setStep('2');
             setSubmit(false);
             }
+           
             navigation.navigate('Home');
         }}
         style={styles.buttonHome}
