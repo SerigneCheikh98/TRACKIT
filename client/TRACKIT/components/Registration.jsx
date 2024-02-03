@@ -646,10 +646,14 @@ Delete  </Button>
                     scrollToBottom()
                    }}
                     onChangeText={(text)=>{
-                     
-                      setDescription(text)
+                      console.log(`Text: ${text}` );
+                      if (text.trim().length > 0 ){
+                        setDescription(text);
+                      }
+                      else{
+                        setDescription('')
+                      }
                       console.log(description)
-                      
                     }}
                     ></TextInput>
    
@@ -697,14 +701,14 @@ Delete  </Button>
         </View>     
 
         </View>          
-        {((gender == null ||   birthDate == null  || idImage == null || licImage == null || phoneNumber.length ==0 )&& submitfinal)
+        {((gender == null ||   birthDate == null  || idImage == null || licImage == null || phoneNumber.length ==0 || description.length == 0 )&& submitfinal)
             && <Text style={{color:'red', marginTop:'7%'}}>Fill in all fields before sending request</Text>}
         <TouchableOpacity    
         onPress={()=>{
           setRequestSent(true);
           setSubmitfinal(true);
           console.log(step);
-            if((gender  && birthDate  && idImage && licImage  && phoneNumber )){
+            if((gender  && birthDate  && idImage && licImage  && phoneNumber && description.length > 0 )){
             
               setStep('3');
             scrollToTop();
