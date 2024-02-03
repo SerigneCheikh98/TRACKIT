@@ -22,7 +22,6 @@ function parseDuration(value, type) {
   else return value * 60
 }
 const UserItem = (props) => {
-  console.log(props.params)
 
   const navigation = useNavigation();
 
@@ -65,7 +64,8 @@ const UserItem = (props) => {
             name: 'Book anyway',
             fn: () => {
               
-          navigation.navigate("BookingPage", { name: props.user.name, lastname: props.user.lastname, rating: props.user.rating, description: props.user.description, rideId : props.user.rideId, from: props.user.from, to: props.user.to, selectedButtons: selectedButtons, params : props.params })
+          navigation.navigate("BookingPage", { name: props.user.name, lastname: props.user.lastname, rating: props.user.rating, description: props.user.description, rideId : props.user.rideId, from: props.user.from, to: props.user.to, selectedButtons: selectedButtons, 
+          date: props.params.date, location : props.params.location,time : props.params.time, timeUnit: props.params.timeUnit  })
           props.closePopup()
           }
           }
@@ -105,7 +105,8 @@ const UserItem = (props) => {
             
             {
               props.toggleDropdown(-1);
-              navigation.navigate("BookingPage", {name : props.user.name, lastname : props.user.lastname, rating : props.user.rating, description : props.user.description, rideId : props.user.rideId, from: props.user.from, to: props.user.to, selectedButtons: selectedButtons, params : props.params}) }}>
+              navigation.navigate("BookingPage", {name : props.user.name, lastname : props.user.lastname, rating : props.user.rating, description : props.user.description, rideId : props.user.rideId, from: props.user.from, to: props.user.to, selectedButtons: selectedButtons, 
+              date: props.params.date, location : props.params.location,time : props.params.time, timeUnit: props.params.timeUnit}) }}>
             Confirm
           </Button>
         </View>

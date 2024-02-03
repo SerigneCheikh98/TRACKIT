@@ -7,21 +7,38 @@ import { Icon } from "@rneui/themed";
 import DriverBar from "./DriverBar";
 import DriverDescription from "./DriverDescription";
 import Topics from "./LessonTopics";
+import { color } from "@rneui/base";
 
 
 
 const BookingConfirmation = ({ navigation, route }) => {
 
+    const email = "mariorossi@hotmail.com"
 
 
-  return (
+    return (
     <View>
-      <TopBar />
-      <View style={styles.bigContainer} >
+        <TopBar />
+        <View style={styles.bigContainer} >
+            <View style = {styles.confimationBookingContainer}>
+                <Text style = {[styles.textStyle, {color : 'green', fontSize: 20} ]} >Confirmed</Text>
+                <Text style = {[ {fontFamily: 'roboto-semiBold', fontSize: 30}]}>Your lesson booking</Text>
+                <View style = {styles.confirmationNumberContainer}>
 
-      </View>
+                </View>
+            </View>
+
+            <View style = {styles.driverContainer}>
+
+            </View>
+
+            <View style = {styles.locationContainer}>
+
+            </View>
+
+        </View>
     </View>
-  )
+    )
 }
 
 const debug = {
@@ -32,79 +49,45 @@ const debug = {
 
 
 const styles = StyleSheet.create({
-  buttonContainer: {
-    ...debug,
-    position: 'absolute',
-    bottom: 15,
-    width: '100%',
-    alignItems: 'center',
-    color: '#782F9',
-    fontWeight: '700',
-    fontSize: 16,
-  },
-  bigContainer: {
-    ...debug,
-    height: '86%',
-    alignItems: 'center',
-    justifyContent: 'center'
+    textStyle: {
+        fontFamily : 'roboto'
+    },
+    confimationBookingContainer: {
+        ...debug,
+        width : '100%',
+        height : '30%',
+        backgroundColor: 'white',
+        borderRadius: 10,
+        marginBottom: '1%'
 
-  },
-  backgroundImage: {
-    flex: 1,
-    resizeMode: 'cover', // or 'contain' or 'stretch'
-    alignItems: 'center',
-    opacity: 0.9, // Adjust the opacity value
+    },
+    bigContainer: {
+        ...debug,
+        height: '86%',
+        alignItems: 'center',
+    
+      },
+      driverContainer: {
+        ...debug,
+        width: '100%',
+        height: '20%',
+        backgroundColor: 'white',
+        marginBottom: '1%'
+      },
 
-  },
+      locationContainer: {
+        ...debug,
+        height: '10%',
+        width : '100%',
+        backgroundColor: 'white'
+      },
+      confirmationNumberContainer : {
+        ...debug,
+        height: '50%',
+        width: '90%',
+        backgroundColor: '#e7fceb'
+      }
 
-  textContainer: {
-    marginBottom: '40%',
-    height: 130,
-    width: 340,
-    backgroundColor: 'rgba(255, 255, 255, 0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 10,
-  },
-
-  textStyle: {
-    fontFamily: 'roboto-semiBold',
-    fontSize: 28,
-    textAlign: 'center',
-    lineHeight: 50, // Adjust this value to increase or decrease the line height
-    margin: 15
-  },
-
-  textButton: {
-    fontFamily: 'roboto-semiBold',
-    fontSize: 25,
-    textAlign: 'center',
-
-  },
-
-  button:
-  {
-    ...debug,
-    backgroundColor: 'rgba( 31, 25, 55, 0.95)',
-
-    borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 50,
-    width: 110,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.5,
-    shadowRadius: 4,
-
-  },
-
-  buttonText: {
-    color: 'white',
-    fontFamily: 'roboto-semiBold',
-    fontSize: 18,
-    textAlign: 'center'
-  },
 
 });
 
