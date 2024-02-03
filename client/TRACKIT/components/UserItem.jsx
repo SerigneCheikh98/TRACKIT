@@ -35,8 +35,6 @@ const UserItem = (props) => {
   
   const [numSlots, setNumSlots] = useState(null);
 
-  selectedButtons = props.selectedButtons
-  setSelectedButtons = props.setSelectedButtons
   const onDismiss = useCallback(() => {
     setVisible(false)
   }, [setVisible])
@@ -67,7 +65,7 @@ const UserItem = (props) => {
             name: 'Book anyway',
             fn: () => {
               
-          navigation.navigate("BookingPage", { name: props.user.name, lastname: props.user.lastname, rating: props.user.rating, description: props.user.description, rideId : props.user.rideId, from: timeSlots, selectedButtons: selectedButtons, 
+          navigation.navigate("BookingPage", { name: props.user.name, lastname: props.user.lastname, rating: props.user.rating, description: props.user.description, rideId : props.user.rideId, from: timeSlots, to: '12:00', selectedButtons: selectedButtons, 
           date: props.params.date, location : props.params.location,time : props.params.time, timeUnit: props.params.timeUnit  })
           props.closePopup()
           }
@@ -103,13 +101,16 @@ const UserItem = (props) => {
       {props.showDrop == props.index && (
         <View style={{ flexDirection: 'column', alignItems: 'center', borderWidth: 0.7, borderColor: '#1F1937', borderRadius: 10, marginTop:-3.5, marginBottom:'1%'}}>
           <Text style={{ fontSize: 16, marginTop:'3%' }}>{selectedButtons.length == 0 && numSlots==1 ?"Choose slot" : selectedButtons.length == 0 && numSlots!=1 ? "Pick starting slot": selectedButtons.length==1 && numSlots!=1 ?"Pick ending slot or Confirm" : "Confirm Selection"}</Text>
-          <Slots from={props.user.from} to={props.user.to} start={start} end={end} selectedButtons = {selectedButtons} setSelectedButtons = {setSelectedButtons} numSlots={numSlots} setNumSlots={setNumSlots}/>
+          <Slots setTimeSlots={setTimeSlots} from={props.user.from} to={props.user.to} start={start} end={end} selectedButtons = {selectedButtons} setSelectedButtons = {setSelectedButtons} numSlots={numSlots} setNumSlots={setNumSlots}/>
           <Button mode="outlined" textColor="white" style={[{ flex: 1, width: '90%', borderRadius: 10, marginBottom: '2%', backgroundColor:'#1F1937' }]} onPress={() => 
             
             {
               props.toggleDropdown(-1);
+              if(selectedButtons.length != 0)
+              { 
               navigation.navigate("BookingPage", {name : props.user.name, lastname : props.user.lastname, rating : props.user.rating, description : props.user.description, rideId : props.user.rideId, from: timeSlots, selectedButtons: selectedButtons, 
-              date: props.params.date, location : props.params.location,time : props.params.time, timeUnit: props.params.timeUnit}) }}>
+              date: props.params.date, location : props.params.location,time : props.params.time, timeUnit: props.params.timeUnit}) 
+              }}}>
             Confirm
           </Button>
         </View>

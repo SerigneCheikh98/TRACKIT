@@ -28,7 +28,7 @@ const getItem = (_data, index) => ({
 
 const Booking = ({ route}) => {
 
-  const { name, lastname, rating, description, rideId, from, selectedButtons } = route.params;
+  const { name, lastname, rating, description, rideId, from, to, selectedButtons, date, location, time } = route.params;
   const { width, height } = Dimensions.get('window');
   const navigation = useNavigation();
   const [disableButton, setDisableButton] = useState(false);
