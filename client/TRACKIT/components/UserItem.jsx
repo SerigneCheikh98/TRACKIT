@@ -106,8 +106,11 @@ const UserItem = (props) => {
             
             {
               props.toggleDropdown(-1);
-              navigation.navigate("BookingPage", {name : props.user.name, lastname : props.user.lastname, rating : props.user.rating, description : props.user.description, rideId : props.user.rideId, from: timeSlots, to: '12:00', selectedButtons: selectedButtons, 
-              date: props.params.date, location : props.params.location,time : props.params.time, timeUnit: props.params.timeUnit}) }}>
+              if(selectedButtons.length != 0)
+              { 
+              navigation.navigate("BookingPage", {name : props.user.name, lastname : props.user.lastname, rating : props.user.rating, description : props.user.description, rideId : props.user.rideId, from: timeSlots, selectedButtons: selectedButtons, 
+              date: props.params.date, location : props.params.location,time : props.params.time, timeUnit: props.params.timeUnit}) 
+              }}}>
             Confirm
           </Button>
         </View>

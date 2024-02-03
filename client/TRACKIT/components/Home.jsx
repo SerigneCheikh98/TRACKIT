@@ -265,12 +265,12 @@ const HomePage = ({ navigation, route }) => {
               <ActivityIndicator size='large' animating={logging} />
               </View>}
               {
-                available == false &&
+              !available && !dirtySearch &&
                 <View style={{ backgroundColor: "#ffffff" }}>
 
                   <RequestCard params={params} handleInsertRequest={handleInsertRequest} throwPopup={throwPopup} closePopup={closePopup} badgeOn={badgeOn} text={'We are sorry! No drivers are available for the specified time and duration'} setBadgeOn={setBadgeOn} />
                   {
-                    noAvailability == false &&
+                    (noAvailability == false && UsersList.length) &&
                     <Separator text={'OR'} />
                   }
                 </View>

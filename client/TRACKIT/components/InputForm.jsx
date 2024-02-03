@@ -218,7 +218,7 @@ const InputForm = (props) => {
               labelField="label"
               valueField="value"
               onChange={(item) => {
-                props.setDirtySearch(true)
+                props.setDirtySearch(true);
                 props.params.setDuration(item);
                 setOnFocusg(false);
               }}
