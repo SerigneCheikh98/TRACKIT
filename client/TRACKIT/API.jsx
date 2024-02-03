@@ -289,9 +289,37 @@ async function addRequest() {
   })
 }
 
+async function deleteRequest() {
+  return getJson(fetch(`${basepath}/deleteRequestDriver`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: 'include',
+    
+  })).then(json => {
+    return json
+  }).catch(err => {
+    throw err
+  })
+}
+// ========================================== Students ==========================================
 
+const getStudent = () => {
+  return getJson( fetch(`${basepath}/student`, {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    credentials: 'include'
+  }))
+  .then( json => {
+    return json
+  })
+  .catch((err) => {
+    return err
+  })
+}
 
-
-
-const API = { getCity, searchRide, getDailyRide, addRequestRide, getNotification, setNotificationSeen, deleteNotification, login, logout, stillLoggedIn, getAllTopics, getEvaluationsByStudentId, bookRide, addRequest }
+const API = { getCity, searchRide, getDailyRide, addRequestRide, getNotification, setNotificationSeen, deleteNotification, login, logout, stillLoggedIn, getAllTopics, getEvaluationsByStudentId, bookRide, addRequest, getStudent, deleteRequest }
 export default API;

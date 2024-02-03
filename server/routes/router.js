@@ -1,15 +1,13 @@
 const notificationController = require('../controller/NotificationController');
-const ridesController = require('../controller/RidesController')
-const reportController = require('../controller/ReportController')
-const requestDriverController = require('../controller/RequestDriverController') 
+const ridesController = require('../controller/RidesController');
+const reportController = require('../controller/ReportController');
+const requestDriverController = require('../controller/RequestDriverController');
+const studentController = require('../controller/StudentController');
 
 const express = require('express');
 
 
 const router = express.Router();
-
-// fake registration
-router.post('/register')
 
 // search a ride
 router.get('/rides', ridesController.searchRide);
@@ -29,9 +27,6 @@ router.get('/topics', reportController.getAllTopics)
 // get all evaluations of the logged student
 router.get('/evaluations', reportController.getEvaluationsByStudentId)
 
-// get all evaluations for the student
-router.get('/evaluations')
-
 // get all the notification for the student
 router.get('/notification', notificationController.getNotification)
 
@@ -44,7 +39,10 @@ router.delete('/notification/:id', notificationController.deleteNotification)
 //set the request to driver of a student to 1
 router.put('/requestdriver', requestDriverController.addRequest )
 
-// delete the request to driver
-router.delete('/requestdriver', requestDriverController.addRequest )
+// delete the request to  upgrade to driver
+router.put('/deleteRequestDriver', requestDriverController.deleteRequest )
+
+// get the logged in student
+router.get('/student', studentController.getStudentById)
 
 module.exports = router;
