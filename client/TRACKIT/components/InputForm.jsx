@@ -155,7 +155,7 @@ const InputForm = (props) => {
               <View pointerEvents="none">
                 <TextInput
                   mode='outlined'
-                  label="DD/MM/YYYY"
+                  label="Date"
                   style={{backgroundColor: 'white'}}
                   outlineColor={props.alarmInput[1] == true ? 'red' : '#1F1937'}
                   activeOutlineColor={props.alarmInput[1] == true ? 'red' : '#1F1937'}

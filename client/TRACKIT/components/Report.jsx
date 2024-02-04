@@ -234,7 +234,7 @@ const ReportScreen = ({ navigation }) => {
             
             }}>
             <View style={{ padding: 20, alignItems: 'center' }}>
-              <Text style={{ color: 'white', fontSize: 15, paddingBottom:5 }}> Average performance in all rides  </Text>
+              <Text style={{ color: 'white', fontSize: 15, paddingBottom:5 }}> Average performance over all practices  </Text>
               <PieChart
                 data={pieData}
                 donut
@@ -323,7 +323,7 @@ const ReportScreen = ({ navigation }) => {
               color:'#1F1937',
               marginTop:'5%',
               fontWeight:'500'
-             }}>Feedback:</Text>
+             }}>Feedback From Instructors:</Text>
              { 
              selectedWeakness &&
              <View

@@ -95,7 +95,7 @@ const NotificationPage = ({ navigation, route }) => {
                     {showUpgradeCard && <View style={{paddingVertical: '2%'}}>
                         <UpgradeCard handleDeleteUpgrade={handleDeleteUpgrade} throwPopup={throwPopup} closePopup={closePopup} />
                     </View>}
-                    {showUpgradeCard && <Separator text={'Rides'} />}
+                    {(showUpgradeCard && bookingsNotSeen.length!=0 || bookingsSeen.length!=0) && <Separator text={'Rides'} />}
                     <View style={{paddingVertical: '2%'}}>
                         {
                             bookingsNotSeen.map((booking, index) => {
@@ -183,8 +183,8 @@ const UpgradeCard = (props) => {
     return (
         <Card style={{ width: "90%", marginLeft: "5%", flex: 1, height: "100%" }}>
             <Card.Title
-                title="Pending Upgrade Request"
-                subtitle=""
+                title="Upgrade to Instructor Request"
+                subtitle="Pending"
                 left={(props) => <Avatar.Icon {...props} style={{ backgroundColor: '#1F1937' }} icon="reflect-vertical" />}
             />
             <Card.Content>
