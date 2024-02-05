@@ -59,7 +59,7 @@ exports.addRide = function addRide(driverId, location, date, time, slots) {
 }
 
 exports.getDailyRide = function getDailyRide(date) {
-    const sql = 'SELECT DriverId, StartingTime, Slot, Date, Name, Surname, R.Location, Rating, Description FROM Rides R, Drivers WHERE Status = 0 AND DriverId = Id AND Date = ?'
+    const sql = 'SELECT DriverId, StartingTime, Slot, Date, Name, Surname, R.Location, Rating, Description, RideId FROM Rides R, Drivers WHERE Status = 0 AND DriverId = Id AND Date = ?'
     return new Promise((resolve, reject) => {
         db.all(sql, [date], (err, rows) => {
             if (err) {

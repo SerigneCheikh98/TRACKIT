@@ -59,27 +59,27 @@ const UserItem = (props) => {
   return (
     <Pressable onPress={() => {
       setSelectedButtons([])
-      if (danger) {
-        props.throwPopup(msg, [
-          {
-            name: 'Book anyway',
-            fn: () => {
+      // if (danger) {
+      //   props.throwPopup(msg, [
+      //     {
+      //       name: 'Book anyway',
+      //       fn: () => {
               
-          navigation.navigate("BookingPage", { name: props.user.name, lastname: props.user.lastname, rating: props.user.rating, description: props.user.description, rideId : props.user.rideId, from: timeSlots, to: '12:00', selectedButtons: selectedButtons, 
-          date: props.params.date, location : props.params.location,time : props.params.time, timeUnit: props.params.timeUnit  })
-          props.closePopup()
-          }
-          }
-          ,{
-            name: 'Close',
-            fn: props.closePopup
-          }
-        ])
-      }
-      else {
+      //     navigation.navigate("BookingPage", { name: props.user.name, lastname: props.user.lastname, rating: props.user.rating, description: props.user.description, rideId : props.user.rideId, from: timeSlots, to: '12:00', selectedButtons: selectedButtons, 
+      //     date: props.params.date, location : props.params.location,time : props.params.time, timeUnit: props.params.timeUnit  })
+      //     props.closePopup()
+      //     }
+      //     }
+      //     ,{
+      //       name: 'Close',
+      //       fn: props.closePopup
+      //     }
+      //   ])
+      // }
+      // else {
 
         props.toggleDropdown(props.index)
-      }
+      // }
     }}>
       <View style={styles.container} pointerEvents="none">
         <View style={styles.icon}>

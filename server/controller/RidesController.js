@@ -209,6 +209,7 @@ exports.getDailyRide = function getDailyRide(req, res) {
                     date: item.Date,
                     from: item.StartingTime,
                     description : item.Description,
+                    rideId: item.RideId,
                     to: calculateEndingHour(item.StartingTime, item.Slot),
                     
                 }

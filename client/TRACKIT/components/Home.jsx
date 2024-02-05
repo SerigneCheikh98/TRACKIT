@@ -70,9 +70,9 @@ const HomePage = ({ navigation, route }) => {
 
   // params
 
-  const [time, setTime] = useState('12:00')
-  const [date, setDate] = useState('17/02/2024');
-  const [location, setLocation] = useState("Torino");
+  const [time, setTime] = useState('')
+  const [date, setDate] = useState('');
+  const [location, setLocation] = useState("");
   const [lastLocation, setLastLocation] = useState("")
 
   const [duration, setDuration] = useState("duration");
@@ -190,6 +190,9 @@ const HomePage = ({ navigation, route }) => {
     if (lastLocation !== location || lastLocation === '') {
       generateDist()
     }
+
+    if(duration === 'duration')
+      return
 
     API.searchRide(paramsObj)
       .then(resp => {
