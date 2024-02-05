@@ -111,9 +111,8 @@ const NotificationPage = ({ navigation, route }) => {
                         }
                     </View>
                     
-                    
                         {
-                            bookingsNotSeen.length != 0 &&
+                            bookingsSeen.length != 0 && bookingsNotSeen.length != 0 &&
                             <Separator text={'Old '} />
                         }
                     <View style={{paddingVertical: '2%'}}>

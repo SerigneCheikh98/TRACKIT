@@ -194,8 +194,6 @@ const InputForm = (props) => {
                   visible={visible}
                   onDismiss={onDismiss}
                   onConfirm={onConfirm}
-                  hours={12}
-                  minutes={14}
                 />
               </View>
             </Pressable>
@@ -306,7 +304,7 @@ const styles = StyleSheet.create({
     
     size:'100%',
     flexDirection:'row',
-    columnGap:'4%'
+    // columnGap:'4%'
   },
   dropdown: {
     borderWidth: 1,
