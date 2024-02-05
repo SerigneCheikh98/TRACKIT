@@ -84,13 +84,15 @@ function ProfileStackScreen({ setIsLoggedIn }) {
 }
 
 const AuthStack = createNativeStackNavigator();
-function AuthStackScreen({ setIsLoggedIn }) {
+function AuthStackScreen({ isLoggedIn, setIsLoggedIn }) {
   return (
     <AuthStack.Navigator screenOptions={{ headerShown: false, gestureEnabled: false }}>
       <AuthStack.Screen name="LoginPage">
         {(props) => <Login {...props} setIsLoggedIn={setIsLoggedIn} />}
       </AuthStack.Screen>
-      <AuthStack.Screen name="RegistrationPage" component={RegisterScreen} />
+      <AuthStack.Screen name="RegistrationPage">
+        {(props) => <RegisterScreen {...props} isLoggedIn={isLoggedIn} />}
+      </AuthStack.Screen>
     </AuthStack.Navigator>
   );
 }
@@ -131,7 +133,7 @@ export default function App() {
     <PaperProvider theme={theme}>
       <NotificationContext.Provider value={[notification, setNotification]}>
     <NavigationContainer>
-      {!isLoggedIn ? <AuthStackScreen setIsLoggedIn={setIsLoggedIn} /> : 
+      {!isLoggedIn ? <AuthStackScreen isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} /> : 
     (<Tab.Navigator
         screenOptions={({ route }) => ({
           tabBarActiveTintColor: '#F9C977',

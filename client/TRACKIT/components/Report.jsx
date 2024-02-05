@@ -124,7 +124,7 @@ const ReportScreen = ({ navigation }) => {
   const tips = () => {
    
     return <>
-      <Text style={{ paddingBottom: 6, fontSize:16}}>You're on the right track! for next lesson practice on your weaknesses or on topics you never covered before</Text>
+      <Text style={{ paddingBottom: 6, fontSize:16}}>You're on the right track! For next lesson practice on your weaknesses or on topics you never covered before</Text>
      
     </>
   }

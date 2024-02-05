@@ -36,23 +36,25 @@ const genders = [
 
 
 
-const RegisterScreen = ({navigation, route}) =>{
+const RegisterScreen = ({navigation, route, isLoggedIn}) =>{
 
 
 
-
+  console.log(isLoggedIn)
   function handleDriverRequest() {
-    API.addRequest()
-      .then(resp => {
-        setNotification(true)
-        closePopup()
-      })
-      .catch(err => {
-        throwPopup(err.message, [{
-          name: 'Close',
-          fn: closePopup
-        }])
-      })
+    if(isLoggedIn) {
+      API.addRequest()
+        .then(resp => {
+          setNotification(true)
+          closePopup()
+        })
+        .catch(err => {
+          throwPopup(err.message, [{
+            name: 'Close',
+            fn: closePopup
+          }])
+        })
+    }
   }
 
 
@@ -236,16 +238,18 @@ const RegisterScreen = ({navigation, route}) =>{
 
     useEffect(() => {
 
-      API.getStudent().then((student) => {
-          console.log(student)
-          if( student.driverRequesState === 1){
-              // show the card
-              setShowUpgradeSent(true);
-          }
-          else{
-              setShowUpgradeSent(false);
-          }
-      }).catch(err => console.log(err));
+      if(isLoggedIn) {
+        API.getStudent().then((student) => {
+            console.log(student)
+            if( student.driverRequesState === 1){
+                // show the card
+                setShowUpgradeSent(true);
+            }
+            else{
+                setShowUpgradeSent(false);
+            }
+        }).catch(err => console.log(err));
+      }
       
   }, [showUpgradeSent])
 
