@@ -78,7 +78,7 @@ const ProfilePage = ({ route, setIsLoggedIn }) => {
                 <TouchableOpacity style={styles.item} onPress={()=> navigation.navigate('Registration', {source: "2"})}>
                     <CircleIcon dimensione={0.14} tipo={'chalkboard-teacher'} fonte={"font-awesome-5"}/>
                     <View style={styles.textContainerItem}>
-                        <Text style={styles.iconTitle}>Upgrade to Driver </Text>
+                        <Text style={styles.iconTitle}>Upgrade to Experienced Driver </Text>
                         <Text style={[styles.iconTitle, styles.iconDescription]}>Start teaching and become a millionaire!</Text>
                     </View>
                     <Icon name= {'chevron-right'} type="font-awesome" color={'#1F1937'} size={20} style={styles.arrow_right}/>
@@ -96,8 +96,8 @@ const ProfilePage = ({ route, setIsLoggedIn }) => {
                 <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('NotificationPage')}>
                     <CircleIcon dimensione={0.14} tipo={'calendar-edit'} fonte={"material-community"}/>
                     <View style={styles.textContainerItem}>
-                        <Text style={styles.iconTitle}>My Rides </Text>
-                        <Text style={[styles.iconTitle, styles.iconDescription]}>Delete any of your bookings</Text>
+                        <Text style={styles.iconTitle}>Bookings and Requests </Text>
+                        <Text style={[styles.iconTitle, styles.iconDescription]}>Check your bookings and requests</Text>
                     </View>
                     <Icon name= {'chevron-right'} type="font-awesome" color={'#1F1937'} size={20} style={styles.arrow_right}/>
                 </TouchableOpacity>
@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
     iconTitle :{
         ...debug,
         ...commonTextStyles,
-        fontSize: 20,
+        fontSize: 16,
         fontFamily: 'roboto-semiBold',
 
 
@@ -249,7 +249,7 @@ const styles = StyleSheet.create({
 
     iconDescription : {
         ...debug,
-        fontSize: 12,
+        fontSize: 10,
         color: 'rgba(0, 0, 0, 0.3)',
         fontFamily: 'roboto',
     },
