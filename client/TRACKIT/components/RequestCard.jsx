@@ -5,7 +5,7 @@ import { color } from '@rneui/base';
 
 const RequestCard = (props) => {
 
-    const msg = `Are you sure you want to request a ride in ${props.params.location} on ${props.params.date} at ${props.params.time} for ${props.params.duration.value} ${props.params.timeUnit} `
+    const msg = `Are you sure you want to request a practice in ${props.params.location} on ${props.params.date} at ${props.params.time} for ${props.params.duration.value} ${props.params.timeUnit} `
     return (
        
         <Card 

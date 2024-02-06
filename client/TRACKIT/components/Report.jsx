@@ -124,7 +124,7 @@ const ReportScreen = ({ navigation }) => {
   const tips = () => {
    
     return <>
-      <Text style={{ paddingBottom: 6, fontSize:16}}>You're on the right track! For next lesson practice on your weaknesses or on topics you never covered before</Text>
+      <Text style={{ paddingBottom: 6, fontSize:16}}>You're on the right track! For next practice, work on your weaknesses or on topics you never covered before</Text>
      
     </>
   }
@@ -323,7 +323,7 @@ const ReportScreen = ({ navigation }) => {
               color:'#1F1937',
               marginTop:'5%',
               fontWeight:'500'
-             }}>Feedback From Instructors:</Text>
+             }}>Feedback from driver:</Text>
              { 
              selectedWeakness &&
              <View

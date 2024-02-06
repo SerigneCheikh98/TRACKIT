@@ -38,11 +38,8 @@ const genders = [
 
 const RegisterScreen = ({navigation, route, isLoggedIn}) =>{
 
-
-
-  console.log(isLoggedIn)
   function handleDriverRequest() {
-    if(isLoggedIn) {
+    if(isLoggedIn == undefined) {
       API.addRequest()
         .then(resp => {
           setNotification(true)
@@ -239,7 +236,7 @@ const RegisterScreen = ({navigation, route, isLoggedIn}) =>{
 
     useEffect(() => {
 
-      if(isLoggedIn) {
+      if(isLoggedIn == undefined) {
         API.getStudent().then((student) => {
             console.log(student)
             if( student.driverRequesState === 1){

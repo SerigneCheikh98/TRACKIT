@@ -66,7 +66,7 @@ const BookingConfirmation = ({ navigation, route }) => {
         <View style={styles.confimationBookingContainer}>
           <View style={styles.textContainer}>
             <Text style={[styles.textStyle, { color: '#F9C977', fontSize: 20 }]} >Confirmed</Text>
-            <Text style={[{ fontFamily: 'roboto-semiBold', fontSize: 30 }]}>Your lesson booking</Text>
+            <Text style={[{ fontFamily: 'roboto-semiBold', fontSize: 30 }]}>Your practice booking</Text>
             <Text style={[styles.textStyle, { fontSize: 16 }]} >You're all set! We sent your confirmation email to <Text style={{ fontFamily: 'roboto-semiBold' }}>{email}</Text></Text>
           </View>
           <View style={styles.confirmationNumberContainer}>

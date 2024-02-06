@@ -269,7 +269,7 @@ const HomePage = ({ navigation, route }) => {
               !available && !dirtySearch &&
                 <View style={{ backgroundColor: "#ffffff" }}>
 
-                  <RequestCard params={params} handleInsertRequest={handleInsertRequest} throwPopup={throwPopup} closePopup={closePopup} badgeOn={badgeOn} text={'We are sorry! No instructors are available for the specified time or duration'} setBadgeOn={setBadgeOn} />
+                  <RequestCard params={params} handleInsertRequest={handleInsertRequest} throwPopup={throwPopup} closePopup={closePopup} badgeOn={badgeOn} text={'We are sorry! No drivers are available for the specified time or duration'} setBadgeOn={setBadgeOn} />
                   {
                     (noAvailability == false && UsersList.length) &&
                     <View style={{
