@@ -84,7 +84,8 @@ const NotificationPage = ({ navigation, route }) => {
         }).catch(err => console.log(err));
         
     }, [dirty, showUpgradeCard])
-
+    
+    const noNotificationMsg = Math.random()*100 <= 80 ? `You don't have any activity yet` : `If you think it's sad because there are no notifications look at you first`
     return (
         <SafeAreaProvider style={{
             backgroundColor:'white'
@@ -96,6 +97,13 @@ const NotificationPage = ({ navigation, route }) => {
                         <UpgradeCard handleDeleteUpgrade={handleDeleteUpgrade} throwPopup={throwPopup} closePopup={closePopup} />
                     </View>}
                     {(showUpgradeCard && bookingsNotSeen.length!=0 || bookingsSeen.length!=0) && <Separator text={'Rides'} />}
+                    { 
+                        bookingsNotSeen.length == 0 &&
+                        bookingsSeen.length == 0 &&
+                        <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignContent: 'center', padding: '10%', paddingTop: 0}}>
+                            <Text>{noNotificationMsg}</Text>
+                        </View>    
+                    }
                     <View style={{paddingVertical: '2%'}}>
                         {
                             bookingsNotSeen.map((booking, index) => {
