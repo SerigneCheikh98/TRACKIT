@@ -125,13 +125,15 @@ const InputForm = (props) => {
         {/* LOCATION */}
         <View style={styles.textInputContainer}>
           <TextInput
-            style={{ flex: 1, backgroundColor: 'white' }}
+            style={{ flex: 1, backgroundColor: 'white', }}
             mode='outlined'
-            label="Location"
+            label="Full address"
+          
             outlineColor={props.alarmInput[0] == true  ? 'red' : '#1F1937'}
             activeOutlineColor={props.alarmInput[0] == true ? 'red' : '#1F1937'}
             value={props.params.location}
             onChangeText={location => {
+             
               props.setDirtySearch(true)
               props.params.setLocation(location)
             }}

@@ -75,6 +75,7 @@ const RegisterScreen = ({navigation, route}) =>{
     const [mail, setMail] = useState("");
     const [password, setPassword] = useState("");
     const [conpassword, setConfPassword] = useState("");
+    const [weakPass, setWeakPass] = useState(false)
     
     // submit
     const [submit, setSubmit] = useState(false);
@@ -395,7 +396,7 @@ const RegisterScreen = ({navigation, route}) =>{
         onPress={()=>{
           setSubmit(true);
           console.log(submit);
-          if((uname!="") && (lastName!="") && (mail!="") && (password!="") && (conpassword!="") && (password == conpassword))
+          if((uname!="") && (lastName!="") && (mail!="") && (password!="") && (conpassword!="") && (password == conpassword) && (password.length>=8))
            { 
             setStep('2');
             setSubmit(false);
@@ -415,6 +416,11 @@ const RegisterScreen = ({navigation, route}) =>{
         (uname!="") && (lastName!="") && (mail!="") && (password!="") && (conpassword!="") && (password != conpassword)) &&
         <Text variant="labelSmall" style={{ marginTop: '7%', color:"red"}} >Password confirmation is wrong</Text>}
           
+          {(submit===true &&
+        (uname!="") && (lastName!="") && (mail!="") && (password!="") && (conpassword!="") && (password.length<8)) &&
+        <Text variant="labelSmall" style={{ marginTop: '7%', color:"red"}} >Password should be at least 8 characters long</Text>} 
+        
+        
         <Text variant="labelSmall" style={{ marginTop: '7%' }} >Already Registered?</Text>
         
        
